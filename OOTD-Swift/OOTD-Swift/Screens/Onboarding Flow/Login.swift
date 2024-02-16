@@ -6,11 +6,9 @@
 //
 
 import SwiftUI
-import AuthenticationServices
 //import GoogleSignInSwift
 
 struct Login: View {
-    
     @State private var email: String = ""
     @State private var password: String = ""
     var body: some View {
@@ -29,43 +27,57 @@ struct Login: View {
                 VStack {
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
-                        .bold()
+                        .font(.title3)
+                        .fontWeight(.heavy)
                     Text("Your virtual closet")
                         .foregroundStyle(Color(hex:"898989"))
-                        .bold()
+                        .font(.title3)
+                        .fontWeight(.heavy)
 
                 }
-                HStack {
-                    TextField("Email...", text: $email)
-//                        .foregroundStyle(Color(hex:"898989"))
-                    Image(systemName: "checkmark")
-                        .fontWeight(.bold)
-                        .foregroundColor(.green)
+                VStack {
+                    HStack {
+                        TextField("Email...", text: $email)
+    //                        .foregroundStyle(Color(hex:"898989"))
+                        Image(systemName: "checkmark")
+                            .fontWeight(.bold)
+                            .foregroundColor(.green)
+                    }
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(lineWidth: 2.0)
+                            .foregroundColor(Color(hex:"898989"))
+                    )
+                    .padding()
+                    HStack {
+                        TextField("Password...", text: $password)
+    //                        .foregroundStyle(Color(hex:"898989"))
+                        Image(systemName: "checkmark")
+                            .fontWeight(.bold)
+                            .foregroundColor(.green)
+                    }
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(lineWidth: 2.0)
+                            .foregroundColor(Color(hex:"898989"))
+                    )
+                    .padding()
+                    
+                    Button(action: {
+                        print("Forgot Password tapped")
+                    }) {
+                        Text("Forgot Password?")
+                            .foregroundStyle(Color(hex: "CBC3E3"))
+                            .fontWeight(.heavy)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.trailing, 20)
+                    }
                 }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(lineWidth: 2.0)
-                        .foregroundColor(Color(hex:"898989"))
-                )
-                .padding()
-                HStack {
-                    TextField("Password...", text: $password)
-//                        .foregroundStyle(Color(hex:"898989"))
-                    Image(systemName: "checkmark")
-                        .fontWeight(.bold)
-                        .foregroundColor(.green)
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(lineWidth: 2.0)
-                        .foregroundColor(Color(hex:"898989"))
-                )
-                .padding()
                 
                 Spacer()
-
+                
             }
         }
     }
