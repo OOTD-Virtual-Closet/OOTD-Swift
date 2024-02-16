@@ -38,7 +38,7 @@ struct Login: View {
                 VStack {
                     HStack {
                         TextField("Email...", text: $email)
-    //                        .foregroundStyle(Color(hex:"898989"))
+                        
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
                             .foregroundColor(.green)
