@@ -73,37 +73,56 @@ struct Login: View {
                             .fontWeight(.heavy)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .padding(.trailing, 20)
+                            .padding(.bottom, 30)
                     }
                 }
                 
-                Spacer()
                 VStack (spacing:10){
                     Button("Login") {
                         // handle login stuff
                     }
                     .padding()
                     .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                    .background(.purple)
-                    .foregroundColor(.white)
+                    .background(Color(hex:"CBC3E3"))
+                    .foregroundColor(.black)
+                    .fontWeight(.bold)
                     .cornerRadius(10)
                     .padding(.horizontal)
-                    
+                    .padding(.bottom, 20)
                     HStack {
                         Text("Don't have an account?")
+                            .foregroundStyle(Color(hex:"898989"))
+                            .fontWeight(.heavy)
                         Button("Signup!") {
                             // handle signup
                         }
-                        .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(Color(hex:"CBC3E3"))
+                        .fontWeight(.heavy)
                     }
                     
                     Text("OR")
                         .padding()
+                        .foregroundStyle(Color(hex:"898989"))
+                        .fontWeight(.bold)
+                    
+                    
+                    //#####NEED TO IMPLEMENT#####
                     
                     Button (action: {
                        // handle google login
+                        print("Login with google")
                     }) {
                         HStack {
                             Text("Log In with Google")
+                                .foregroundColor(.black)
+                        }
+                    }
+                    Button (action: {
+                       // handle google login
+                        print("Login with Apple")
+                    }) {
+                        HStack {
+                            Text("Log In with Apple")
                                 .foregroundColor(.black)
                         }
                     }
