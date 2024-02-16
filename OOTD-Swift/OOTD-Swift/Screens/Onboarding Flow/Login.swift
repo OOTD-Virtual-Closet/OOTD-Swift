@@ -77,7 +77,39 @@ struct Login: View {
                 }
                 
                 Spacer()
+                VStack (spacing:10){
+                    Button("Login") {
+                        // handle login stuff
+                    }
+                    .padding()
+                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                    .background(.purple)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding(.horizontal)
+                    
+                    HStack {
+                        Text("Don't have an account?")
+                        Button("Signup!") {
+                            // handle signup
+                        }
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    }
+                    
+                    Text("OR")
+                        .padding()
+                    
+                    Button (action: {
+                       // handle google login
+                    }) {
+                        HStack {
+                            Text("Log In with Google")
+                                .foregroundColor(.black)
+                        }
+                    }
+                }
                 
+                Spacer()
             }
         }
     }
