@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8915767D2B7F1422006947E4 /* Closet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767C2B7F1422006947E4 /* Closet.swift */; };
+		891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767F2B7F1440006947E4 /* BottomNavBar.swift */; };
 		8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */; };
 		8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B76B2B75D7A6000E8DED /* Persistence.swift */; };
 		8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8985B76D2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8915767C2B7F1422006947E4 /* Closet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closet.swift; sourceTree = "<group>"; };
+		8915767F2B7F1440006947E4 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		8985B7662B75D7A6000E8DED /* OOTD-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OOTD-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftApp.swift; sourceTree = "<group>"; };
 		8985B76B2B75D7A6000E8DED /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -77,6 +81,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8915767A2B7F13B3006947E4 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				8915767C2B7F1422006947E4 /* Closet.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		8915767E2B7F142C006947E4 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8915767F2B7F1440006947E4 /* BottomNavBar.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		8985B75D2B75D7A6000E8DED = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +120,8 @@
 		8985B7682B75D7A6000E8DED /* OOTD-Swift */ = {
 			isa = PBXGroup;
 			children = (
+				8915767E2B7F142C006947E4 /* Components */,
+				8915767A2B7F13B3006947E4 /* Screens */,
 				8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */,
 				8985B76B2B75D7A6000E8DED /* Persistence.swift */,
 				8985B7702B75D7A6000E8DED /* ContentView.swift */,
@@ -267,7 +289,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
 				8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */,
+				891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */,
 				8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */,
 				8985B7712B75D7A6000E8DED /* ContentView.swift in Sources */,
 				8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */,
@@ -451,7 +475,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.testflight..OOTD-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -488,7 +513,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.testflight..OOTD-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
