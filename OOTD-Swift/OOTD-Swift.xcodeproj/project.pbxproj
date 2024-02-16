@@ -87,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				8915767C2B7F1422006947E4 /* Closet.swift */,
-				CCDE677E2B7F1E9C00599FE8 /* Login.swift */,
+				CCDE67802B7F1EED00599FE8 /* Onboarding Flow */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -160,6 +160,14 @@
 				8985B78D2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift */,
 			);
 			path = "OOTD-SwiftUITests";
+			sourceTree = "<group>";
+		};
+		CCDE67802B7F1EED00599FE8 /* Onboarding Flow */ = {
+			isa = PBXGroup;
+			children = (
+				CCDE677E2B7F1E9C00599FE8 /* Login.swift */,
+			);
+			path = "Onboarding Flow";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
