@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import AuthenticationServices
+//import GoogleSignInSwift
 
 struct Login: View {
+    
     @State private var email: String = ""
     @State private var password: String = ""
     var body: some View {
@@ -60,6 +63,7 @@ struct Login: View {
                         .foregroundColor(Color(hex:"898989"))
                 )
                 .padding()
+                
                 Spacer()
 
             }
