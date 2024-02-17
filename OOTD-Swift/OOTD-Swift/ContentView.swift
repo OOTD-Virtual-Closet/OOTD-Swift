@@ -23,28 +23,25 @@ struct ContentView: View {
             } else if checkBiometricLogin() {
                 // TODO: Implement biometric login
             } else {
-                
+                Login()
             }
         }
     }
     
     //checks if quick login is enabled
-    private func checkQuickLogin() {
+    private func checkQuickLogin() -> Bool {
+        // TODO: implement checkQuickLogin()
+        return false;
     }
 
     //checks if biometric login is enabled
     //returns true/false
-    private func checkBiometricLogin() {
-        
+    private func checkBiometricLogin() -> Bool {
+        // TODO: implement checkBiometricLogin()
+        return false;
     }
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
 
 struct Previews_ContentView_Previews: PreviewProvider {
