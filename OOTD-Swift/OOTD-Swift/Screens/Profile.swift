@@ -32,42 +32,64 @@ struct ProfileSummary: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color("settingsBackground")
-                VStack(alignment: .leading, spacing: 4) {
+                //Color("settingsBackground")
+                VStack {
+
                     Text("\nSettings\n")
-                        .font(.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .padding()
+                        .foregroundStyle(Color(hex:"CBC3E3"))
                     
                     //display username and email
                     Text(profile.username)
                         .bold()
                         .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fontWeight(.heavy)
+                        .padding(.horizontal)
+                        .foregroundColor(Color(hex:"898989"))
+                    
                     Text("email: " + profile.email + "\n")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                        .foregroundColor(Color(hex:"898989"))
                     
-                    //change password button
-                    Button(action: {
-                        //TODO: ADD STUFF TO CHANGE PASSWORD
+                    VStack {
                         
-                    }, label: {
-                        Text("Change Password")
-                            .accentColor(.black)
-                            .padding()
-                            .background(
-                                Color("UIpurple")
-                                    .cornerRadius(10))
-                    })
-                    
-                    
-                    //delete account button
-                    Button(action: {
+                        //change password button
+                        Button(action: {
+                            //TODO: ADD STUFF TO CHANGE PASSWORD
+                            
+                        }, label: {
+                            Text("Change Password")
+                                .padding()
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(.black)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                                .background(Color("UIpurple"))
+                                .cornerRadius(10)
+                        })
                         
-                    }, label: {
-                        Text("Delete Account")
-                            .accentColor(.red)
-                            .padding()
-                            .background(
-                                Color("UIpurple")
-                                    .cornerRadius(10))
-                    })
+                        .padding(.horizontal)
+                   
+                        //delete account button
+                        Button(action: {
+                            
+                        }, label: {
+                            Text("Delete Account")
+                                .padding()
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(.red)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                                .background(Color("UIpurple"))
+                                .cornerRadius(10)
+                        })
+                        .padding()
+                    }
                     
                     Spacer()
                     Spacer()
