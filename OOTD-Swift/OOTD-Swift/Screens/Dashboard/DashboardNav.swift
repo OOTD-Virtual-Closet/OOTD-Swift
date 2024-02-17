@@ -8,26 +8,30 @@
 import SwiftUI
 
 struct DashboardNav: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     let userProfile: String
     var body: some View {
         TabView {
-                    CategoriesView()
-                        .tabItem {
-                            Image(systemName: "1.circle")
-                            Text("Market")
-                        }
-                    FeedView()
-                        .tabItem {
-                            Image(systemName: "2.circle")
-                            Text("Social")
-                        }
-                    ClothesView()
-                        .tabItem {
-                            Image(systemName: "3.circle")
-                            Text("Closet")
-                        }
-                }
-        
+            CategoriesView()
+                .tabItem {
+                    Image(systemName: "1.circle")
+                    Text("Market")
+            }
+            FeedView()
+                .tabItem {
+                    Image(systemName: "2.circle")
+                    Text("Social")
+            }
+            ClothesView()
+                .tabItem {
+                    Image(systemName: "3.circle")
+                    Text("Closet")
+            }
+        }
+        .navigationBarTitle("")
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 }
 
