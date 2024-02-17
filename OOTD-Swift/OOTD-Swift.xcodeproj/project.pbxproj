@@ -19,6 +19,7 @@
 		8985B78C2B75D7A7000E8DED /* OOTD_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B78B2B75D7A7000E8DED /* OOTD_SwiftUITests.swift */; };
 		8985B78E2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B78D2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift */; };
 		CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE677E2B7F1E9C00599FE8 /* Login.swift */; };
+		CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE67832B8138BD00599FE8 /* Signup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		8985B78B2B75D7A7000E8DED /* OOTD_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftUITests.swift; sourceTree = "<group>"; };
 		8985B78D2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CCDE677E2B7F1E9C00599FE8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		CCDE67832B8138BD00599FE8 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				CCDE677E2B7F1E9C00599FE8 /* Login.swift */,
+				CCDE67832B8138BD00599FE8 /* Signup.swift */,
 			);
 			path = "Onboarding Flow";
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */,
 				891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */,
 				8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */,
+				CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */,
 				8985B7712B75D7A6000E8DED /* ContentView.swift in Sources */,
 				8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */,
 			);

@@ -2,13 +2,13 @@
 //  Login.swift
 //  OOTD-Swift
 //
-//  Created by Atharva Gupta on 2/15/24.
+//  Created by Atharva Gupta on 2/17/24.
 //
 
 import SwiftUI
 //import GoogleSignInSwift
 
-struct Login: View {
+struct Signup: View {
     @State private var email: String = ""
     @State private var password: String = ""
     var body: some View {
@@ -16,28 +16,25 @@ struct Login: View {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
                 HStack {
-                    Text("Hello Welcome!")
+                    Text("OOTD SIGN UP!")
                         .frame(maxWidth: .infinity, alignment: .center)
                         .font(.largeTitle)
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
                 }
                 .padding()
-                .padding()
+                .padding(.bottom, 5)
                 VStack {
-                    Text("Welcome to OOTD")
+                    Text("Let's get started on your account")
                         .foregroundStyle(Color(hex:"898989"))
-                        .font(.title3)
+                        .font(.subheadline)
                         .fontWeight(.heavy)
-                    Text("Your virtual closet")
-                        .foregroundStyle(Color(hex:"898989"))
-                        .font(.title3)
-                        .fontWeight(.heavy)
+                        .padding(.bottom, 40)
 
                 }
                 VStack {
                     HStack {
-                        TextField("Email...", text: $email)
+                        TextField("Enter username...", text: $email)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -51,7 +48,7 @@ struct Login: View {
                     )
                     .padding()
                     HStack {
-                        TextField("Password...", text: $password)
+                        TextField("Enter password...", text: $password)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -64,19 +61,8 @@ struct Login: View {
                             .foregroundColor(Color(hex:"898989"))
                     )
                     .padding()
-                    
-                    Button(action: {
-                        print("Forgot Password tapped")
-                    }) {
-                        Text("Forgot Password?")
-                            .foregroundStyle(Color(hex: "CBC3E3"))
-                            .fontWeight(.heavy)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.trailing, 20)
-                            .padding(.bottom, 30)
-                    }
                 }
-                
+                Spacer()
                 VStack (spacing:10){
                     Button("Login") {
                         // handle login stuff
@@ -90,10 +76,10 @@ struct Login: View {
                     .padding(.horizontal)
                     .padding(.bottom, 20)
                     HStack {
-                        Text("Don't have an account?")
+                        Text("Already have an account?")
                             .foregroundStyle(Color(hex:"898989"))
                             .fontWeight(.heavy)
-                        Button("Signup!") {
+                        Button("Login!") {
                             // handle signup
                         }
                         .foregroundColor(Color(hex:"CBC3E3"))
@@ -110,19 +96,19 @@ struct Login: View {
                     
                     Button (action: {
                        // handle google login
-                        print("Login with google")
+                        print("Sign Up with google")
                     }) {
                         HStack {
-                            Text("Log In with Google")
+                            Text("Sign up In with Google")
                                 .foregroundColor(.black)
                         }
                     }
                     Button (action: {
                        // handle google login
-                        print("Login with Apple")
+                        print("Sign up with Apple")
                     }) {
                         HStack {
-                            Text("Log In with Apple")
+                            Text("Sign up with Apple")
                                 .foregroundColor(.black)
                         }
                     }
@@ -134,35 +120,9 @@ struct Login: View {
     }
 }
 
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (1, 1, 1, 0)
-        }
 
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue:  Double(b) / 255,
-            opacity: Double(a) / 255
-        )
-    }
-}
-
-struct Login_Previews: PreviewProvider {
+struct Signup_Previews: PreviewProvider {
     static var previews: some View {
-        Login()
+        Signup()
     }
 }
