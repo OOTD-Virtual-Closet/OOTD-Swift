@@ -17,6 +17,7 @@ struct Signup: View {
             VStack {
                 HStack {
                     Text("OOTD SIGN UP!")
+                        .padding(.top, 30)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .font(.largeTitle)
                         .fontWeight(.heavy)
@@ -55,6 +56,7 @@ struct Signup: View {
                             .foregroundColor(.green)
                     }
                     .padding()
+
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 2.0)
@@ -63,7 +65,7 @@ struct Signup: View {
                     .padding()
                 }
                 Spacer()
-                VStack (spacing:10){
+                VStack (spacing:20){
                     Button("Login") {
                         // handle login stuff
                     }
