@@ -9,7 +9,25 @@ import SwiftUI
 
 struct DashboardNav: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TabView {
+                    CategoriesView()
+                        .tabItem {
+                            Image(systemName: "1.circle")
+                            Text("Market")
+                        }
+                    FeedView()
+                        .tabItem {
+                            Image(systemName: "2.circle")
+                            Text("Social")
+                        }
+                    ClothesView()
+                        .tabItem {
+                            Image(systemName: "3.circle")
+                            Text("Closet")
+                        }
+                }
+                .accentColor(.blue)
+        
     }
 }
 

@@ -5,4 +5,16 @@
 //  Created by Aditya Patel on 2/17/24.
 //
 
-import Foundation
+import SwiftUI
+
+struct ClothesView: View {
+    var body: some View {
+        Text("clothes")
+    }
+}
+
+struct ClothesView_Previews: PreviewProvider {
+    static var previews: some View {
+        ClothesView()
+    }
+}
