@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52358BAC2B7FFC5E00619E85 /* Profile.swift */; };
+		52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A5802B801DCE00496804 /* DeleteAccount.swift */; };
 		8915767D2B7F1422006947E4 /* Closet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767C2B7F1422006947E4 /* Closet.swift */; };
 		891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767F2B7F1440006947E4 /* BottomNavBar.swift */; };
 		8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		52358BAC2B7FFC5E00619E85 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		52D6A5802B801DCE00496804 /* DeleteAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccount.swift; sourceTree = "<group>"; };
 		8915767C2B7F1422006947E4 /* Closet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closet.swift; sourceTree = "<group>"; };
 		8915767F2B7F1440006947E4 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		8985B7662B75D7A6000E8DED /* OOTD-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OOTD-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,7 +92,9 @@
 		8915767A2B7F13B3006947E4 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				52D6A5802B801DCE00496804 /* DeleteAccount.swift */,
 				8915767C2B7F1422006947E4 /* Closet.swift */,
+				52358BAC2B7FFC5E00619E85 /* Profile.swift */,
 				CCDE67802B7F1EED00599FE8 /* Onboarding Flow */,
 			);
 			path = Screens;
@@ -307,9 +313,11 @@
 				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
 				8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */,
 				891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */,
+				52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */,
 				8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */,
 				CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */,
 				8985B7712B75D7A6000E8DED /* ContentView.swift in Sources */,
+				52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */,
 				8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
