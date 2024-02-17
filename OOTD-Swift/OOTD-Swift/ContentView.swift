@@ -16,34 +16,34 @@ struct ContentView: View {
         animation: .default)
     private var items: FetchedResults<Item>
 
+    @State private var isAuthenticated = false
+    //@State var userProfile = Profile.empty
+    @State var userProfile = ""
+    //TODO: make a class to store user info after auth
     var body: some View {
+        
         NavigationView {
-            if checkQuickLogin() {
-                // TODO: Implement quick login
-                DashboardNav()
-            } else if checkBiometricLogin() {
-                // TODO: Implement biometric login
-                DashboardNav()
+            if isAuthenticated {
+                DashboardNav(userProfile: userProfile)
             } else {
                 Login()
             }
         }
-    }
     
-    //checks if quick login is enabled
-    private func checkQuickLogin() -> Bool {
-        // TODO: implement checkQuickLogin()
-        return false;
-    }
-
-    //checks if biometric login is enabled
-    //returns true/false
-    private func checkBiometricLogin() -> Bool {
-        // TODO: implement checkBiometricLogin()
-        return false;
     }
 }
+//checks if quick login is enabled
+func checkQuickLogin() -> Bool {
+    // TODO: implement checkQuickLogin()
+    return false;
+}
 
+//checks if biometric login is enabled
+//returns true/false
+func checkBiometricLogin() -> Bool {
+    // TODO: implement checkBiometricLogin()
+    return false;
+}
 
 
 struct Previews_ContentView_Previews: PreviewProvider {

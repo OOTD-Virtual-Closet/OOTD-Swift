@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DashboardNav: View {
+    let userProfile: String
     var body: some View {
         TabView {
                     CategoriesView()
@@ -26,13 +27,12 @@ struct DashboardNav: View {
                             Text("Closet")
                         }
                 }
-                .accentColor(.blue)
         
     }
 }
 
 struct DashboardNav_Previews: PreviewProvider {
     static var previews: some View {
-        DashboardNav()
+        DashboardNav(userProfile: "im not adi")
     }
 }

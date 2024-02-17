@@ -66,27 +66,29 @@ struct Signup: View {
                 }
                 Spacer()
                 VStack (spacing:20){
-                    Button("Login") {
-                        // handle login stuff
-                    }
-                    .padding()
-                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                    .background(Color(hex:"CBC3E3"))
-                    .foregroundColor(.black)
-                    .fontWeight(.bold)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    .padding(.bottom, 20)
-                    HStack {
-                        Text("Already have an account?")
-                            .foregroundStyle(Color(hex:"898989"))
-                            .fontWeight(.heavy)
-                        Button("Login!") {
-                            // handle signup
+                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
+                                    label: {
+                        Text("Create an Account")
+                            .padding()
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .background(Color(hex:"CBC3E3"))
+                            .foregroundColor(.black)
+                            .fontWeight(.bold)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .padding(.bottom, 20)
                         }
-                        .foregroundColor(Color(hex:"CBC3E3"))
-                        .fontWeight(.heavy)
-                    }
+                    )
+//                    HStack {
+//                        Text("Already have an account?")
+//                            .foregroundStyle(Color(hex:"898989"))
+//                            .fontWeight(.heavy)
+//                        Button("Login!") {
+//                            // handle signup
+//                        }
+//                        .foregroundColor(Color(hex:"CBC3E3"))
+//                        .fontWeight(.heavy)
+//                    }
                     
                     Text("OR")
                         .padding()
