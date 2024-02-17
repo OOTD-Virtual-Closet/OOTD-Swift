@@ -12,6 +12,7 @@ struct Login: View {
     @State private var email: String = ""
     @State private var password: String = ""
     var body: some View {
+        
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
@@ -78,24 +79,28 @@ struct Login: View {
                 }
                 
                 VStack (spacing:10){
-                    Button("Login") {
-                        // handle login stuff
-                    }
-                    .padding()
-                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                    .background(Color(hex:"CBC3E3"))
-                    .foregroundColor(.black)
-                    .fontWeight(.bold)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    .padding(.bottom, 20)
+                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
+                                    label: {
+                        Text("Login")
+                            .padding()
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .background(Color(hex:"CBC3E3"))
+                            .foregroundColor(.black)
+                            .fontWeight(.bold)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .padding(.bottom, 20)
+                        }
+                    )
                     HStack {
                         Text("Don't have an account?")
                             .foregroundStyle(Color(hex:"898989"))
                             .fontWeight(.heavy)
-                        Button("Signup!") {
-                            // handle signup
-                        }
+                        NavigationLink(
+                            destination: Signup(), label: {
+                                Text("Signup!")
+                            }
+                        )
                         .foregroundColor(Color(hex:"CBC3E3"))
                         .fontWeight(.heavy)
                     }
@@ -131,6 +136,7 @@ struct Login: View {
                 Spacer()
             }
         }
+
     }
 }
 
