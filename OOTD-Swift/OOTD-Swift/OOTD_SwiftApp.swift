@@ -6,15 +6,18 @@
 //
 
 import SwiftUI
-
 @main
 struct OOTD_SwiftApp: App {
-    let persistenceController = PersistenceController.shared
+  // register app delegate for Firebase setup
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-        }
+
+  var body: some Scene {
+    WindowGroup {
+      NavigationView {
+        ContentView()
+      }
     }
+  }
 }
+
