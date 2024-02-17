@@ -20,6 +20,7 @@ struct ContentView: View {
         NavigationView {
             if checkQuickLogin() {
                 // TODO: Implement quick login
+                
             } else if checkBiometricLogin() {
                 // TODO: Implement biometric login
             } else {
