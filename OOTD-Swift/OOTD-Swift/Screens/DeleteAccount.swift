@@ -8,13 +8,29 @@
 import SwiftUI
 
 struct DeleteAccount: View {
+    @State private var showSignInView: Bool = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            NavigationStack {
+                Text("Temporary Screen (just testing login auth)")
+                ProfileSummary(showSignInView: $showSignInView)
+            }
+        }
+        .onAppear {
+            let authUser = try? AuthManager.shared.getAuthenticatedUser()
+            self.showSignInView = authUser == nil
+        }
+        .fullScreenCover(isPresented:$showSignInView) { NavigationStack {
+                Signup()
+            }
+        }
     }
 }
 
 struct Previews_DeleteAccount_Previews: PreviewProvider {
     static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+//        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+        DeleteAccount()
     }
 }

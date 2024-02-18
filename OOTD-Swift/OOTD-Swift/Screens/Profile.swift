@@ -9,25 +9,35 @@ import Foundation
 import SwiftUI
 import UIKit
 
-struct Profile {
-    var username: String
-    var email: String
-    var password: String
 
-    static let `default` = Profile(username: "sanjheeg", email: "sanjheeg30@gmail.com", password: "")
-
-}
-
-struct ProfileHost: View {
-    @State private var draftProfile = Profile.default
-
-    var body: some View {
-        Text("Profile for: \(draftProfile.username)")
+@MainActor
+final class ProfileViewModel: ObservableObject {
+    func signOut() throws {
+        try AuthManager.shared.signout()
     }
 }
+//
+//struct Profile {
+//    var username: String
+//    var email: String
+//    var password: String
+//
+//    static let `default` = Profile(username: "sanjheeg", email: "sanjheeg30@gmail.com", password: "")
+//
+//}
+
+//struct ProfileHost: View {
+//    @State private var draftProfile = Profile.default
+//
+//    var body: some View {
+//        Text("Profile for: \(draftProfile.username)")
+//    }
+//}
 
 struct ProfileSummary: View {
-    var profile: Profile
+    @StateObject private var viewModel = ProfileViewModel()
+    @Binding var showSignInView: Bool
+//    var profile: Profile
 
     var body: some View {
         NavigationView {
@@ -43,7 +53,7 @@ struct ProfileSummary: View {
                         .foregroundStyle(Color(hex:"CBC3E3"))
                     
                     //display username and email
-                    Text(profile.username)
+                    Text("profile.username")
                         .bold()
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -51,7 +61,7 @@ struct ProfileSummary: View {
                         .padding(.horizontal)
                         .foregroundColor(Color(hex:"898989"))
                     
-                    Text("email: " + profile.email + "\n")
+                    Text("email: " + "profile.email" + "\n")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
                         .foregroundColor(Color(hex:"898989"))
@@ -89,6 +99,28 @@ struct ProfileSummary: View {
                                 .cornerRadius(10)
                         })
                         .padding()
+                        
+                        Button(action: {
+                            print("Log out pressed")
+                            Task {
+                                do {
+                                    try viewModel.signOut()
+                                    showSignInView = true
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        }, label: {
+                            Text("Log Out")
+                                .padding()
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(.black)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                                .background(Color("UIpurple"))
+                                .cornerRadius(10)
+                        })
+                        .padding()
                     }
                     
                     Spacer()
@@ -104,8 +136,8 @@ struct ProfileSummary: View {
 }
 
 
-struct Profile_Previews: PreviewProvider {
+struct ProfileSummary_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSummary(profile: Profile.default)
+        ProfileSummary(showSignInView: .constant(false))
     }
 }

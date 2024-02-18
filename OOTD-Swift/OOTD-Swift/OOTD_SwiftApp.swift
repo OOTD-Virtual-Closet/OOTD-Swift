@@ -16,9 +16,10 @@ struct OOTD_SwiftApp: App {
 
   var body: some Scene {
     WindowGroup {
-      NavigationView {
-        Login()
-      }
+//      NavigationView {
+//          Login()
+        DeleteAccount()
+//      }
     }
   }
 }

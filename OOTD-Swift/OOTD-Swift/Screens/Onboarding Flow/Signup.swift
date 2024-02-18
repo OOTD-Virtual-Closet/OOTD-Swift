@@ -35,7 +35,6 @@ final class SignUpViewModel: ObservableObject {
 
 
 struct Signup: View {
-//    @Binding var currentShowingView: String
     
     @StateObject private var viewModel = SignUpViewModel()
     @State private var isActive: Bool = false
@@ -95,19 +94,7 @@ struct Signup: View {
                 }
                 Spacer()
                 VStack (spacing:20){
-//                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
-//                                    label: {
-//                        Text("Create an Account")
-//                            .padding()
-//                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-//                            .background(Color(hex:"CBC3E3"))
-//                            .foregroundColor(.black)
-//                            .fontWeight(.bold)
-//                            .cornerRadius(10)
-//                            .padding(.horizontal)
-//                            .padding(.bottom, 20)
-//                        }
-//                    )
+
                     Button {
                         print("Sign Up presed")
                         viewModel.signIn()
