@@ -1,0 +1,18 @@
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/SocialDashboard/FriendsView.swift":
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FriendsView.swiftconstvalues"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FriendsView.d"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FriendsView.swiftdeps"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FriendsView.dia"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FriendsView.o"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Onboarding Flow/Login.swift":
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Login.dia"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Login.swiftconstvalues"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Login.d"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Login.o"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Login.swiftdeps"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Closet.swift":
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Closet.swiftdeps"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Closet.dia"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Closet.swiftconstvalues"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Closet.o"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/Closet.d"

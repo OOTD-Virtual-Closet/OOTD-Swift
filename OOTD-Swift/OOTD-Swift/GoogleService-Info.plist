@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.testflight..OOTD-Swift</string>
+	<string>com.testflight.test.OOTD-Swift</string>
 	<key>PROJECT_ID</key>
 	<string>ootd-87b8d</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:779358043811:ios:96dba22d333f689a078916</string>
+	<string>1:779358043811:ios:c916d6d12f260a5d078916</string>
 </dict>
 </plist>

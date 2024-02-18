@@ -1,0 +1,6 @@
+Target dependency graph (3 targets)
+Target 'OOTD-SwiftUITests' in project 'OOTD-Swift'
+➜ Explicit dependency on target 'OOTD-Swift' in project 'OOTD-Swift'
+Target 'OOTD-SwiftTests' in project 'OOTD-Swift'
+➜ Explicit dependency on target 'OOTD-Swift' in project 'OOTD-Swift'
+Target 'OOTD-Swift' in project 'OOTD-Swift' (no dependencies)

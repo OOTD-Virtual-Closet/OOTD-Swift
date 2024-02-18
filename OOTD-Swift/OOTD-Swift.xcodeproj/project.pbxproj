@@ -103,7 +103,6 @@
 		8985B7722B75D7A7000E8DED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8985B7742B75D7A7000E8DED /* OOTD_Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OOTD_Swift.entitlements; sourceTree = "<group>"; };
 		8985B7762B75D7A7000E8DED /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8985B7782B75D7A7000E8DED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8985B77D2B75D7A7000E8DED /* OOTD-SwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "OOTD-SwiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8985B7812B75D7A7000E8DED /* OOTD_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftTests.swift; sourceTree = "<group>"; };
 		8985B7872B75D7A7000E8DED /* OOTD-SwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "OOTD-SwiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,7 +272,6 @@
 				8985B7702B75D7A6000E8DED /* ContentView.swift */,
 				8985B7722B75D7A7000E8DED /* Assets.xcassets */,
 				8985B7742B75D7A7000E8DED /* OOTD_Swift.entitlements */,
-				8985B7782B75D7A7000E8DED /* Info.plist */,
 				8985B76D2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld */,
 				8985B7752B75D7A7000E8DED /* Preview Content */,
 			);
@@ -659,7 +657,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "OOTD-Swift/Info.plist";
+				INFOPLIST_FILE = "OOTD-Swift/GoogleService-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -675,7 +673,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.testflight..OOTD-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.testflight.test.OOTD-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -698,7 +696,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "OOTD-Swift/Info.plist";
+				INFOPLIST_FILE = "OOTD-Swift/GoogleService-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -714,7 +712,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.testflight..OOTD-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.testflight.test.OOTD-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

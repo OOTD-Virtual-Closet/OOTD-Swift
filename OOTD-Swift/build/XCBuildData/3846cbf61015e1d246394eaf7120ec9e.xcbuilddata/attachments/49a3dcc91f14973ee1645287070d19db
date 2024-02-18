@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD-SwiftUITests-master.dia",
+    "emit-module-dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD-SwiftUITests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD-SwiftUITests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD-SwiftUITests-master.swiftdeps"
+  },
+  "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-SwiftUITests/OOTD_SwiftUITests.swift" : {
+    "const-values" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests.swiftconstvalues",
+    "dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests.d",
+    "diagnostics" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests.dia",
+    "index-unit-output-path" : "/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests.o",
+    "llvm-bc" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests.bc",
+    "object" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests.o",
+    "swift-dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests.swiftdeps",
+    "swiftmodule" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITests~partial.swiftmodule"
+  },
+  "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-SwiftUITests/OOTD_SwiftUITestsLaunchTests.swift" : {
+    "const-values" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests.swiftconstvalues",
+    "dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests.d",
+    "diagnostics" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests.dia",
+    "index-unit-output-path" : "/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests.o",
+    "llvm-bc" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests.bc",
+    "object" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests.o",
+    "swift-dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests.swiftdeps",
+    "swiftmodule" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftUITests.build/Objects-normal/arm64/OOTD_SwiftUITestsLaunchTests~partial.swiftmodule"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD-SwiftTests-master.dia",
+    "emit-module-dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD-SwiftTests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD-SwiftTests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD-SwiftTests-master.swiftdeps"
+  },
+  "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-SwiftTests/OOTD_SwiftTests.swift" : {
+    "const-values" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests.swiftconstvalues",
+    "dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests.d",
+    "diagnostics" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests.dia",
+    "index-unit-output-path" : "/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests.o",
+    "llvm-bc" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests.bc",
+    "object" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests.o",
+    "swift-dependencies" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests.swiftdeps",
+    "swiftmodule" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-SwiftTests.build/Objects-normal/arm64/OOTD_SwiftTests~partial.swiftmodule"
+  }
+}
