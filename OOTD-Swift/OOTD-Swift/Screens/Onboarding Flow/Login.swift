@@ -197,8 +197,9 @@ extension Color {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
-            Login()
-        }
+        @State var showSignInView = false
+//        NavigationStack {
+        Login()
+//        }
     }
 }

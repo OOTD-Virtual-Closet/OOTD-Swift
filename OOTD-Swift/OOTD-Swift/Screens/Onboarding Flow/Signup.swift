@@ -13,22 +13,13 @@ final class SignUpViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     
-    func signIn() {
+    func signIn() async throws {
         guard !email.isEmpty, !password.isEmpty else {
             print("No user email or password found")
             return
         }
-        Task {
-            do {
-              let returnedUser = try await AuthManager.shared.createUser(email: email, password: password)
-                print("Success")
-                print(returnedUser)
-            } catch {
-                print("Error")
-                print("Error \(error)")
-            }
-        }
-        
+        try await AuthManager.shared.createUser(email: email, password: password)
+          print("Success")
         
     }
 }
@@ -38,6 +29,7 @@ struct Signup: View {
     
     @StateObject private var viewModel = SignUpViewModel()
     @State private var isActive: Bool = false
+    @State private var shouldNavigateToProfile = false
     
     var body: some View {
         ZStack {
@@ -97,7 +89,14 @@ struct Signup: View {
 
                     Button {
                         print("Sign Up presed")
-                        viewModel.signIn()
+                        Task {
+                            do {
+                                try await viewModel.signIn()
+                                shouldNavigateToProfile = true
+                            } catch {
+                                print("Sign up Error \(error)")
+                            }
+                        }
                     } label: {
                         Text("Create an Account")
                             .font(.title3)
@@ -112,6 +111,7 @@ struct Signup: View {
                             )
                             .padding(.bottom, 20)
                     }
+                    .background(NavigationLink("", destination: ProfileSummary(showSignInView: $isActive), isActive: $shouldNavigateToProfile).hidden()) 
                     HStack {
                         Text("Already have an account?")
                             .foregroundStyle(Color(hex:"898989"))
@@ -131,6 +131,7 @@ struct Signup: View {
 //                            // handle signup
 //                            print("Login pressed")
 //                        }
+                        .foregroundColor(Color(hex:"CBC3E3"))
                         .foregroundColor(Color(hex:"CBC3E3"))
                         .fontWeight(.heavy)
                     }
@@ -173,6 +174,7 @@ struct Signup: View {
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
+//            Signup()
             Signup()
         }
     }
