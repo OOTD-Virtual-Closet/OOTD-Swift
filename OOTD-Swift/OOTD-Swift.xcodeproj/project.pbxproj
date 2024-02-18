@@ -58,6 +58,7 @@
 		8985B7822B75D7A7000E8DED /* OOTD_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B7812B75D7A7000E8DED /* OOTD_SwiftTests.swift */; };
 		8985B78C2B75D7A7000E8DED /* OOTD_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B78B2B75D7A7000E8DED /* OOTD_SwiftUITests.swift */; };
 		8985B78E2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B78D2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift */; };
+		CC95B8F82B82A4130034B352 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC95B8F72B82A4130034B352 /* AuthView.swift */; };
 		CC9C53CF2B82992E00A616D2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC9C53CE2B82992E00A616D2 /* GoogleService-Info.plist */; };
 		CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE677E2B7F1E9C00599FE8 /* Login.swift */; };
 		CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE67832B8138BD00599FE8 /* Signup.swift */; };
@@ -109,6 +110,7 @@
 		8985B7872B75D7A7000E8DED /* OOTD-SwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "OOTD-SwiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8985B78B2B75D7A7000E8DED /* OOTD_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftUITests.swift; sourceTree = "<group>"; };
 		8985B78D2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CC95B8F72B82A4130034B352 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		CC9C53CE2B82992E00A616D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CCDE677E2B7F1E9C00599FE8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		CCDE67832B8138BD00599FE8 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 			children = (
 				CCDE677E2B7F1E9C00599FE8 /* Login.swift */,
 				CCDE67832B8138BD00599FE8 /* Signup.swift */,
+				CC95B8F72B82A4130034B352 /* AuthView.swift */,
 			);
 			path = "Onboarding Flow";
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				893227ED2B813E86002D693D /* AppDelegate.swift in Sources */,
 				8985B7712B75D7A6000E8DED /* ContentView.swift in Sources */,
 				52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */,
+				CC95B8F82B82A4130034B352 /* AuthView.swift in Sources */,
 				8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

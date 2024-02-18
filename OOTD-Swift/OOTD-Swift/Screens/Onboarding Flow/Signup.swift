@@ -9,6 +9,9 @@ import SwiftUI
 //import GoogleSignInSwift
 
 struct Signup: View {
+//    @Binding var currentShowingView: String
+    
+    
     @State private var email: String = ""
     @State private var password: String = ""
     var body: some View {
@@ -79,16 +82,17 @@ struct Signup: View {
                             .padding(.bottom, 20)
                         }
                     )
-//                    HStack {
-//                        Text("Already have an account?")
-//                            .foregroundStyle(Color(hex:"898989"))
-//                            .fontWeight(.heavy)
-//                        Button("Login!") {
-//                            // handle signup
-//                        }
-//                        .foregroundColor(Color(hex:"CBC3E3"))
-//                        .fontWeight(.heavy)
-//                    }
+                    HStack {
+                        Text("Already have an account?")
+                            .foregroundStyle(Color(hex:"898989"))
+                            .fontWeight(.heavy)
+//                        self.currentShowingView = "login"
+                        Button("Login!") {
+                            // handle signup
+                        }
+                        .foregroundColor(Color(hex:"CBC3E3"))
+                        .fontWeight(.heavy)
+                    }
                     
                     Text("OR")
                         .padding()
