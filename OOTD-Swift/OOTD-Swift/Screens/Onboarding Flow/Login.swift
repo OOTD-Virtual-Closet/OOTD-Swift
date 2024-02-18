@@ -13,6 +13,7 @@ struct Login: View {
     
     @State private var email: String = ""
     @State private var password: String = ""
+    @State private var isActive: Bool = false
     var body: some View {
         
         ZStack {
@@ -82,7 +83,7 @@ struct Login: View {
                 
                 VStack (spacing:10){
                     Button {
-                        
+                        print("Login in presed")
                     } label: {
                         Text("Login")
                             .font(.title3)
@@ -123,11 +124,13 @@ struct Login: View {
 //                        .fontWeight(.heavy)
                         Button(action: {
                             print("Sign Up")
+                            self.isActive = true
                         }) {
                             Text("Sign Up?")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
                                 .fontWeight(.heavy)
                         }
+                        .background(NavigationLink(destination: Signup(), isActive: $isActive) { EmptyView() }.hidden())
                     }
                     
                     Text("OR")
@@ -194,6 +197,8 @@ extension Color {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login()
+        NavigationStack {
+            Login()
+        }
     }
 }

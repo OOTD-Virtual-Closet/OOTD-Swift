@@ -1,18 +1,19 @@
+////
+////  AppDelegate.swift
+////  OOTD-Swift
+////
+////  Created by Aaryan Srivastava on 2/17/24.
+////
 //
-//  AppDelegate.swift
-//  OOTD-Swift
+//import SwiftUI
+//import FirebaseCore
+//import FirebaseAuth
 //
-//  Created by Aaryan Srivastava on 2/17/24.
+//class AppDelegate: NSObject, UIApplicationDelegate {
+//  func application(_ application: UIApplication,
+//                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+//    FirebaseApp.configure()
+//    return true
+//  }
+//}
 //
-
-import SwiftUI
-import FirebaseCore
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-    return true
-  }
-}
-
