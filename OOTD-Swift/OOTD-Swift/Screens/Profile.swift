@@ -14,16 +14,8 @@ struct Profile {
     var email: String
     var password: String
 
-    static let `default` = Profile(username: "sanjheeg", email: "sanjheeg30@gmail.com", password: "")
+    static let `default` = Profile(username: "[username]", email: "[email]", password: "")
 
-}
-
-struct ProfileHost: View {
-    @State private var draftProfile = Profile.default
-
-    var body: some View {
-        Text("Profile for: \(draftProfile.username)")
-    }
 }
 
 struct ProfileSummary: View {
@@ -77,7 +69,7 @@ struct ProfileSummary: View {
                    
                         //delete account button
                         Button(action: {
-                            
+                            //TODO: ADD STUFF TO DELETE ACCOUNT
                         }, label: {
                             Text("Delete Account")
                                 .padding()
