@@ -8,9 +8,34 @@
 import SwiftUI
 //import GoogleSignInSwift
 
+final class SignUpViewModel: ObservableObject {
+    @Published var email = ""
+    @Published var password = ""
+    
+    func signIn() {
+        guard !email.isEmpty, !password.isEmpty else {
+            print("No email or password found")
+            // have some error handling here; most likely show error on screen and renavigate to login page smth like that
+            return
+        }
+        Task {
+            do {
+                let returnedUserData = try await AuthManager.shared.createUser(email: email, password: password)
+                print("Success")
+                print(returnedUserData)
+            } catch {
+                print("Error \(error)")
+            }
+        }
+    }
+}
+
 struct Signup: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    //@State private var email: String = ""
+    //@State private var password: String = ""
+    
+    @StateObject private var viewModel = SignUpViewModel()
+    
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -35,7 +60,7 @@ struct Signup: View {
                 }
                 VStack {
                     HStack {
-                        TextField("Enter username...", text: $email)
+                        TextField("Enter username...", text: $viewModel.email)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -49,14 +74,13 @@ struct Signup: View {
                     )
                     .padding()
                     HStack {
-                        TextField("Enter password...", text: $password)
+                        SecureField("Enter password...", text: $viewModel.password)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
                             .foregroundColor(.green)
                     }
                     .padding()
-
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 2.0)
@@ -99,8 +123,7 @@ struct Signup: View {
                     //#####NEED TO IMPLEMENT#####
                     
                     Button (action: {
-                       // handle google login
-                        print("Sign Up with google")
+                        viewModel.signIn()
                     }) {
                         HStack {
                             Text("Sign up In with Google")
