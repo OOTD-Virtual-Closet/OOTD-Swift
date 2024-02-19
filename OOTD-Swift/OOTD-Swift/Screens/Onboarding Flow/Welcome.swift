@@ -1,18 +1,20 @@
 //
-//  DeleteAccount.swift
+//  Welcome.swift
 //  OOTD-Swift
 //
-//  Created by Sanjhee Gupta on 2/16/24.
+//  Created by Sanjhee Gupta on 2/18/24.
 //
 
 import SwiftUI
+import UIKit
 
-struct DeleteAccount: View {
+
+struct Welcome: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    DeleteAccount()
+    Welcome()
 }
