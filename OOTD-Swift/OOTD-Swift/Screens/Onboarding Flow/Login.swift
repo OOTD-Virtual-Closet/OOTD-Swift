@@ -131,6 +131,7 @@ struct Login: View {
                                 .fontWeight(.heavy)
                         }
                         .background(NavigationLink(destination: Signup(), isActive: $isActive) { EmptyView() }.hidden())
+                        .navigationBarBackButtonHidden(true) 
                     }
                     
                     Text("OR")

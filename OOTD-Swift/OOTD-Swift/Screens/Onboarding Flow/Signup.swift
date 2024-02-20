@@ -126,6 +126,7 @@ struct Signup: View {
                                 .fontWeight(.heavy)
                         }
                         .background(NavigationLink(destination: Login(), isActive: $isActive) { EmptyView() }.hidden())
+                        .navigationBarBackButtonHidden(true) 
                         
 //                        Button("Login?") {
 //                            // handle signup

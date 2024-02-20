@@ -121,6 +121,7 @@ struct ProfileSummary: View {
                                 .cornerRadius(10)
                         })
                         .padding()
+                        .navigationBarBackButtonHidden(true) 
                     }
                     
                     Spacer()
