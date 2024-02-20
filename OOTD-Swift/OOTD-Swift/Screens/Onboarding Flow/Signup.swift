@@ -11,6 +11,7 @@ import SwiftUI
 @MainActor
 final class SignUpViewModel: ObservableObject {
     @Published var email = ""
+    @Published var uid = ""
     @Published var password = ""
     
     func signIn() async throws {
@@ -18,9 +19,15 @@ final class SignUpViewModel: ObservableObject {
             print("No user email or password found")
             return
         }
-        try await AuthManager.shared.createUser(email: email, password: password)
-          print("Success")
-        
+        let user = try await AuthManager.shared.createUser(email: email, password: password)
+        print("Sign in completed")
+        print(user.email)
+        print(user.uid)
+        UserDefaults.standard.set(user.email, forKey: "email")
+        UserDefaults.standard.set(user.uid, forKey: "uid")
+        print("Success")
+        email = user.email ?? ""
+        uid = user.uid
     }
 }
 

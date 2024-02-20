@@ -37,6 +37,8 @@ final class ProfileViewModel: ObservableObject {
 struct ProfileSummary: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
+    var email = UserDefaults.standard.string(forKey: "email") ?? "tempEmail"
+    var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
 //    var profile: Profile
 
     var body: some View {
@@ -53,7 +55,7 @@ struct ProfileSummary: View {
                         .foregroundStyle(Color(hex:"CBC3E3"))
                     
                     //display username and email
-                    Text("profile.username")
+                    Text("profile.uid = " + uid)
                         .bold()
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -61,7 +63,7 @@ struct ProfileSummary: View {
                         .padding(.horizontal)
                         .foregroundColor(Color(hex:"898989"))
                     
-                    Text("email: " + "profile.email" + "\n")
+                    Text("email: " + email + "\n")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
                         .foregroundColor(Color(hex:"898989"))
