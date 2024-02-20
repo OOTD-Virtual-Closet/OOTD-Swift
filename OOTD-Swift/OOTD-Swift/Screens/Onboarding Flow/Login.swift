@@ -6,14 +6,35 @@
 //
 
 import SwiftUI
-//import GoogleSignInSwift
+//import GoogleSignInSwift@MainActor
+
+final class LoginViewModel: ObservableObject {
+    @Published var email = ""
+    @Published var uid = ""
+    @Published var password = ""
+    
+    func login() async throws {
+        guard !email.isEmpty, !password.isEmpty else {
+            print("No user email or password found")
+            return
+        }
+        let user = try await AuthManager.shared.signIn(email: email, password: password)
+        print("log in completed")
+        print(user.email)
+        print(user.uid)
+        UserDefaults.standard.set(user.email, forKey: "email")
+        UserDefaults.standard.set(user.uid, forKey: "uid")
+        print("Success")
+    }
+}
 
 struct Login: View {
 //    @Binding var currentShowingView: String
-    
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var isActive: Bool = false
+    @StateObject private var viewModel = LoginViewModel()
+    @State private var loginButton: Bool = false
+    @State private var signUpActive: Bool = false
+    @State private var showSignInView: Bool = false
+
     var body: some View {
         
         ZStack {
@@ -41,7 +62,7 @@ struct Login: View {
                 }
                 VStack {
                     HStack {
-                        TextField("Email...", text: $email)
+                        TextField("Email...", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
 
@@ -58,7 +79,7 @@ struct Login: View {
                     )
                     .padding()
                     HStack {
-                        SecureField("Password...", text: $password)
+                        SecureField("Password...", text: $viewModel.password)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -87,6 +108,14 @@ struct Login: View {
                 VStack (spacing:10){
                     Button {
                         print("Login in presed")
+                        Task {
+                            do {
+                                try await viewModel.login()
+                                loginButton = true
+                            } catch {
+                                print("log in Error \(error)")
+                            }
+                        }
                     } label: {
                         Text("Login")
                             .font(.title3)
@@ -101,6 +130,7 @@ struct Login: View {
                             )
                             .padding(.bottom, 20)
                     }
+                    .background(NavigationLink("",destination: ProfileSummary(showSignInView: $showSignInView), isActive: $loginButton).hidden())
 //                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
 //                                    label: {
 //                        Text("Login")
@@ -127,13 +157,13 @@ struct Login: View {
 //                        .fontWeight(.heavy)
                         Button(action: {
                             print("Sign Up")
-                            self.isActive = true
+                            signUpActive = true
                         }) {
                             Text("Sign Up?")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
                                 .fontWeight(.heavy)
                         }
-                        .background(NavigationLink(destination: Signup(), isActive: $isActive) { EmptyView() }.hidden())
+                        .background(NavigationLink(destination: Signup(), isActive: $signUpActive) { EmptyView() }.hidden())
                         .navigationBarBackButtonHidden(true) 
                     }
                     
