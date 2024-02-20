@@ -56,6 +56,8 @@ struct Signup: View {
                 VStack {
                     HStack {
                         TextField("Enter email...", text: $viewModel.email)
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -69,7 +71,7 @@ struct Signup: View {
                     )
                     .padding()
                     HStack {
-                        TextField("Enter password...", text: $viewModel.password)
+                        SecureField("Enter password...", text: $viewModel.password)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
