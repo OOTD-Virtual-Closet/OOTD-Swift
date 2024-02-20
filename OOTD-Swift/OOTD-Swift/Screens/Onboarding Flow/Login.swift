@@ -8,32 +8,32 @@
 import SwiftUI
 import GoogleSignInSwift
 
-final class LoginViewModel: ObservableObject {
-    @Published var email = ""
-    @Published var password = ""
-    
-    func signIn() {
-        guard !email.isEmpty, !password.isEmpty else {
-            print("No email or password found")
-            // have some error handling here; most likely show error on screen and renavigate to login page smth like that
-            return
-        }
-        Task {
-            do {
-                let returnedUserData = try await AuthManager.shared.createUser(email: email, password: password)
-                print("Success")
-                print(returnedUserData)
-            } catch {
-                print("Error \(error)")
-            }
-        }
-    }
-}
+//final class LoginViewModel: ObservableObject {
+//    @Published var email = ""
+//    @Published var password = ""
+//    
+//    func signIn() {
+//        guard !email.isEmpty, !password.isEmpty else {
+//            print("No email or password found")
+//            // have some error handling here; most likely show error on screen and renavigate to login page smth like that
+//            return
+//        }
+//        Task {
+//            do {
+//                let returnedUserData = try await AuthManager.shared.createUser(email: email, password: password)
+//                print("Success")
+//                print(returnedUserData)
+//            } catch {
+//                print("Error \(error)")
+//            }
+//        }
+//    }
+//}
 
 struct Login: View {
-    //@State private var email: String = ""
-    //@State private var password: String = ""
-    @StateObject private var viewModel = LoginViewModel()
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @EnvironmentObject var loginVM: LogInVM
     
     var body: some View {
         ZStack {
@@ -61,7 +61,7 @@ struct Login: View {
                 }
                 VStack {
                     HStack {
-                        TextField("Email...", text: $viewModel.email)
+                        TextField("Email...", text: $email)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -75,7 +75,7 @@ struct Login: View {
                     )
                     .padding()
                     HStack {
-                        SecureField("Password...", text: $viewModel.password)
+                        SecureField("Password...", text: $password)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -106,7 +106,7 @@ struct Login: View {
                                     label: {
                         Text("Login")
                             .padding()
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .frame(maxWidth: .infinity)
                             .background(Color(hex:"CBC3E3"))
                             .foregroundColor(.black)
                             .fontWeight(.bold)
@@ -147,11 +147,16 @@ struct Login: View {
 //                                .foregroundColor(.black)
 //                        }
 //                    }
-                    GoogleSignInButton(action: viewModel.signIn)
-                        .padding()
-                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                        .cornerRadius(10)
-                        .padding(.vertical, 8)
+                    
+                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
+                                    label: {
+                        GoogleSignInButton(action: loginVM.signUpWithGoogle)
+                            .padding()
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .cornerRadius(10)
+                            .padding(.vertical, 8)
+                        }
+                    )
                     Button (action: {
                        // handle google login
                         print("Login with Apple")
@@ -200,5 +205,6 @@ extension Color {
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
         Login()
+            .environmentObject(LogInVM())
     }
 }

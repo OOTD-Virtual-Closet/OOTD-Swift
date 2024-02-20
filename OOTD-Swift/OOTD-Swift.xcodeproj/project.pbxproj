@@ -24,6 +24,8 @@
 		6A89421A2B83F56400AF2650 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 6A8942192B83F56400AF2650 /* GoogleSignIn */; };
 		6A89421C2B83F56400AF2650 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6A89421B2B83F56400AF2650 /* GoogleSignInSwift */; };
 		6A8942202B83FDBE00AF2650 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A89421F2B83FDBE00AF2650 /* AuthenticationViewModel.swift */; };
+		6AF401D52B8505CC00628ACD /* LogInVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF401D42B8505CC00628ACD /* LogInVM.swift */; };
+		6AF401D82B8506EA00628ACD /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF401D72B8506EA00628ACD /* Application.swift */; };
 		8915767D2B7F1422006947E4 /* Closet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767C2B7F1422006947E4 /* Closet.swift */; };
 		891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767F2B7F1440006947E4 /* BottomNavBar.swift */; };
 		893227ED2B813E86002D693D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893227EC2B813E86002D693D /* AppDelegate.swift */; };
@@ -100,6 +102,8 @@
 		6A8942122B83DEE000AF2650 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		6A8942142B83EEEC00AF2650 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6A89421F2B83FDBE00AF2650 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
+		6AF401D42B8505CC00628ACD /* LogInVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInVM.swift; sourceTree = "<group>"; };
+		6AF401D72B8506EA00628ACD /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		8915767C2B7F1422006947E4 /* Closet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closet.swift; sourceTree = "<group>"; };
 		8915767F2B7F1440006947E4 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		893227EC2B813E86002D693D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -215,6 +219,17 @@
 			path = MarketDashboard;
 			sourceTree = "<group>";
 		};
+		6AF401D62B85067A00628ACD /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				6AF401D42B8505CC00628ACD /* LogInVM.swift */,
+				6A8942122B83DEE000AF2650 /* AuthManager.swift */,
+				6A89421F2B83FDBE00AF2650 /* AuthenticationViewModel.swift */,
+				6AF401D72B8506EA00628ACD /* Application.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		8915767A2B7F13B3006947E4 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,6 +289,7 @@
 		8985B7682B75D7A6000E8DED /* OOTD-Swift */ = {
 			isa = PBXGroup;
 			children = (
+				6AF401D62B85067A00628ACD /* Authentication */,
 				6A8942142B83EEEC00AF2650 /* GoogleService-Info.plist */,
 				893227EB2B813E73002D693D /* AppFiles */,
 				8915767E2B7F142C006947E4 /* Components */,
@@ -317,10 +333,8 @@
 		CCDE67802B7F1EED00599FE8 /* Onboarding Flow */ = {
 			isa = PBXGroup;
 			children = (
-				6A89421F2B83FDBE00AF2650 /* AuthenticationViewModel.swift */,
 				CCDE677E2B7F1E9C00599FE8 /* Login.swift */,
 				CCDE67832B8138BD00599FE8 /* Signup.swift */,
-				6A8942122B83DEE000AF2650 /* AuthManager.swift */,
 			);
 			path = "Onboarding Flow";
 			sourceTree = "<group>";
@@ -501,6 +515,7 @@
 				34A177FC2B81553400265C56 /* FavoritesView.swift in Sources */,
 				891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */,
 				34A178082B81559600265C56 /* TrendingView.swift in Sources */,
+				6AF401D82B8506EA00628ACD /* Application.swift in Sources */,
 				34A177FA2B81552200265C56 /* OutfitsView.swift in Sources */,
 				6A8942202B83FDBE00AF2650 /* AuthenticationViewModel.swift in Sources */,
 				34A1780A2B8155A500265C56 /* RecommendedView.swift in Sources */,
@@ -511,6 +526,7 @@
 				34A178062B81558E00265C56 /* CategoriesView.swift in Sources */,
 				893227ED2B813E86002D693D /* AppDelegate.swift in Sources */,
 				8985B7712B75D7A6000E8DED /* ContentView.swift in Sources */,
+				6AF401D52B8505CC00628ACD /* LogInVM.swift in Sources */,
 				6A8942132B83DEE000AF2650 /* AuthManager.swift in Sources */,
 				52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */,
 				8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */,

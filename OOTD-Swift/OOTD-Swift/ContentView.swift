@@ -26,7 +26,7 @@ struct ContentView: View {
             if isAuthenticated {
                 DashboardNav(userProfile: userProfile)
             } else {
-                Login()
+                Login().environmentObject(LogInVM())
             }
         }
     
@@ -49,5 +49,6 @@ func checkBiometricLogin() -> Bool {
 struct Previews_ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(LogInVM())
     }
 }
