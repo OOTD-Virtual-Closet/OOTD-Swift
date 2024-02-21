@@ -214,13 +214,13 @@
 		8915767A2B7F13B3006947E4 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				52272DF02B85CEA100922262 /* Welcome.swift */,
+				52272DF22B85CF9B00922262 /* ChangePassword.swift */,
 				34A177F12B81542D00265C56 /* Dashboard */,
 				52D6A5802B801DCE00496804 /* DeleteAccount.swift */,
 				8915767C2B7F1422006947E4 /* Closet.swift */,
 				52358BAC2B7FFC5E00619E85 /* Profile.swift */,
 				CCDE67802B7F1EED00599FE8 /* Onboarding Flow */,
-				52272DF02B85CEA100922262 /* Welcome.swift */,
-				52272DF22B85CF9B00922262 /* ChangePassword.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -276,8 +276,8 @@
 				893227EB2B813E73002D693D /* AppFiles */,
 				8915767E2B7F142C006947E4 /* Components */,
 				8915767A2B7F13B3006947E4 /* Screens */,
-				8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */,
 				8985B76B2B75D7A6000E8DED /* Persistence.swift */,
+				8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */,
 				8985B7702B75D7A6000E8DED /* ContentView.swift */,
 				8985B7722B75D7A7000E8DED /* Assets.xcassets */,
 				8985B7742B75D7A7000E8DED /* OOTD_Swift.entitlements */,

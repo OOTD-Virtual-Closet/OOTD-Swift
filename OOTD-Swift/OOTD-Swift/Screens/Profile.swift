@@ -74,6 +74,7 @@ struct ProfileSummary: View {
                                 .padding(.horizontal)
                                 .background(Color("UIpurple"))
                                 .cornerRadius(10)
+                                
                         }
                         .padding()
                     }
@@ -83,7 +84,6 @@ struct ProfileSummary: View {
                     Spacer()
                     Spacer()
                 }
-                
             }
         }
     }
@@ -94,5 +94,6 @@ struct ProfileSummary: View {
 struct Profile_Previews: PreviewProvider {
     static var previews: some View {
         ProfileSummary(profile: Profile.default)
+            
     }
 }

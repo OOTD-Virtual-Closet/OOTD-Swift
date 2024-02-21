@@ -92,6 +92,7 @@ struct ChangePassword: View {
                             .background(Color("UIpurple"))
                             .cornerRadius(10)
                         }
+                        
                         .padding(.horizontal)
                     }
                     Spacer()
