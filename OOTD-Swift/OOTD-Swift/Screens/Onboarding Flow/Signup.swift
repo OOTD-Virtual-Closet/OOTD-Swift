@@ -85,7 +85,6 @@ struct Signup: View {
                             .foregroundColor(.green)
                     }
                     .padding()
-
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 2.0)
@@ -155,8 +154,7 @@ struct Signup: View {
                     //#####NEED TO IMPLEMENT#####
                     
                     Button (action: {
-                       // handle google login
-                        print("Sign Up with google")
+                        viewModel.signIn()
                     }) {
                         HStack {
                             Text("Sign up In with Google")

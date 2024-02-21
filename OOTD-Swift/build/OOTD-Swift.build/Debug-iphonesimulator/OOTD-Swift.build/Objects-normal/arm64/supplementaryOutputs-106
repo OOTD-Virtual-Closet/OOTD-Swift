@@ -1,0 +1,18 @@
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/ClosetDashboard/ClothesView.swift":
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/ClothesView.swiftconstvalues"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/ClothesView.swiftdeps"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/ClothesView.dia"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/ClothesView.d"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/ClothesView.o"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/OOTD_SwiftApp.swift":
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OOTD_SwiftApp.dia"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OOTD_SwiftApp.swiftconstvalues"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OOTD_SwiftApp.swiftdeps"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OOTD_SwiftApp.o"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OOTD_SwiftApp.d"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/SocialDashboard/PostsView.swift":
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/PostsView.d"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/PostsView.swiftdeps"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/PostsView.o"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/PostsView.dia"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/PostsView.swiftconstvalues"

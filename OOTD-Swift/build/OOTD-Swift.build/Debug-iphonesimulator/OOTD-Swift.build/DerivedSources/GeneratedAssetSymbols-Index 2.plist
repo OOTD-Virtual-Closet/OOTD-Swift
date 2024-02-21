@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>colors</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameUIpurple</string>
+			<key>relativePath</key>
+			<string>./UIpurple.colorset</string>
+			<key>swiftSymbol</key>
+			<string>uIpurple</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameSettingsBackground</string>
+			<key>relativePath</key>
+			<string>./settingsBackground.colorset</string>
+			<key>swiftSymbol</key>
+			<string>settingsBackground</string>
+		</dict>
+	</array>
+	<key>images</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameIcons8Google180</string>
+			<key>relativePath</key>
+			<string>./icons8-google-180.imageset</string>
+			<key>swiftSymbol</key>
+			<string>icons8Google180</string>
+		</dict>
+	</array>
+	<key>symbols</key>
+	<array/>
+</dict>
+</plist>

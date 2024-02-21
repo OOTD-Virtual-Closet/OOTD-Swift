@@ -1,0 +1,72 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : false,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "5999c4c70ccab7e769377b6dbd95606a08b86ae21bc4afe3bdb145ab3bd2c57e"
+    },
+    {
+      "guid" : "5999c4c70ccab7e769377b6dbd95606aa79830d293a645a70de14dc1e3385bf3"
+    },
+    {
+      "guid" : "5999c4c70ccab7e769377b6dbd95606ae8dcc67b4227cb7b176305b5fb9829ee"
+    }
+  ],
+  "containerPath" : "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift.xcodeproj",
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "iphonesimulator",
+      "sdk" : "iphonesimulator17.2",
+      "sdkVariant" : "iphonesimulator",
+      "supportedArchitectures" : [
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/atharvagupta/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/atharvagupta/Library/Developer/Xcode/DerivedData/OOTD-Swift-gwijgdgrhldzxfagxdzhywbtlsjj/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/atharvagupta/Library/Developer/Xcode/DerivedData/OOTD-Swift-gwijgdgrhldzxfagxdzhywbtlsjj/Index.noindex/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPhone16,1",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "17.2",
+          "ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION" : "iPhone16,1",
+          "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
+          "CLANG_COVERAGE_MAPPING" : "YES",
+          "CLANG_PROFILE_DATA_DIRECTORY" : "/Users/atharvagupta/Library/Developer/Xcode/DerivedData/OOTD-Swift-gwijgdgrhldzxfagxdzhywbtlsjj/CodeCoverage/ProfileData",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO",
+          "TARGET_DEVICE_IDENTIFIER" : "C4276404-32FE-42B2-8C7A-12BE5CD0ADD1",
+          "TARGET_DEVICE_MODEL" : "iPhone16,1",
+          "TARGET_DEVICE_OS_VERSION" : "17.2",
+          "TARGET_DEVICE_PLATFORM_NAME" : "iphonesimulator"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

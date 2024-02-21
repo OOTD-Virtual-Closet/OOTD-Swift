@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import GoogleSignInSwift
+
 //import GoogleSignInSwift@MainActor
 
 final class LoginViewModel: ObservableObject {
@@ -34,9 +36,9 @@ struct Login: View {
     @State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
     @State private var showSignInView: Bool = false
+    @EnvironmentObject var loginVM: LogInVM
 
-    var body: some View {
-        
+  var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
@@ -167,23 +169,35 @@ struct Login: View {
                         .navigationBarBackButtonHidden(true) 
                     }
                     
-                    Text("OR")
-                        .padding()
-                        .foregroundStyle(Color(hex:"898989"))
-                        .fontWeight(.bold)
-                    
-                    
+                    HStack {
+                        VStack { Divider() }
+                        Text("OR")
+                            .padding()
+                            .foregroundStyle(Color(hex:"898989"))
+                            .fontWeight(.bold)
+                        VStack { Divider() }
+                    }
                     //#####NEED TO IMPLEMENT#####
                     
-                    Button (action: {
-                       // handle google login
-                        print("Login with google")
-                    }) {
-                        HStack {
-                            Text("Log In with Google")
-                                .foregroundColor(.black)
+//                    Button (action: {
+//                       // handle google login
+//                        print("Login with google")
+//                    }) {
+//                        HStack {
+//                            Text("Log In with Google")
+//                                .foregroundColor(.black)
+//                        }
+//                    }
+                    
+                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
+                                    label: {
+                        GoogleSignInButton(action: loginVM.signUpWithGoogle)
+                            .padding()
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .cornerRadius(10)
+                            .padding(.vertical, 8)
                         }
-                    }
+                    )
                     Button (action: {
                        // handle google login
                         print("Login with Apple")
@@ -234,6 +248,6 @@ struct Login_Previews: PreviewProvider {
         @State var showSignInView = false
 //        NavigationStack {
         Login()
-//        }
+            .environmentObject(LogInVM())
     }
 }

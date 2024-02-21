@@ -1,0 +1,18 @@
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/DashboardNav.swift":
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/DashboardNav.swiftconstvalues"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/DashboardNav.d"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/DashboardNav.swiftdeps"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/DashboardNav.o"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/DashboardNav.dia"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Components/BottomNavBar.swift":
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/BottomNavBar.swiftdeps"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/BottomNavBar.d"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/BottomNavBar.dia"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/BottomNavBar.swiftconstvalues"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/BottomNavBar.o"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/ClosetDashboard/FavoritesView.swift":
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FavoritesView.swiftdeps"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FavoritesView.dia"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FavoritesView.swiftconstvalues"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FavoritesView.d"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/FavoritesView.o"

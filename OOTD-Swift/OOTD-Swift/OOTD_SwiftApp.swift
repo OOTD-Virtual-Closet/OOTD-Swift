@@ -18,11 +18,22 @@ struct OOTD_SwiftApp: App {
     WindowGroup {
       NavigationView {
           Login()
-//        Delete
+              
+//        ContentView()
+              //.environmentObject(LogInVM())
+  //            .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
       }
     }
   }
 }
+/*
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseApp.configure()
+    return true
+  }
+}*/
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -30,6 +41,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     FirebaseApp.configure()
     return true
   }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
+    }
 }
 
 

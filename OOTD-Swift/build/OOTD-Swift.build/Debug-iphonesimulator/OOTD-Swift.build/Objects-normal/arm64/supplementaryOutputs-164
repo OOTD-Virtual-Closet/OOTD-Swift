@@ -1,0 +1,18 @@
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/ClosetDashboard/OutfitsView.swift":
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OutfitsView.dia"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OutfitsView.d"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OutfitsView.o"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OutfitsView.swiftdeps"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/OutfitsView.swiftconstvalues"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/MarketDashboard/RecommendedView.swift":
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/RecommendedView.swiftconstvalues"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/RecommendedView.dia"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/RecommendedView.d"
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/RecommendedView.swiftdeps"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/RecommendedView.o"
+"/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/OOTD-Swift/Screens/Dashboard/MarketDashboard/TrendingView.swift":
+  swift-dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/TrendingView.swiftdeps"
+  object: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/TrendingView.o"
+  diagnostics: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/TrendingView.dia"
+  const-values: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/TrendingView.swiftconstvalues"
+  dependencies: "/Users/atharvagupta/Desktop/OOTD-Swift/OOTD-Swift/build/OOTD-Swift.build/Debug-iphonesimulator/OOTD-Swift.build/Objects-normal/arm64/TrendingView.d"
