@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import GoogleSignIn
 
 @main
 struct OOTD_SwiftApp: App {
@@ -17,19 +18,24 @@ struct OOTD_SwiftApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-          Login()
-//        Delete
+          //Login()
+          ContentView()
+              .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
       }
     }
   }
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-    return true
-  }
+      func application(_ application: UIApplication,
+                       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        return true
+      }
+    
+      func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+          return GIDSignIn.sharedInstance.handle(url)
+      }
 }
 
 

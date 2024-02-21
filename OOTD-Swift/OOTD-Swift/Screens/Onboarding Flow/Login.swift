@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-//import GoogleSignInSwift@MainActor
+import GoogleSignInSwift
 
 final class LoginViewModel: ObservableObject {
     @Published var email = ""
@@ -34,6 +34,7 @@ struct Login: View {
     @State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
     @State private var showSignInView: Bool = false
+    @EnvironmentObject var loginVM: LogInVM
 
     var body: some View {
         
@@ -174,16 +175,16 @@ struct Login: View {
                     
                     
                     //#####NEED TO IMPLEMENT#####
-                    
-                    Button (action: {
-                       // handle google login
-                        print("Login with google")
-                    }) {
-                        HStack {
-                            Text("Log In with Google")
-                                .foregroundColor(.black)
+                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
+                                    label: {
+                        GoogleSignInButton(action: loginVM.signUpWithGoogle)
+                            .padding()
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .cornerRadius(10)
+                            .padding(.vertical, 8)
                         }
-                    }
+                    )
+                    
                     Button (action: {
                        // handle google login
                         print("Login with Apple")
@@ -234,6 +235,7 @@ struct Login_Previews: PreviewProvider {
         @State var showSignInView = false
 //        NavigationStack {
         Login()
+            .environmentObject(LogInVM())
 //        }
     }
 }

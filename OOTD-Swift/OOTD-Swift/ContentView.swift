@@ -28,6 +28,7 @@ struct ContentView: View {
                 DashboardNav(userProfile: userProfile)
             } else {
                 Login()
+                    .environmentObject(LogInVM())
             }
         }
     
