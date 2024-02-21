@@ -49,7 +49,7 @@ struct ProfileSummary: View {
                         .foregroundColor(Color(hex:"898989"))
                     
                     VStack {
-                        NavigationLink(destination: ProfileSummary(profile: Profile.default)) {
+                        NavigationLink(destination: ChangePassword()) {
                             //TODO: REDIRECT TO FORGOT PASSWORD ONCE CREATED
                             
                             Text("Change Password")
@@ -63,7 +63,7 @@ struct ProfileSummary: View {
                         }
                         .padding(.horizontal)
                    
-                        NavigationLink(destination: ProfileSummary(profile: Profile.default)) {
+                        NavigationLink(destination: DeleteAccount()) {
                             //TODO: REDIRECT TO DELETE ACCOUNT ONCE CREATED
                             
                             Text("Delete Account")
