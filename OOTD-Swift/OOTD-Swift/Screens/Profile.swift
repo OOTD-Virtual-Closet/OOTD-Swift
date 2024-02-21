@@ -14,16 +14,8 @@ struct Profile {
     var email: String
     var password: String
 
-    static let `default` = Profile(username: "sanjheeg", email: "sanjheeg30@gmail.com", password: "")
+    static let `default` = Profile(username: "[username]", email: "[email]", password: "[password]")
 
-}
-
-struct ProfileHost: View {
-    @State private var draftProfile = Profile.default
-
-    var body: some View {
-        Text("Profile for: \(draftProfile.username)")
-    }
 }
 
 struct ProfileSummary: View {
@@ -57,12 +49,9 @@ struct ProfileSummary: View {
                         .foregroundColor(Color(hex:"898989"))
                     
                     VStack {
-                        
-                        //change password button
-                        Button(action: {
-                            //TODO: ADD STUFF TO CHANGE PASSWORD
+                        NavigationLink(destination: ProfileSummary(profile: Profile.default)) {
+                            //TODO: REDIRECT TO FORGOT PASSWORD ONCE CREATED
                             
-                        }, label: {
                             Text("Change Password")
                                 .padding()
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
@@ -71,14 +60,12 @@ struct ProfileSummary: View {
                                 .padding(.horizontal)
                                 .background(Color("UIpurple"))
                                 .cornerRadius(10)
-                        })
-                        
+                        }
                         .padding(.horizontal)
                    
-                        //delete account button
-                        Button(action: {
+                        NavigationLink(destination: ProfileSummary(profile: Profile.default)) {
+                            //TODO: REDIRECT TO DELETE ACCOUNT ONCE CREATED
                             
-                        }, label: {
                             Text("Delete Account")
                                 .padding()
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
@@ -87,7 +74,7 @@ struct ProfileSummary: View {
                                 .padding(.horizontal)
                                 .background(Color("UIpurple"))
                                 .cornerRadius(10)
-                        })
+                        }
                         .padding()
                     }
                     
