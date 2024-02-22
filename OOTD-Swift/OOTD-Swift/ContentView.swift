@@ -17,16 +17,18 @@ struct ContentView: View {
     private var items: FetchedResults<Item>
 
     @State private var isAuthenticated = false
+    
     //@State var userProfile = Profile.empty
     @State var userProfile = ""
     //TODO: make a class to store user info after auth
     var body: some View {
-        
+        @State var showSignInView:Bool = false
         NavigationView {
             if isAuthenticated {
                 DashboardNav(userProfile: userProfile)
             } else {
                 Login()
+                    .environmentObject(LogInVM())
             }
         }
     

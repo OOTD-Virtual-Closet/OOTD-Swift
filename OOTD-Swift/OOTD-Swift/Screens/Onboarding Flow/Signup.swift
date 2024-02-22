@@ -8,9 +8,36 @@
 import SwiftUI
 //import GoogleSignInSwift
 
+@MainActor
+final class SignUpViewModel: ObservableObject {
+    @Published var email = ""
+    @Published var uid = ""
+    @Published var password = ""
+    
+    func signIn() async throws {
+        guard !email.isEmpty, !password.isEmpty else {
+            print("No user email or password found")
+            return
+        }
+        let user = try await AuthManager.shared.createUser(email: email, password: password)
+        print("Sign in completed")
+        print(user.email)
+        print(user.uid)
+        UserDefaults.standard.set(user.email, forKey: "email")
+        UserDefaults.standard.set(user.uid, forKey: "uid")
+        print("Success")
+        email = user.email ?? ""
+        uid = user.uid
+    }
+}
+
+
 struct Signup: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    
+    @StateObject private var viewModel = SignUpViewModel()
+    @State private var isActive: Bool = false
+    @State private var shouldNavigateToProfile = false
+    
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -35,7 +62,9 @@ struct Signup: View {
                 }
                 VStack {
                     HStack {
-                        TextField("Enter username...", text: $email)
+                        TextField("Enter email...", text: $viewModel.email)
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -49,7 +78,7 @@ struct Signup: View {
                     )
                     .padding()
                     HStack {
-                        TextField("Enter password...", text: $password)
+                        SecureField("Enter password...", text: $viewModel.password)
     //                        .foregroundStyle(Color(hex:"898989"))
                         Image(systemName: "checkmark")
                             .fontWeight(.bold)
@@ -66,29 +95,56 @@ struct Signup: View {
                 }
                 Spacer()
                 VStack (spacing:20){
-                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
-                                    label: {
-                        Text("Create an Account")
-                            .padding()
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                            .background(Color(hex:"CBC3E3"))
-                            .foregroundColor(.black)
-                            .fontWeight(.bold)
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                            .padding(.bottom, 20)
+
+                    Button {
+                        print("Sign Up presed")
+                        Task {
+                            do {
+                                try await viewModel.signIn()
+                                shouldNavigateToProfile = true
+                            } catch {
+                                print("Sign up Error \(error)")
+                            }
                         }
-                    )
-//                    HStack {
-//                        Text("Already have an account?")
-//                            .foregroundStyle(Color(hex:"898989"))
-//                            .fontWeight(.heavy)
-//                        Button("Login!") {
+                    } label: {
+                        Text("Create an Account")
+                            .font(.title3)
+                            .foregroundColor(Color(hex:"7B7A7A"))
+                            .bold()
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(hex: "CBC3E3"))
+                                    .padding(.horizontal)
+                            )
+                            .padding(.bottom, 20)
+                    }
+                    .background(NavigationLink("", destination: ProfileSummary(showSignInView: $isActive), isActive: $shouldNavigateToProfile).hidden()) 
+                    HStack {
+                        Text("Already have an account?")
+                            .foregroundStyle(Color(hex:"898989"))
+                            .fontWeight(.heavy)
+//                        self.currentShowingView = "login"
+                        Button(action: {
+                            print("Login")
+                            self.isActive = true
+                        }) {
+                            Text("Login?")
+                                .foregroundStyle(Color(hex: "CBC3E3"))
+                                .fontWeight(.heavy)
+                        }
+                        .background(NavigationLink(destination: Login(), isActive: $isActive) { EmptyView() }.hidden())
+                        .navigationBarBackButtonHidden(true) 
+                        
+//                        Button("Login?") {
 //                            // handle signup
+//                            print("Login pressed")
 //                        }
-//                        .foregroundColor(Color(hex:"CBC3E3"))
-//                        .fontWeight(.heavy)
-//                    }
+                        .foregroundColor(Color(hex:"CBC3E3"))
+                        .foregroundColor(Color(hex:"CBC3E3"))
+                        .fontWeight(.heavy)
+                    }
                     
                     Text("OR")
                         .padding()
@@ -127,6 +183,9 @@ struct Signup: View {
 
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
-        Signup()
+        NavigationStack {
+//            Signup()
+            Signup()
+        }
     }
 }
