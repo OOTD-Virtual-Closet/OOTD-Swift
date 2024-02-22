@@ -121,30 +121,6 @@ struct Signup: View {
                             .padding(.bottom, 20)
                     }
                     .background(NavigationLink("", destination: ProfileSummary(showSignInView: $isActive), isActive: $shouldNavigateToProfile).hidden()) 
-                    HStack {
-                        Text("Already have an account?")
-                            .foregroundStyle(Color(hex:"898989"))
-                            .fontWeight(.heavy)
-//                        self.currentShowingView = "login"
-                        Button(action: {
-                            print("Login")
-                            self.isActive = true
-                        }) {
-                            Text("Login?")
-                                .foregroundStyle(Color(hex: "CBC3E3"))
-                                .fontWeight(.heavy)
-                        }
-                        .background(NavigationLink(destination: Login(), isActive: $isActive) { EmptyView() }.hidden())
-                        .navigationBarBackButtonHidden(true) 
-                        
-//                        Button("Login?") {
-//                            // handle signup
-//                            print("Login pressed")
-//                        }
-                        .foregroundColor(Color(hex:"CBC3E3"))
-                        .foregroundColor(Color(hex:"CBC3E3"))
-                        .fontWeight(.heavy)
-                    }
                     
                     Text("OR")
                         .padding()

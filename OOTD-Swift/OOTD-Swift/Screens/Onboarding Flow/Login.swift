@@ -37,20 +37,16 @@ struct Login: View {
     @EnvironmentObject var loginVM: LogInVM
 
     var body: some View {
-        
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
-                HStack {
+                VStack {
                     Text("Hello Welcome!")
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        .frame(maxWidth: 300, alignment: .center)
                         .font(.largeTitle)
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
-                }
-                .padding()
-                .padding()
-                VStack {
+                        .padding(.bottom, 20)
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
@@ -175,15 +171,15 @@ struct Login: View {
                     
                     
                     //#####NEED TO IMPLEMENT#####
-                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
-                                    label: {
-                        GoogleSignInButton(action: loginVM.signUpWithGoogle)
-                            .padding()
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                            .cornerRadius(10)
-                            .padding(.vertical, 8)
-                        }
-                    )
+//                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
+//                                    label: {
+//                        GoogleSignInButton(action: loginVM.signUpWithGoogle)
+//                            .padding()
+//                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+//                            .cornerRadius(10)
+//                            .padding(.vertical, 8)
+//                        }
+//                    )
                     
                     Button (action: {
                        // handle google login
