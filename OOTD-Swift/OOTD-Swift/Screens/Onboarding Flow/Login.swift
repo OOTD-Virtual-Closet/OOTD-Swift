@@ -35,7 +35,16 @@ struct Login: View {
     @State private var signUpActive: Bool = false
     @State private var showSignInView: Bool = false
     @EnvironmentObject var loginVM: LogInVM
-
+    
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
+    }
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -62,11 +71,9 @@ struct Login: View {
                         TextField("Email...", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-
-    //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
+                        Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
                             .fontWeight(.bold)
-                            .foregroundColor(.green)
+                            .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
                     }
                     .padding()
                     .overlay(
@@ -77,10 +84,10 @@ struct Login: View {
                     .padding()
                     HStack {
                         SecureField("Password...", text: $viewModel.password)
-    //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
+                        
+                        Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
                             .fontWeight(.bold)
-                            .foregroundColor(.green)
+                            .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
                     }
                     .padding()
                     .overlay(
@@ -128,30 +135,10 @@ struct Login: View {
                             .padding(.bottom, 20)
                     }
                     .background(NavigationLink("",destination: ProfileSummary(showSignInView: $showSignInView), isActive: $loginButton).hidden())
-//                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
-//                                    label: {
-//                        Text("Login")
-//                            .padding()
-//                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-//                            .background(Color(hex:"CBC3E3"))
-//                            .foregroundColor(.black)
-//                            .fontWeight(.bold)
-//                            .cornerRadius(10)
-//                            .padding(.horizontal)
-//                            .padding(.bottom, 20)
-//                        }
-//                    )
                     HStack {
                         Text("Don't have an account?")
                             .foregroundStyle(Color(hex:"898989"))
                             .fontWeight(.heavy)
-//                        NavigationLink(
-//                            destination: Signup(), label: {
-//                                Text("Signup!")
-//                            }
-//                        )
-//                        .foregroundColor(Color(hex:"CBC3E3"))
-//                        .fontWeight(.heavy)
                         Button(action: {
                             print("Sign Up")
                             signUpActive = true
@@ -196,6 +183,15 @@ struct Login: View {
             }
         }
 
+    }
+}
+extension String {
+    func isValidEmail() -> Bool {
+        // test@email.com == true
+        // test.com == false
+        let regex = try! NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
+        
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
     }
 }
 
