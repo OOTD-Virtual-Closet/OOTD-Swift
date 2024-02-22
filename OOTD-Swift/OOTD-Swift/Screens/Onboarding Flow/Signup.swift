@@ -38,6 +38,16 @@ struct Signup: View {
     @State private var isActive: Bool = false
     @State private var shouldNavigateToProfile = false
     
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
+    }
+    
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -66,9 +76,10 @@ struct Signup: View {
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
     //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
+                        let email = $viewModel.email
+                        Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
                             .fontWeight(.bold)
-                            .foregroundColor(.green)
+                            .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
                     }
                     .padding()
                     .overlay(
@@ -80,9 +91,9 @@ struct Signup: View {
                     HStack {
                         SecureField("Enter password...", text: $viewModel.password)
     //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
+                        Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
                             .fontWeight(.bold)
-                            .foregroundColor(.green)
+                            .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
                     }
                     .padding()
 
@@ -156,6 +167,15 @@ struct Signup: View {
     }
 }
 
+extension String {
+    func isValidEmail() -> Bool {
+        // test@email.com == true
+        // test.com == false
+        let regex = try! NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
+        
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
+    }
+}
 
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
