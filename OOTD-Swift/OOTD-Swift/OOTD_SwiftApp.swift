@@ -19,8 +19,9 @@ struct OOTD_SwiftApp: App {
     WindowGroup {
       NavigationView {
           //Login()
-          ContentView()
-              .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+          SplashScreenView()
+//          ContentView()
+//              .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
       }
     }
   }
