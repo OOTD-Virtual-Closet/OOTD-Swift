@@ -265,13 +265,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		893227EB2B813E73002D693D /* AppFiles */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = AppFiles;
-			sourceTree = "<group>";
-		};
 		893227EE2B815A81002D693D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,7 +300,6 @@
 				343F07812B86C927007DBE14 /* Models */,
 				343F077B2B86B349007DBE14 /* Authentication */,
 				CC9C53CE2B82992E00A616D2 /* GoogleService-Info.plist */,
-				893227EB2B813E73002D693D /* AppFiles */,
 				8915767E2B7F142C006947E4 /* Components */,
 				8915767A2B7F13B3006947E4 /* Screens */,
 				8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */,
