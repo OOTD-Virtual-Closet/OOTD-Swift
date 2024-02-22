@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleSignInSwift
 //import GoogleSignInSwift
 
 @MainActor
@@ -37,6 +38,7 @@ struct Signup: View {
     @StateObject private var viewModel = SignUpViewModel()
     @State private var isActive: Bool = false
     @State private var shouldNavigateToProfile = false
+    @EnvironmentObject var loginVM: LogInVM
     
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
@@ -76,10 +78,14 @@ struct Signup: View {
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
     //                        .foregroundStyle(Color(hex:"898989"))
-                        let email = $viewModel.email
-                        Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
+                        if (viewModel.email == "") {
+                            Image(systemName: "envelope.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
+                        }
                     }
                     .padding()
                     .overlay(
@@ -91,9 +97,14 @@ struct Signup: View {
                     HStack {
                         SecureField("Enter password...", text: $viewModel.password)
     //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                        if (viewModel.password == "") {
+                            Image(systemName: "lock.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                        }
                     }
                     .padding()
 
@@ -140,16 +151,17 @@ struct Signup: View {
                     
                     
                     //#####NEED TO IMPLEMENT#####
+//                    GoogleSignInButton(action: loginVM.signUpWithGoogle)
+//                        .foregroundColor(.white)
+//                        .font(.title)
+//                        .bold()
+//                        .frame(maxWidth: 350)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 8)
+//                                .stroke(Color.black, lineWidth: 1)
+//                        )
                     
-                    Button (action: {
-                       // handle google login
-                        print("Sign Up with google")
-                    }) {
-                        HStack {
-                            Text("Sign up In with Google")
-                                .foregroundColor(.black)
-                        }
-                    }
+                    
                     Button (action: {
                        // handle google login
                         print("Sign up with Apple")
@@ -170,8 +182,8 @@ struct Signup: View {
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-//            Signup()
             Signup()
+                .environmentObject(LogInVM())
         }
     }
 }

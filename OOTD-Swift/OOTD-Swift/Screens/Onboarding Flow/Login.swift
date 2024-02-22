@@ -71,9 +71,14 @@ struct Login: View {
                         TextField("Email...", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-                        Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
+                        if (viewModel.email == "") {
+                            Image(systemName: "envelope.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
+                        }
                     }
                     .padding()
                     .overlay(
@@ -84,10 +89,14 @@ struct Login: View {
                     .padding()
                     HStack {
                         SecureField("Password...", text: $viewModel.password)
-                        
-                        Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                        if (viewModel.password == "") {
+                            Image(systemName: "lock.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                        }
                     }
                     .padding()
                     .overlay(
@@ -156,17 +165,17 @@ struct Login: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
-                    
-                    //#####NEED TO IMPLEMENT#####
-//                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
-//                                    label: {
-//                        GoogleSignInButton(action: loginVM.signUpWithGoogle)
-//                            .padding()
-//                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-//                            .cornerRadius(10)
-//                            .padding(.vertical, 8)
-//                        }
-//                    )
+
+                    // #### NEED TO ADD NAV LOCATIONS ####
+                    GoogleSignInButton(action: loginVM.signUpWithGoogle)
+                        .foregroundColor(.white)
+                        .font(.title)
+                        .bold()
+                        .frame(maxWidth: 350)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.black, lineWidth: 1)
+                        )
                     
                     Button (action: {
                        // handle google login
