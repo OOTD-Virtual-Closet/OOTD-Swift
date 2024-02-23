@@ -144,7 +144,6 @@ struct Login: View {
                             )
                             .padding(.bottom, 20)
                     }
-                    .background(NavigationLink("",destination: ProfileSummary(showSignInView: $showSignInView), isActive: $loginButton).hidden())
                     HStack {
                         Text("Don't have an account?")
                             .foregroundStyle(Color(hex:"898989"))

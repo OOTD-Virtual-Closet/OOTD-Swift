@@ -143,7 +143,6 @@ struct Signup: View {
                             )
                             .padding(.bottom, 20)
                     }
-                    .background(NavigationLink("", destination: ProfileSummary(showSignInView: $isActive), isActive: $shouldNavigateToProfile).hidden()) 
                     
                     Text("OR")
                         .padding()

@@ -36,7 +36,7 @@ final class ProfileViewModel: ObservableObject {
 
 struct ProfileSummary: View {
     @StateObject private var viewModel = ProfileViewModel()
-    @Binding var showSignInView: Bool
+    @Binding var isAuthenticated: Bool
     var email = UserDefaults.standard.string(forKey: "email") ?? "tempEmail"
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
 //    var profile: Profile
@@ -107,7 +107,7 @@ struct ProfileSummary: View {
                             Task {
                                 do {
                                     try viewModel.signOut()
-                                    showSignInView = true
+                                    isAuthenticated = false
                                 } catch {
                                     print(error)
                                 }
@@ -141,6 +141,7 @@ struct ProfileSummary: View {
 
 struct ProfileSummary_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSummary(showSignInView: .constant(false))
+        @State var isAuthenticated = false
+        ProfileSummary(isAuthenticated:$isAuthenticated)
     }
 }
