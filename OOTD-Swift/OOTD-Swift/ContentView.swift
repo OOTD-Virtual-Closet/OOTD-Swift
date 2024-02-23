@@ -22,10 +22,12 @@ struct ContentView: View {
     var body: some View {
         if isAuthenticated {
             DashboardNav(isAuthenticated:$isAuthenticated,userProfile: userProfile)
+                .transition(.slide)
         } else {
             NavigationView {
                 Login(isAuthenticated:$isAuthenticated)
                     .environmentObject(LogInVM())
+                    .transition(.slide)
 
             }
         }

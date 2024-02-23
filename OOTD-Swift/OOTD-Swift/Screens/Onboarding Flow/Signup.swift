@@ -34,6 +34,12 @@ final class SignUpViewModel: ObservableObject {
         print(user.uid)
         UserDefaults.standard.set(user.email, forKey: "email")
         UserDefaults.standard.set(user.uid, forKey: "uid")
+        var userViewModel = UserViewModel()
+        userViewModel.setInitData(newUser: User(
+            uid: user.uid,
+            email: user.email ?? "emailUnknown",
+            creationDate: Date()
+        ))
         print("Success")
         email = user.email ?? ""
         uid = user.uid
