@@ -10,9 +10,14 @@ import SwiftUI
 
 struct User: Codable, Identifiable {
     var id: String = UUID().uuidString
-    var uid: String?
+    var uid: String
     var name: String?
-    var email: String?
-    var username: String?
+    var email: String
     var creationDate: Date?
+    var username: String?
+    var clothesId: [String]?
+    var outfitsId: [String]?
+    var friendsId: [String]?
+    var friendsRequestId: [String]?
+    var postsId: [String]?
 }
