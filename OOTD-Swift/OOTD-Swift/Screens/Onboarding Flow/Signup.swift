@@ -78,7 +78,7 @@ struct Signup: View {
                         TextField("Enter email...", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-    //                        .foregroundStyle(Color(hex:"898989"))
+                        
                         if (viewModel.email == "") {
                             Image(systemName: "envelope.fill")
                                 .fontWeight(.bold)
@@ -97,7 +97,7 @@ struct Signup: View {
                     .padding()
                     HStack {
                         SecureField("Enter password...", text: $viewModel.password)
-    //                        .foregroundStyle(Color(hex:"898989"))
+
                         if (viewModel.password == "") {
                             Image(systemName: "lock.fill")
                                 .fontWeight(.bold)

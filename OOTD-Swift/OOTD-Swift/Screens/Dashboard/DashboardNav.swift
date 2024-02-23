@@ -7,8 +7,8 @@
 
 import SwiftUI
 
+// If User logged IN --> View this --> Redirect to the 3 view panels
 struct DashboardNav: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Binding var isAuthenticated:Bool
     
     let userProfile: String
@@ -16,7 +16,7 @@ struct DashboardNav: View {
         ZStack{
             VStack {
                 TabView {
-                    MarketNav()
+                    MarketNav(isAuthenticated: $isAuthenticated)
                         .navigationTitle("Market")
                         .tabItem {
                             Image(systemName: "1.circle")
