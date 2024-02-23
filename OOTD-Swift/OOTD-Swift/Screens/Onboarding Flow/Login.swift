@@ -8,15 +8,21 @@
 import SwiftUI
 import GoogleSignInSwift
 
+enum LoginErrors: Error{
+    case BlankForm
+}
+
 final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var uid = ""
     @Published var password = ""
     
     func login() async throws {
+        print("Email: \(email)")
+        print("Password: \(password)")
         guard !email.isEmpty, !password.isEmpty else {
             print("No user email or password found")
-            return
+            throw LoginErrors.BlankForm
         }
         let user = try await AuthManager.shared.signIn(email: email, password: password)
         print("log in completed")
@@ -126,8 +132,8 @@ struct Login: View {
                             do {
                                 try await viewModel.login()
                                 isAuthenticated = true
-                            } catch {
-                                print("log in Error \(error)")
+                            } catch LoginErrors.BlankForm {
+                                print("Invalid Password or Username")
                             }
                         }
                     } label: {

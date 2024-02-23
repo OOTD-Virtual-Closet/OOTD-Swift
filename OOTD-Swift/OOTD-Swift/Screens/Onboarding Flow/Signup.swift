@@ -8,7 +8,6 @@
 import SwiftUI
 import GoogleSignInSwift
 //import GoogleSignInSwift
-
 @MainActor
 final class SignUpViewModel: ObservableObject {
     @Published var email = ""
@@ -18,7 +17,7 @@ final class SignUpViewModel: ObservableObject {
     func signIn() async throws {
         guard !email.isEmpty, !password.isEmpty else {
             print("No user email or password found")
-            return
+            throw LoginErrors.BlankForm
         }
         let user = try await AuthManager.shared.createUser(email: email, password: password)
         print("Sign in completed")
@@ -125,8 +124,8 @@ struct Signup: View {
                             do {
                                 try await viewModel.signIn()
                                 isAuthenticated = true
-                            } catch {
-                                print("Sign up Error \(error)")
+                            } catch LoginErrors.BlankForm {
+                                print("Invalid Password or Username")
                             }
                         }
                     } label: {
