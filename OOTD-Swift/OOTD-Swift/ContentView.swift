@@ -17,19 +17,29 @@ struct ContentView: View {
     private var items: FetchedResults<Item>
 
     @State private var isAuthenticated = false
-    //@State var userProfile = Profile.empty
     @State var userProfile = ""
     //TODO: make a class to store user info after auth
     var body: some View {
+<<<<<<< HEAD
         
         NavigationView {
             if isAuthenticated {
                 DashboardNav(userProfile: userProfile)
             } else {
                 Login().environmentObject(LogInVM())
+=======
+        if isAuthenticated {
+            DashboardNav(isAuthenticated:$isAuthenticated,userProfile: userProfile)
+                .transition(.slide)
+        } else {
+            NavigationView {
+                Login(isAuthenticated:$isAuthenticated)
+                    .environmentObject(LogInVM())
+                    .transition(.slide)
+
+>>>>>>> dev
             }
         }
-    
     }
 }
 //checks if quick login is enabled
