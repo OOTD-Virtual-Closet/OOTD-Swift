@@ -10,6 +10,8 @@ import GoogleSignInSwift
 
 enum LoginErrors: Error{
     case BlankForm
+    case InvalidPassword
+    case InvalidUsername
 }
 
 final class LoginViewModel: ObservableObject {
@@ -24,6 +26,12 @@ final class LoginViewModel: ObservableObject {
             print("No user email or password found")
             throw LoginErrors.BlankForm
         }
+        guard isValidPassword(password) else {
+            throw LoginErrors.InvalidPassword
+        }
+        guard isValidEmail(email) else {
+            throw LoginErrors.InvalidUsername
+        }
         let user = try await AuthManager.shared.signIn(email: email, password: password)
         print("log in completed")
         print(user.email)
@@ -31,6 +39,21 @@ final class LoginViewModel: ObservableObject {
         UserDefaults.standard.set(user.email, forKey: "email")
         UserDefaults.standard.set(user.uid, forKey: "uid")
         print("Success")
+    }
+    private func isValidEmail(_ password: String) -> Bool {
+        let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
+        return emailTest.evaluate(with: email)
+
+    }
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
     }
 }
 
@@ -40,6 +63,8 @@ struct Login: View {
     @State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
     @State private var showSignInView: Bool = false
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
     @Binding var isAuthenticated:Bool
     @EnvironmentObject var loginVM: LogInVM
     
@@ -63,6 +88,7 @@ struct Login: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
                         .padding(.bottom, 20)
+                        .padding(.top, 5)
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
@@ -126,6 +152,7 @@ struct Login: View {
                 }
                 
                 VStack (spacing:10){
+                    
                     Button {
                         print("Login in presed")
                         Task {
@@ -134,7 +161,21 @@ struct Login: View {
                                 isAuthenticated = true
                             } catch LoginErrors.BlankForm {
                                 print("Invalid Password or Username")
+                                showingAlert = true
+                                alertMessage = "Invalid Password or Username"
+                            } catch LoginErrors.InvalidPassword {
+                                print("Invalid Password")
+                                showingAlert = true
+                                alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                            } catch LoginErrors.InvalidUsername {
+                                print("Invalid Username")
+                                showingAlert = true
+                                alertMessage = "The username you have entered seems to be invalid"
+                            } catch {
+                                showingAlert = true
+                                alertMessage = "An unexpected error occured"
                             }
+                            
                         }
                     } label: {
                         Text("Login")
@@ -150,6 +191,10 @@ struct Login: View {
                             )
                             .padding(.bottom, 20)
                     }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                    }
+                    
                     HStack {
                         Text("Don't have an account?")
                             .foregroundStyle(Color(hex:"898989"))
