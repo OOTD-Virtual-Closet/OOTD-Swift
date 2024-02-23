@@ -22,12 +22,12 @@ struct DashboardNav: View {
                             Image(systemName: "1.circle")
                             Text("Market")
                         }
-                    SocialNav()
+                    SocialNav(isAuthenticated: $isAuthenticated)
                         .tabItem {
                             Image(systemName: "2.circle")
                             Text("Social")
                         }
-                    ClosetNav()
+                    ClosetNav(isAuthenticated: $isAuthenticated)
                         .tabItem {
                             Image(systemName: "3.circle")
                             Text("Closet")

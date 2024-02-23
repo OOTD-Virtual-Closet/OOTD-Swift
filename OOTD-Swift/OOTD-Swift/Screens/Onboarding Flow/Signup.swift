@@ -37,6 +37,8 @@ struct Signup: View {
     @StateObject private var viewModel = SignUpViewModel()
     @State private var isActive: Bool = false
     @State private var shouldNavigateToProfile = false
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
     @EnvironmentObject var loginVM: LogInVM
     @Binding var isAuthenticated:Bool
 
@@ -126,6 +128,11 @@ struct Signup: View {
                                 isAuthenticated = true
                             } catch LoginErrors.BlankForm {
                                 print("Invalid Password or Username")
+                                alertMessage = "Invalid Password or Username"
+                                showingAlert = true
+                            } catch {
+                                alertMessage = "An unexpected error occured"
+                                showingAlert = true
                             }
                         }
                     } label: {
@@ -141,6 +148,9 @@ struct Signup: View {
                                     .padding(.horizontal)
                             )
                             .padding(.bottom, 20)
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
                     
                     Text("OR")
