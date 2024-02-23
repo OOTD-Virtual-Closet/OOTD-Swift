@@ -27,7 +27,7 @@ final class LoginViewModel: ObservableObject {
             print("No user email or password found")
             throw LoginErrors.BlankForm
         }
-        guard isValidEmail(email) && isValidPassword(password) else {
+        guard isValidEmail(email) || isValidPassword(password) else {
             throw LoginErrors.InvalidPasswordUsername
         }
         guard isValidPassword(password) else {
@@ -44,8 +44,8 @@ final class LoginViewModel: ObservableObject {
         UserDefaults.standard.set(user.uid, forKey: "uid")
         print("Success")
     }
-    private func isValidEmail(_ password: String) -> Bool {
-        let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
         return emailTest.evaluate(with: email)
 
@@ -164,9 +164,9 @@ struct Login: View {
                                 try await viewModel.login()
                                 isAuthenticated = true
                             } catch LoginErrors.BlankForm {
-                                print("Invalid Password or Username")
+                                print("Password or Username Field is blank")
                                 showingAlert = true
-                                alertMessage = "Invalid Password or Username"
+                                alertMessage = "Password or username field is blank"
                             } catch LoginErrors.InvalidPasswordUsername {
                                 showingAlert = true
                                 alertMessage = "Invalid Password and Username"
@@ -178,11 +178,7 @@ struct Login: View {
                                 print("Invalid Username")
                                 showingAlert = true
                                 alertMessage = "The username you have entered seems to be invalid"
-                            } catch {
-                                showingAlert = true
-                                alertMessage = "An unexpected error occured"
                             }
-                            
                         }
                     } label: {
                         Text("Login")
