@@ -19,6 +19,15 @@ final class SignUpViewModel: ObservableObject {
             print("No user email or password found")
             throw LoginErrors.BlankForm
         }
+        guard isValidEmail(email) && isValidPassword(password) else {
+            throw LoginErrors.InvalidPasswordUsername
+        }
+        guard isValidPassword(password) else {
+            throw LoginErrors.InvalidPassword
+        }
+        guard isValidEmail(email) else {
+            throw LoginErrors.InvalidUsername
+        }
         let user = try await AuthManager.shared.createUser(email: email, password: password)
         print("Sign in completed")
         print(user.email)
@@ -28,6 +37,22 @@ final class SignUpViewModel: ObservableObject {
         print("Success")
         email = user.email ?? ""
         uid = user.uid
+    }
+    
+    private func isValidEmail(_ password: String) -> Bool {
+        let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
+        return emailTest.evaluate(with: email)
+
+    }
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
     }
 }
 
@@ -128,11 +153,22 @@ struct Signup: View {
                                 isAuthenticated = true
                             } catch LoginErrors.BlankForm {
                                 print("Invalid Password or Username")
+                                showingAlert = true
                                 alertMessage = "Invalid Password or Username"
+                            } catch LoginErrors.InvalidPasswordUsername {
                                 showingAlert = true
+                                alertMessage = "Invalid Password and Username"
+                            } catch LoginErrors.InvalidPassword {
+                                print("Invalid Password")
+                                showingAlert = true
+                                alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                            } catch LoginErrors.InvalidUsername {
+                                print("Invalid Username")
+                                showingAlert = true
+                                alertMessage = "The username you have entered seems to be invalid"
                             } catch {
-                                alertMessage = "An unexpected error occured"
                                 showingAlert = true
+                                alertMessage = "An unexpected error occured"
                             }
                         }
                     } label: {

@@ -12,6 +12,7 @@ enum LoginErrors: Error{
     case BlankForm
     case InvalidPassword
     case InvalidUsername
+    case InvalidPasswordUsername
 }
 
 final class LoginViewModel: ObservableObject {
@@ -25,6 +26,9 @@ final class LoginViewModel: ObservableObject {
         guard !email.isEmpty, !password.isEmpty else {
             print("No user email or password found")
             throw LoginErrors.BlankForm
+        }
+        guard isValidEmail(email) && isValidPassword(password) else {
+            throw LoginErrors.InvalidPasswordUsername
         }
         guard isValidPassword(password) else {
             throw LoginErrors.InvalidPassword
@@ -163,6 +167,9 @@ struct Login: View {
                                 print("Invalid Password or Username")
                                 showingAlert = true
                                 alertMessage = "Invalid Password or Username"
+                            } catch LoginErrors.InvalidPasswordUsername {
+                                showingAlert = true
+                                alertMessage = "Invalid Password and Username"
                             } catch LoginErrors.InvalidPassword {
                                 print("Invalid Password")
                                 showingAlert = true
