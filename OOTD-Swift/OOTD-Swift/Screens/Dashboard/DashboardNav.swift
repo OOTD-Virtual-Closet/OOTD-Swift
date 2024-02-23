@@ -15,24 +15,23 @@ struct DashboardNav: View {
     var body: some View {
         VStack {
             TabView {
-                CategoriesView()
+                MarketNav()
+                    .navigationTitle("Market")
                     .tabItem {
                         Image(systemName: "1.circle")
                         Text("Market")
                     }
-                FeedView()
+                SocialNav()
                     .tabItem {
                         Image(systemName: "2.circle")
                         Text("Social")
                     }
-                ClothesView()
+                ClosetNav()
                     .tabItem {
                         Image(systemName: "3.circle")
                         Text("Closet")
                     }
             }
-            .navigationBarTitle("")
-            .navigationBarBackButtonHidden(true)
         }
     }
 }
