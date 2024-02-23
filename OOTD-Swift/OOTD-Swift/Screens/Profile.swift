@@ -16,23 +16,6 @@ final class ProfileViewModel: ObservableObject {
         try AuthManager.shared.signout()
     }
 }
-//
-//struct Profile {
-//    var username: String
-//    var email: String
-//    var password: String
-//
-//    static let `default` = Profile(username: "sanjheeg", email: "sanjheeg30@gmail.com", password: "")
-//
-//}
-
-//struct ProfileHost: View {
-//    @State private var draftProfile = Profile.default
-//
-//    var body: some View {
-//        Text("Profile for: \(draftProfile.username)")
-//    }
-//}
 
 struct ProfileSummary: View {
     @StateObject private var viewModel = ProfileViewModel()
