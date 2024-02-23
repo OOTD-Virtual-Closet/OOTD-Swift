@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DeleteAccount: View {
     @State private var showSignInView: Bool = false
+    @Binding var isAuthenticated:Bool
+
     
     var body: some View {
         ZStack {
@@ -20,10 +22,7 @@ struct DeleteAccount: View {
         .onAppear {
             let authUser = try? AuthManager.shared.getAuthenticatedUser()
             self.showSignInView = authUser == nil
-        }
-        .fullScreenCover(isPresented:$showSignInView) { NavigationStack {
-                Signup()
-            }
+            isAuthenticated = false
         }
     }
 }
@@ -31,6 +30,7 @@ struct DeleteAccount: View {
 struct Previews_DeleteAccount_Previews: PreviewProvider {
     static var previews: some View {
 //        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-        DeleteAccount()
+        @State var isAuthenticated = true
+        DeleteAccount(isAuthenticated: $isAuthenticated)
     }
 }

@@ -39,7 +39,8 @@ struct Signup: View {
     @State private var isActive: Bool = false
     @State private var shouldNavigateToProfile = false
     @EnvironmentObject var loginVM: LogInVM
-    
+    @Binding var isAuthenticated:Bool
+
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
         // minimum 6 characters long
@@ -123,7 +124,7 @@ struct Signup: View {
                         Task {
                             do {
                                 try await viewModel.signIn()
-                                shouldNavigateToProfile = true
+                                isAuthenticated = true
                             } catch {
                                 print("Sign up Error \(error)")
                             }
@@ -181,8 +182,9 @@ struct Signup: View {
 
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
+        @State var isAuthenticated = false
         NavigationStack {
-            Signup()
+            Signup(isAuthenticated: $isAuthenticated)
                 .environmentObject(LogInVM())
         }
     }

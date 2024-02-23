@@ -19,7 +19,7 @@ struct SplashScreenView: View {
         } else {
             VStack {
                 VStack {
-                    Image(.appLogo)
+                    Image("AppLogo")
                         .resizable()
                         .frame(width: 450, height: 200)
                     Text("Outfit. Of. The. Day")

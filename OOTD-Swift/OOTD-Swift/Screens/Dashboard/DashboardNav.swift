@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DashboardNav: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Binding var isAuthenticated:Bool
     
     let userProfile: String
     var body: some View {
@@ -37,6 +38,7 @@ struct DashboardNav: View {
 
 struct DashboardNav_Previews: PreviewProvider {
     static var previews: some View {
-        DashboardNav(userProfile: "im not adi")
+        @State var isAuthenticated = true
+        DashboardNav(isAuthenticated: $isAuthenticated, userProfile: "im not adi")
     }
 }

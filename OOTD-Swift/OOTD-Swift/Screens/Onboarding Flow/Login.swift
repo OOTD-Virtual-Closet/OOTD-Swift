@@ -34,6 +34,7 @@ struct Login: View {
     @State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
     @State private var showSignInView: Bool = false
+    @Binding var isAuthenticated:Bool
     @EnvironmentObject var loginVM: LogInVM
     
     private func isValidPassword(_ password: String) -> Bool {
@@ -124,7 +125,7 @@ struct Login: View {
                         Task {
                             do {
                                 try await viewModel.login()
-                                loginButton = true
+                                isAuthenticated = true
                             } catch {
                                 print("log in Error \(error)")
                             }
@@ -156,7 +157,7 @@ struct Login: View {
                                 .foregroundStyle(Color(hex: "CBC3E3"))
                                 .fontWeight(.heavy)
                         }
-                        .background(NavigationLink(destination: Signup(), isActive: $signUpActive) { EmptyView() }.hidden())
+                        .background(NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated), isActive: $signUpActive) { EmptyView() }.hidden())
                         .navigationBarBackButtonHidden(true) 
                     }
                     
@@ -234,9 +235,10 @@ extension Color {
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
         @State var showSignInView = false
-//        NavigationStack {
-        Login()
+        @State var isAuthenticated = false
+        NavigationStack {
+        Login(isAuthenticated: $isAuthenticated)
             .environmentObject(LogInVM())
-//        }
+        }
     }
 }
