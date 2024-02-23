@@ -166,10 +166,7 @@ struct Signup: View {
                                 print("Invalid Username")
                                 showingAlert = true
                                 alertMessage = "The username you have entered seems to be invalid"
-                            } catch {
-                                showingAlert = true
-                                alertMessage = "An unexpected error occured"
-                            }
+                            } 
                         }
                     } label: {
                         Text("Create an Account")
