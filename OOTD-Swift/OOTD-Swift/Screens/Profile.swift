@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
+
 struct Profile {
     var username: String
     var email: String
@@ -48,10 +49,9 @@ struct ProfileSummary: View {
                         .padding(.horizontal)
                         .foregroundColor(Color(hex:"898989"))
                     
+                    
                     VStack {
-                        NavigationLink(destination: ChangePassword()) {
-                            //TODO: REDIRECT TO FORGOT PASSWORD ONCE CREATED
-                            
+                        NavigationLink(destination: ChangePasswordUI()) {
                             Text("Change Password")
                                 .padding()
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
@@ -63,9 +63,7 @@ struct ProfileSummary: View {
                         }
                         .padding(.horizontal)
                    
-                        NavigationLink(destination: DeleteAccount()) {
-                            //TODO: REDIRECT TO DELETE ACCOUNT ONCE CREATED
-                            
+                        NavigationLink(destination: DeleteAccountUI()) {
                             Text("Delete Account")
                                 .padding()
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)

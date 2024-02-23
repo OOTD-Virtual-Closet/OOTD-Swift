@@ -7,7 +7,15 @@
 
 import SwiftUI
 
-struct ChangePassword: View {
+@MainActor
+final class ProfileViewModelChangePassword: ObservableObject {
+    func ChangePassword(password:String) throws {
+        try AuthManager.shared.changePassword(password: password)
+    }
+}
+
+struct ChangePasswordUI: View {
+    @StateObject private var viewModel = ProfileViewModelChangePassword()
     @State private var oldPass: String = ""
     @State private var newPass: String = ""
     var body: some View {
@@ -82,17 +90,26 @@ struct ChangePassword: View {
                         }
                         .padding(.horizontal)
                         
-                        NavigationLink(destination: Login()) {
-                            Text("LOGIN")
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                            .frame(height:50)
-                            .foregroundColor(.black)
-                            .fontWeight(.bold)
-                            .padding(.horizontal)
-                            .background(Color("UIpurple"))
-                            .cornerRadius(10)
+                        Button (action: {
+                            do {
+                                try viewModel.ChangePassword(password: newPass)
+                            } catch {
+                                print("An error occurred: \(error)")
+                            }
+                        }) {
+                            HStack {
+                                NavigationLink(destination: Login()) {
+                                    Text("CHANGE PASSWORD")
+                                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                                    .frame(height:50)
+                                    .foregroundColor(.black)
+                                    .fontWeight(.bold)
+                                    .padding(.horizontal)
+                                    .background(Color("UIpurple"))
+                                    .cornerRadius(10)
+                                }
+                            }
                         }
-                        
                         .padding(.horizontal)
                     }
                     Spacer()
@@ -105,6 +122,6 @@ struct ChangePassword: View {
 
 struct Change_Previews: PreviewProvider {
     static var previews: some View {
-        ChangePassword()
+        ChangePasswordUI()
     }
 }

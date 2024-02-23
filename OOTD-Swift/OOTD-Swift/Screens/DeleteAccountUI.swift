@@ -7,9 +7,24 @@
 
 import SwiftUI
 
-struct DeleteAccount: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+@MainActor
+final class ProfileViewModelDeleteAcc: ObservableObject {
+    func DeleteAccount() throws{
+        try AuthManager.shared.deleteAccount()
+    }
+    
+    func GetAuthenticatedUser() throws -> AuthDataResultModel {
+        let user = try AuthManager.shared.getAuthenticatedUser()
+        return user
+    }
+    
+}
+
+
+struct DeleteAccountUI: View {
+    @StateObject private var viewModel = ProfileViewModelDeleteAcc()
+    @State private var user: String = ""
+    @State private var confirmUser: String = ""
     @State private var confirmPass: String = ""
     var body: some View {
         NavigationView {
@@ -17,7 +32,7 @@ struct DeleteAccount: View {
                 Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 VStack {
                     HStack {
-                        Text("Delete Account!")
+                        Text("Delete Current Account!")
                             .frame(maxWidth: .infinity, alignment: .center)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
@@ -35,7 +50,7 @@ struct DeleteAccount: View {
                     
                     VStack {
                         HStack {
-                            TextField("Email...", text: $email)
+                            TextField("Username...", text: $user)
                             Image(systemName: "checkmark")
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)
@@ -49,7 +64,7 @@ struct DeleteAccount: View {
                         .padding()
                         
                         HStack {
-                            TextField("Password...", text: $password)
+                            TextField("Confirm Username...", text: $confirmUser)
                             Image(systemName: "checkmark")
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)
@@ -61,33 +76,6 @@ struct DeleteAccount: View {
                                 .foregroundColor(Color(hex:"898989"))
                         )
                         .padding()
-                        
-                        HStack {
-                            TextField("Confirm Password...", text: $confirmPass)
-                            Image(systemName: "checkmark")
-                                .fontWeight(.bold)
-                                .foregroundColor(.green)
-                        }
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(lineWidth: 2.0)
-                                .foregroundColor(Color(hex:"898989"))
-                        )
-                        .padding()
-                        
-                        NavigationLink(destination: DeleteAccount()) {
-                            //TODO: REDIRECT TO FORGOT PASSWORD ONCE CREATED
-                            
-                            Text("Forgot Password?")
-                                .foregroundStyle(Color(hex: "CBC3E3"))
-                                .fontWeight(.heavy)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.trailing, 20)
-                                .padding(.bottom, 30)
-                        }
-                        .padding(.horizontal)
-                        
                     }
                     
                     VStack {
@@ -104,17 +92,26 @@ struct DeleteAccount: View {
                         }
                         .padding(.horizontal)
                         
-                        NavigationLink(destination: Signup()) {
-                            Text("DELETE")
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                            .frame(height:50)
-                            .foregroundColor(.red)
-                            .fontWeight(.bold)
-                            .padding(.horizontal)
-                            .background(Color("UIpurple"))
-                            .cornerRadius(10)
+                        Button (action: {
+                            do {
+                                try viewModel.DeleteAccount()
+                            } catch {
+                                print("An error occurred: \(error)")
+                            }
+                        }) {
+                            HStack {
+                                Text("DELETE")
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                                .frame(height:50)
+                                .foregroundColor(.red)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                                .background(Color("UIpurple"))
+                                .cornerRadius(10)
+                            }
                         }
                         .padding(.horizontal)
+                        
                     }
                     Spacer()
                 }
@@ -126,6 +123,6 @@ struct DeleteAccount: View {
 
 struct Delete_Previews: PreviewProvider {
     static var previews: some View {
-        DeleteAccount()
+        DeleteAccountUI()
     }
 }
