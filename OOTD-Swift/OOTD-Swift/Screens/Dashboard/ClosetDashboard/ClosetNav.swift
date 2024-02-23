@@ -9,18 +9,21 @@ import SwiftUI
 
 struct ClosetNav: View {
     @State private var selectedContent: Int? = 1
+    @Binding var isAuthenticated:Bool
     var body: some View {
         ZStack{
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack{
                 HStack{
                     Spacer()
-                    Image("UserIcon")
-                        .resizable() // Allows the image to be resizable
-                        .scaledToFit() // Scales the image to fit its frame
-                        .frame(width: 45, height: 45) // Set the desired width and height
-                        .border(Color.gray) // Just to visualize the image's frame
-                        .padding(.trailing)
+                    NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
+                        Image("UserIcon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 45, height: 45)
+                            .border(Color.gray)
+                            .padding(.trailing)
+                    }
                 }
                 Spacer()
             }
@@ -71,6 +74,7 @@ struct ClosetNav: View {
 
 struct ClosetNav_Previews: PreviewProvider {
     static var previews: some View {
-        ClosetNav()
+        @State var isAuthenticated = true
+        ClosetNav(isAuthenticated: $isAuthenticated)
     }
 }

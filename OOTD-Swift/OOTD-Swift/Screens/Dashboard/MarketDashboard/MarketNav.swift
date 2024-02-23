@@ -25,7 +25,7 @@ struct MarketNav: View {
                                 .frame(width: 45, height: 45)
                                 .border(Color.gray)
                                 .padding(.trailing)
-                            }
+                        }
                     }
                     Spacer()
                 }
