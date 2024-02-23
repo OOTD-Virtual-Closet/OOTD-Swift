@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
+import GoogleSignInSwift
 //import GoogleSignInSwift
-
 @MainActor
 final class SignUpViewModel: ObservableObject {
     @Published var email = ""
@@ -17,7 +17,16 @@ final class SignUpViewModel: ObservableObject {
     func signIn() async throws {
         guard !email.isEmpty, !password.isEmpty else {
             print("No user email or password found")
-            return
+            throw LoginErrors.BlankForm
+        }
+        guard isValidEmail(email) || isValidPassword(password) else {
+            throw LoginErrors.InvalidPasswordUsername
+        }
+        guard isValidPassword(password) else {
+            throw LoginErrors.InvalidPassword
+        }
+        guard isValidEmail(email) else {
+            throw LoginErrors.InvalidUsername
         }
         let user = try await AuthManager.shared.createUser(email: email, password: password)
         print("Sign in completed")
@@ -29,6 +38,22 @@ final class SignUpViewModel: ObservableObject {
         email = user.email ?? ""
         uid = user.uid
     }
+    
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
+        return emailTest.evaluate(with: email)
+
+    }
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
+    }
 }
 
 
@@ -37,6 +62,20 @@ struct Signup: View {
     @StateObject private var viewModel = SignUpViewModel()
     @State private var isActive: Bool = false
     @State private var shouldNavigateToProfile = false
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
+    @EnvironmentObject var loginVM: LogInVM
+    @Binding var isAuthenticated:Bool
+
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
+    }
     
     var body: some View {
         ZStack {
@@ -65,10 +104,15 @@ struct Signup: View {
                         TextField("Enter email...", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-    //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(.green)
+                        
+                        if (viewModel.email == "") {
+                            Image(systemName: "envelope.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
+                        }
                     }
                     .padding()
                     .overlay(
@@ -79,10 +123,15 @@ struct Signup: View {
                     .padding()
                     HStack {
                         SecureField("Enter password...", text: $viewModel.password)
-    //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(.green)
+
+                        if (viewModel.password == "") {
+                            Image(systemName: "lock.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                        }
                     }
                     .padding()
 
@@ -101,10 +150,23 @@ struct Signup: View {
                         Task {
                             do {
                                 try await viewModel.signIn()
-                                shouldNavigateToProfile = true
-                            } catch {
-                                print("Sign up Error \(error)")
-                            }
+                                isAuthenticated = true
+                            } catch LoginErrors.BlankForm {
+                                print("Invalid Password or Username")
+                                showingAlert = true
+                                alertMessage = "Password or username field is blank"
+                            } catch LoginErrors.InvalidPasswordUsername {
+                                showingAlert = true
+                                alertMessage = "Invalid Password and Username"
+                            } catch LoginErrors.InvalidPassword {
+                                print("Invalid Password")
+                                showingAlert = true
+                                alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                            } catch LoginErrors.InvalidUsername {
+                                print("Invalid Username")
+                                showingAlert = true
+                                alertMessage = "The username you have entered seems to be invalid"
+                            } 
                         }
                     } label: {
                         Text("Create an Account")
@@ -120,30 +182,8 @@ struct Signup: View {
                             )
                             .padding(.bottom, 20)
                     }
-                    .background(NavigationLink("", destination: ProfileSummary(showSignInView: $isActive), isActive: $shouldNavigateToProfile).hidden()) 
-                    HStack {
-                        Text("Already have an account?")
-                            .foregroundStyle(Color(hex:"898989"))
-                            .fontWeight(.heavy)
-//                        self.currentShowingView = "login"
-                        Button(action: {
-                            print("Login")
-                            self.isActive = true
-                        }) {
-                            Text("Login?")
-                                .foregroundStyle(Color(hex: "CBC3E3"))
-                                .fontWeight(.heavy)
-                        }
-                        .background(NavigationLink(destination: Login(), isActive: $isActive) { EmptyView() }.hidden())
-                        .navigationBarBackButtonHidden(true) 
-                        
-//                        Button("Login?") {
-//                            // handle signup
-//                            print("Login pressed")
-//                        }
-                        .foregroundColor(Color(hex:"CBC3E3"))
-                        .foregroundColor(Color(hex:"CBC3E3"))
-                        .fontWeight(.heavy)
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
                     
                     Text("OR")
@@ -153,16 +193,17 @@ struct Signup: View {
                     
                     
                     //#####NEED TO IMPLEMENT#####
+//                    GoogleSignInButton(action: loginVM.signUpWithGoogle)
+//                        .foregroundColor(.white)
+//                        .font(.title)
+//                        .bold()
+//                        .frame(maxWidth: 350)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 8)
+//                                .stroke(Color.black, lineWidth: 1)
+//                        )
                     
-                    Button (action: {
-                       // handle google login
-                        print("Sign Up with google")
-                    }) {
-                        HStack {
-                            Text("Sign up In with Google")
-                                .foregroundColor(.black)
-                        }
-                    }
+                    
                     Button (action: {
                        // handle google login
                         print("Sign up with Apple")
@@ -180,12 +221,12 @@ struct Signup: View {
     }
 }
 
-
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
+        @State var isAuthenticated = false
         NavigationStack {
-//            Signup()
-            Signup()
+            Signup(isAuthenticated: $isAuthenticated)
+                .environmentObject(LogInVM())
         }
     }
 }

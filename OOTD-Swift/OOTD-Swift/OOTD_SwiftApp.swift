@@ -19,8 +19,9 @@ struct OOTD_SwiftApp: App {
     WindowGroup {
       NavigationView {
           //Login()
-          ContentView()
-              .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+          SplashScreenView()
+//          ContentView()
+//              .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
       }
     }
   }
@@ -32,7 +33,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         return true
       }
-    
       func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
           return GIDSignIn.sharedInstance.handle(url)
       }
