@@ -25,11 +25,13 @@ struct MarketNav: View {
                 }) {
                     Text("Categories")
                 }
+                Spacer()
                 Button(action: {
                     self.selectedContent = 2
                 }) {
                     Text("Recommended")
                 }
+                Spacer()
                 Button(action: {
                     self.selectedContent = 3
                 }) {
