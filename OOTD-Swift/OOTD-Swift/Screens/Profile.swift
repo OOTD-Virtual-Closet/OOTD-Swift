@@ -46,7 +46,6 @@ struct ProfileSummary: View {
             ZStack {
                 //Color("settingsBackground")
                 VStack {
-
                     Text("\nSettings\n")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.largeTitle)

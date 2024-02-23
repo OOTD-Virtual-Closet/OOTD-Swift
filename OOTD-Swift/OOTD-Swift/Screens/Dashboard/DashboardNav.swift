@@ -13,24 +13,26 @@ struct DashboardNav: View {
     
     let userProfile: String
     var body: some View {
-        VStack {
-            TabView {
-                MarketNav()
-                    .navigationTitle("Market")
-                    .tabItem {
-                        Image(systemName: "1.circle")
-                        Text("Market")
-                    }
-                SocialNav()
-                    .tabItem {
-                        Image(systemName: "2.circle")
-                        Text("Social")
-                    }
-                ClosetNav()
-                    .tabItem {
-                        Image(systemName: "3.circle")
-                        Text("Closet")
-                    }
+        ZStack{
+            VStack {
+                TabView {
+                    MarketNav()
+                        .navigationTitle("Market")
+                        .tabItem {
+                            Image(systemName: "1.circle")
+                            Text("Market")
+                        }
+                    SocialNav()
+                        .tabItem {
+                            Image(systemName: "2.circle")
+                            Text("Social")
+                        }
+                    ClosetNav()
+                        .tabItem {
+                            Image(systemName: "3.circle")
+                            Text("Closet")
+                        }
+                }
             }
         }
     }

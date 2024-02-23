@@ -156,7 +156,6 @@ struct Login: View {
                                 .foregroundStyle(Color(hex: "CBC3E3"))
                                 .fontWeight(.heavy)
                         }
-                        .background(NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated), isActive: $signUpActive) { EmptyView() }.hidden())
                         .navigationBarBackButtonHidden(true) 
                     }
                     
