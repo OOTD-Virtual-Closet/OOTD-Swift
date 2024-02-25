@@ -25,7 +25,7 @@ struct FavoritesView: View {
                     FavoriteOutfits().tag(1)
 
                 }
-              TabBarView(currentTab: self.$currentTab)
+                TabBarView(currentTab: self.$currentTab, spacing: 150)
             }
             
         }  

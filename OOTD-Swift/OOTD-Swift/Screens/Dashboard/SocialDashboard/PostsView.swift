@@ -9,7 +9,14 @@ import SwiftUI
 
 struct PostsView: View {
     var body: some View {
-        Text("posts :P")
+        ScrollView {
+                    VStack(spacing: 20) {
+                        ForEach(0..<10) { _ in
+                            UserPost()
+                        }
+                    }
+                   
+                }.padding (.top, 50)
     }
 }
 

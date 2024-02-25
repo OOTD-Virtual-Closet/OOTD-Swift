@@ -15,10 +15,15 @@ struct SocialNav: View {
     @State var currentTab: Int = 0
 
     var body: some View {
-        ZStack {
-            Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            VStack{
+        NavigationView {
+            VStack {
                 HStack{
+                    Spacer()
+                    Text("Social")
+                        .foregroundColor(.black)
+                        .font(.system( size: 25))
+                        .fontWeight(.heavy)
+                        .padding(.leading, 20)
                     Spacer()
                     NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
                         Image("UserIcon")
@@ -30,33 +35,33 @@ struct SocialNav: View {
                                 .padding(.trailing)
                     }
                 }
-                Spacer()
-            }
-            VStack {
-                Text("Social")
-                    .foregroundColor(.black)
-                    .font(.system( size: 25))
-                    .fontWeight(.heavy)
-                ZStack (alignment: .top) {
-                    TabView(selection: self.$currentTab) {
-                        FriendsView()
-                            .tag(0)
-                        FeedView()
-                            .tag(1)
-                        PostsView().tag(2)
+                
+                VStack {
+                    ZStack (alignment: .top) {
+                        TabView(selection: self.$currentTab) {
+                            FriendsView()
+                                .tag(0)
+                            FeedView()
+                                .tag(1)
+                            PostsView().tag(2)
 
-                    }.padding (.top, 50)
-                    TabBarViewV2(currentTab: self.$currentTab, tabBarOptions: tabBarOptions, tabBarImages: tabImageNames)
+                        }.padding (.top, 50)
+                        TabBarViewV2(currentTab: self.$currentTab, tabBarOptions: tabBarOptions, tabBarImages: tabImageNames, spacing: 40)
+                    }
+                    Spacer()
                 }
-                Spacer()
+                .padding(.bottom, -100)
+
+                
             }
-            .padding(.bottom, -100)
+
             
-            }
-            .padding()
+        }
 
         }
     }
+
+
 
 
 struct SocialNav_Previews: PreviewProvider {

@@ -15,6 +15,7 @@ struct DashboardNav: View {
     let userProfile: String
     var body: some View {
         NavigationView {
+            
             VStack(spacing: 0) {
    
                        switch selectedTab {
@@ -33,15 +34,9 @@ struct DashboardNav: View {
                        BottomNavBar(isAuthenticated: $isAuthenticated, selectedTab: $selectedTab)
                     
                    }
-                    .padding(.top, 90) 
-                    .edgesIgnoringSafeArea([.top, .bottom])
-        
-
-                    .alignmentGuide(.top) { _ in
-                            0
-                        }
                    .navigationBarHidden(true)
-               }
+               }            .ignoresSafeArea(.all)
+            .padding(.top, -125)
     }
 }
 

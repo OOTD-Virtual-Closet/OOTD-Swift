@@ -10,11 +10,12 @@ import SwiftUI
 struct TabBarView: View {
     @Binding var currentTab: Int
     @Namespace var namespace
+    var spacing: CGFloat
     
     var tabBarOptions: [String] = ["Clothes", "Outfits"]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 150) {
+            HStack(spacing: spacing) {
                 ForEach(Array(zip(self.tabBarOptions.indices,
                                   self.tabBarOptions)),
                         id: \.0,
@@ -37,7 +38,6 @@ struct TabBarView: View {
 struct TabBarItem: View {
     @Binding var currentTab: Int
     let namespace: Namespace.ID
-    
     var tabBarItemName: String
     var tab: Int
     
@@ -75,9 +75,10 @@ struct TabBarViewV2: View {
     
     var tabBarOptions: [String] 
     var tabBarImages: [String]
+    var spacing: CGFloat
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 30) {
+            HStack(spacing: spacing) {
                 ForEach(Array(zip(self.tabBarOptions.indices,
                                   self.tabBarOptions)),
                         id: \.0,
