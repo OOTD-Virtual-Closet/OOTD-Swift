@@ -49,7 +49,6 @@ struct ProfileSummary: View {
                         .padding(.horizontal)
                         .foregroundColor(Color(hex:"898989"))
                     
-                    
                     VStack {
                         NavigationLink(destination: ChangePasswordUI()) {
                             Text("Change Password")
@@ -74,7 +73,20 @@ struct ProfileSummary: View {
                                 .cornerRadius(10)
                                 
                         }
-                        .padding()
+                        .padding(.horizontal)
+                        NavigationLink(destination: Login()) {
+                            Text("Log OUt")
+                                .padding()
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(.black)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                                .background(Color("UIpurple"))
+                                .cornerRadius(10)
+                                
+                        }
+                        
+                        .padding(.horizontal)
                     }
                     
                     Spacer()

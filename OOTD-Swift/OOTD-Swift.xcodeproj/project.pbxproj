@@ -19,9 +19,10 @@
 		34A1780C2B8156E600265C56 /* ClothesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A1780B2B8156E600265C56 /* ClothesView.swift */; };
 		52272DEF2B85CB9900922262 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52272DEE2B85CB9900922262 /* GoogleService-Info.plist */; };
 		52272DF12B85CEA100922262 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52272DF02B85CEA100922262 /* Welcome.swift */; };
-		52272DF32B85CF9B00922262 /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52272DF22B85CF9B00922262 /* ChangePassword.swift */; };
+		52272DF32B85CF9B00922262 /* ChangePasswordUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52272DF22B85CF9B00922262 /* ChangePasswordUI.swift */; };
 		52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52358BAC2B7FFC5E00619E85 /* Profile.swift */; };
-		52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A5802B801DCE00496804 /* DeleteAccount.swift */; };
+		5236CEF12B891CA400BE2367 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236CEF02B891CA400BE2367 /* AuthManager.swift */; };
+		52D6A5812B801DCE00496804 /* DeleteAccountUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A5802B801DCE00496804 /* DeleteAccountUI.swift */; };
 		8915767D2B7F1422006947E4 /* Closet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767C2B7F1422006947E4 /* Closet.swift */; };
 		891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767F2B7F1440006947E4 /* BottomNavBar.swift */; };
 		893227ED2B813E86002D693D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893227EC2B813E86002D693D /* AppDelegate.swift */; };
@@ -95,9 +96,10 @@
 		34A1780B2B8156E600265C56 /* ClothesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesView.swift; sourceTree = "<group>"; };
 		52272DEE2B85CB9900922262 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		52272DF02B85CEA100922262 /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
-		52272DF22B85CF9B00922262 /* ChangePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassword.swift; sourceTree = "<group>"; };
+		52272DF22B85CF9B00922262 /* ChangePasswordUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordUI.swift; sourceTree = "<group>"; };
 		52358BAC2B7FFC5E00619E85 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		52D6A5802B801DCE00496804 /* DeleteAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccount.swift; sourceTree = "<group>"; };
+		5236CEF02B891CA400BE2367 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		52D6A5802B801DCE00496804 /* DeleteAccountUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountUI.swift; sourceTree = "<group>"; };
 		8915767C2B7F1422006947E4 /* Closet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closet.swift; sourceTree = "<group>"; };
 		8915767F2B7F1440006947E4 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		893227EC2B813E86002D693D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -215,9 +217,9 @@
 			isa = PBXGroup;
 			children = (
 				52272DF02B85CEA100922262 /* Welcome.swift */,
-				52272DF22B85CF9B00922262 /* ChangePassword.swift */,
+				52272DF22B85CF9B00922262 /* ChangePasswordUI.swift */,
 				34A177F12B81542D00265C56 /* Dashboard */,
-				52D6A5802B801DCE00496804 /* DeleteAccount.swift */,
+				52D6A5802B801DCE00496804 /* DeleteAccountUI.swift */,
 				8915767C2B7F1422006947E4 /* Closet.swift */,
 				52358BAC2B7FFC5E00619E85 /* Profile.swift */,
 				CCDE67802B7F1EED00599FE8 /* Onboarding Flow */,
@@ -317,6 +319,7 @@
 			children = (
 				CCDE677E2B7F1E9C00599FE8 /* Login.swift */,
 				CCDE67832B8138BD00599FE8 /* Signup.swift */,
+				5236CEF02B891CA400BE2367 /* AuthManager.swift */,
 			);
 			path = "Onboarding Flow";
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */,
+				5236CEF12B891CA400BE2367 /* AuthManager.swift in Sources */,
 				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
 				34A178022B81557500265C56 /* FriendsView.swift in Sources */,
 				8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */,
@@ -498,14 +502,14 @@
 				34A1780A2B8155A500265C56 /* RecommendedView.swift in Sources */,
 				52272DF12B85CEA100922262 /* Welcome.swift in Sources */,
 				52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */,
-				52272DF32B85CF9B00922262 /* ChangePassword.swift in Sources */,
+				52272DF32B85CF9B00922262 /* ChangePasswordUI.swift in Sources */,
 				8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */,
 				34A178002B81556900265C56 /* FeedView.swift in Sources */,
 				CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */,
 				34A178062B81558E00265C56 /* CategoriesView.swift in Sources */,
 				893227ED2B813E86002D693D /* AppDelegate.swift in Sources */,
 				8985B7712B75D7A6000E8DED /* ContentView.swift in Sources */,
-				52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */,
+				52D6A5812B801DCE00496804 /* DeleteAccountUI.swift in Sources */,
 				8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
