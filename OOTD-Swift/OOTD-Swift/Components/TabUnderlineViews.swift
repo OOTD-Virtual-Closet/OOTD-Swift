@@ -73,8 +73,8 @@ struct TabBarViewV2: View {
     @Binding var currentTab: Int
     @Namespace var namespace
     
-    var tabBarOptions: [String] = ["Clothes", "Outfits", "Favorites"]
-    var tabBarImages: [String] = ["tshirt", "figure", "star"]
+    var tabBarOptions: [String] 
+    var tabBarImages: [String]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 30) {

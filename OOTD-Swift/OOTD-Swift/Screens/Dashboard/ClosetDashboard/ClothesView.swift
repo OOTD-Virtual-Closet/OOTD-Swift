@@ -91,7 +91,7 @@ struct ClothesView: View {
                         }
                     }
                     .padding(10)
-                }.padding(.horizontal, 15)
+                }.padding(.trailing, 15)
                 
                 HStack {
                     Text("Hoodies & Jackets")
@@ -115,7 +115,7 @@ struct ClothesView: View {
                         }
                     }
                     .padding(10)
-                }.padding(.horizontal, 15)
+                }.padding(.trailing, 15)
                 HStack {
                     Text("Pants")
                         .foregroundColor(.black)
@@ -138,7 +138,7 @@ struct ClothesView: View {
                         }
                     }
                     .padding(10)
-                }.padding(.horizontal, 15)
+                }.padding(.trailing, 15)
                 HStack {
                     Text("Shoes")
                         .foregroundColor(.black)
@@ -161,7 +161,7 @@ struct ClothesView: View {
                         }
                     }
                     .padding(10)
-                }.padding(.horizontal, 15)
+                }.padding(.trailing, 15)
 
             }
             Color.white

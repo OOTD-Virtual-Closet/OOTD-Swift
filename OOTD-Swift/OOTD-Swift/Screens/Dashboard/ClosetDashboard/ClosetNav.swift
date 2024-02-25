@@ -11,6 +11,9 @@ struct ClosetNav: View {
     @State private var selectedContent: Int = 1
     @Binding var isAuthenticated:Bool
     @State var currentTab: Int = 0
+    var tabImageNames : [String] = ["tshirt", "figure", "star"]
+    var tabBarOptions: [String] = ["Clothes", "Outfits", "Favorites"]
+
 
     var body: some View {
         ZStack{
@@ -21,10 +24,11 @@ struct ClosetNav: View {
                     NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
                         Image("UserIcon")
                             .resizable()
-                            .scaledToFit()
-                            .frame(width: 45, height: 45)
-                            .border(Color.gray)
-                            .padding(.trailing)
+                                .scaledToFit()
+                                .frame(width: 35, height: 35)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                .padding(.trailing)
                     }
                 }
                 Spacer()
@@ -44,7 +48,7 @@ struct ClosetNav: View {
                         FavoritesView().tag(2)
 
                     }.padding (.top, 50)
-                  TabBarViewV2(currentTab: self.$currentTab)
+                    TabBarViewV2(currentTab: self.$currentTab, tabBarOptions: tabBarOptions, tabBarImages: tabImageNames)
                 }
                 
             //    HStack{
