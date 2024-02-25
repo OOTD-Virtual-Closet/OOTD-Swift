@@ -7,7 +7,7 @@
 
 import SwiftUI
 import GoogleSignInSwift
-//import GoogleSignInSwift
+
 @MainActor
 final class SignUpViewModel: ObservableObject {
     @Published var email = ""
@@ -28,19 +28,25 @@ final class SignUpViewModel: ObservableObject {
         guard isValidEmail(email) else {
             throw LoginErrors.InvalidUsername
         }
+        
         let user = try await AuthManager.shared.createUser(email: email, password: password)
+        
         print("Sign in completed")
         print(user.email)
         print(user.uid)
+        
         UserDefaults.standard.set(user.email, forKey: "email")
         UserDefaults.standard.set(user.uid, forKey: "uid")
+        
         var userViewModel = UserViewModel()
         userViewModel.setInitData(newUser: User(
             uid: user.uid,
             email: user.email ?? "emailUnknown",
             creationDate: Date()
         ))
+        
         print("Success")
+        
         email = user.email ?? ""
         uid = user.uid
     }
@@ -140,7 +146,6 @@ struct Signup: View {
                         }
                     }
                     .padding()
-
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 2.0)
@@ -152,7 +157,7 @@ struct Signup: View {
                 VStack (spacing:20){
 
                     Button {
-                        print("Sign Up presed")
+                        print("Signup Pressed...")
                         Task {
                             do {
                                 try await viewModel.signIn()
@@ -197,17 +202,22 @@ struct Signup: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
-                    
-                    //#####NEED TO IMPLEMENT#####
-//                    GoogleSignInButton(action: loginVM.signUpWithGoogle)
-//                        .foregroundColor(.white)
-//                        .font(.title)
-//                        .bold()
-//                        .frame(maxWidth: 350)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 8)
-//                                .stroke(Color.black, lineWidth: 1)
-//                        )
+  
+                    GoogleSignInButton(action: {
+                        loginVM.signUpWithGoogle { success in
+                            DispatchQueue.main.async {
+                                isAuthenticated = success
+                            }
+                        }
+                    })
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .bold()
+                    .frame(maxWidth: 350)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.black, lineWidth: 1)
+                    )
                     
                     
                     Button (action: {

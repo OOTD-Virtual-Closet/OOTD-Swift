@@ -42,5 +42,6 @@ struct DashboardNav_Previews: PreviewProvider {
     static var previews: some View {
         @State var isAuthenticated = true
         DashboardNav(isAuthenticated: $isAuthenticated, userProfile: "im not adi")
+            .environmentObject(LogInVM())
     }
 }

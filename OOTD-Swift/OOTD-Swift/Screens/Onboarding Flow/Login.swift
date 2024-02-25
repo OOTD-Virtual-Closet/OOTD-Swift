@@ -66,7 +66,7 @@ struct Login: View {
     @StateObject private var viewModel = LoginViewModel()
     @State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
-    @State private var showSignInView: Bool = false
+    @State private var showSignInView: Bool = false // remove? i dont see where this is used
     @State private var showingAlert = false
     @State private var alertMessage = ""
     @Binding var isAuthenticated:Bool
@@ -81,6 +81,8 @@ struct Login: View {
         
         return passwordRegex.evaluate(with: password)
     }
+    
+    
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -156,9 +158,8 @@ struct Login: View {
                 }
                 
                 VStack (spacing:10){
-                    
                     Button {
-                        print("Login in presed")
+                        print("Login Pressed...")
                         Task {
                             do {
                                 try await viewModel.login()
@@ -212,6 +213,7 @@ struct Login: View {
                         }
                         .background(NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated), isActive: $signUpActive) { EmptyView() }.hidden())
                         .navigationBarBackButtonHidden(true)
+                        .environmentObject(LogInVM())
                     }
                     
                     Text("OR")
@@ -219,17 +221,21 @@ struct Login: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
-
-                    // #### NEED TO ADD NAV LOCATIONS ####
-                    GoogleSignInButton(action: loginVM.signUpWithGoogle)
-                        .foregroundColor(.white)
-                        .font(.title)
-                        .bold()
-                        .frame(maxWidth: 350)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.black, lineWidth: 1)
-                        )
+                    GoogleSignInButton(action: {
+                        loginVM.signUpWithGoogle { success in
+                            DispatchQueue.main.async {
+                                isAuthenticated = success
+                            }
+                        }
+                    })
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .bold()
+                    .frame(maxWidth: 350)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.black, lineWidth: 1)
+                    )
                     
                     Button (action: {
                        // handle google login

@@ -20,9 +20,11 @@ struct OOTD_SwiftApp: App {
       NavigationView {
           //Login()
           SplashScreenView()
+              //.environmentObject(LogInVM())
 //          ContentView()
 //              .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
       }
+      .environmentObject(LogInVM())
     }
   }
 }
