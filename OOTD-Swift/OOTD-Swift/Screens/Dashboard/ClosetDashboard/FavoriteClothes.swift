@@ -103,6 +103,9 @@ struct FavoriteClothes: View {
                     }
                     .padding(10)
                 }.padding(.horizontal, 15)
+                
+                Color.white
+                        .frame(width: UIScreen.main.bounds.width, height: 100)
 
             }
         }

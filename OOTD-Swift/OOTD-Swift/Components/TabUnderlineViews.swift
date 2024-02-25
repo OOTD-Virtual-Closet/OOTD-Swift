@@ -68,3 +68,74 @@ struct TabBarItem: View {
         .buttonStyle(.plain)
     }
 }
+
+struct TabBarViewV2: View {
+    @Binding var currentTab: Int
+    @Namespace var namespace
+    
+    var tabBarOptions: [String] = ["Clothes", "Outfits", "Favorites"]
+    var tabBarImages: [String] = ["tshirt", "figure", "star"]
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 30) {
+                ForEach(Array(zip(self.tabBarOptions.indices,
+                                  self.tabBarOptions)),
+                        id: \.0,
+                        content: {
+                    index, name in
+                    TabBarItemV2(currentTab: self.$currentTab,
+                               namespace: namespace.self,
+                               tabBarItemName: name,
+                               tab: index, tabBarImageName: tabBarImages[index])
+                    
+                })
+            }
+            .padding(.horizontal)
+        }
+       .background(Color.white)
+        .frame(height: 50)
+    }
+}
+
+struct TabBarItemV2: View {
+    @Binding var currentTab: Int
+    let namespace: Namespace.ID
+    
+    var tabBarItemName: String
+    var tab: Int
+    var tabBarImageName: String
+    
+    var body: some View {
+        Button {
+            self.currentTab = tab
+        } label: {
+            VStack {
+                Spacer()
+                HStack {
+                    Text(tabBarItemName)
+                    .foregroundColor(currentTab == tab ? .black : Color(hex: "9278E0"))
+                    .font(.system(size:17))
+                    .fontWeight(.heavy)
+                Image(systemName: tabBarImageName)
+                    .resizable()
+                    .foregroundColor(currentTab == tab ? .black : Color(hex: "9278E0"))
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 23, height: 23)
+                    
+                }
+
+                if currentTab == tab {
+                    Color.black
+                        .frame(height: 2)
+                        .matchedGeometryEffect(id: "underline",
+                                               in: namespace,
+                                               properties: .frame)
+                } else {
+                    Color.clear.frame(height: 2)
+                }
+            }
+            .animation(.spring(), value: self.currentTab)
+        }
+        .buttonStyle(.plain)
+    }
+}
