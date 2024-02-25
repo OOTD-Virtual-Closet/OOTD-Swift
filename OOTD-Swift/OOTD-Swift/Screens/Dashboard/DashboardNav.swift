@@ -10,37 +10,45 @@ import SwiftUI
 // If User logged IN --> View this --> Redirect to the 3 view panels
 struct DashboardNav: View {
     @Binding var isAuthenticated:Bool
+    @State private var selectedTab = 1
     
     let userProfile: String
     var body: some View {
-        ZStack{
-            VStack {
-                TabView {
-                    MarketNav(isAuthenticated: $isAuthenticated)
-                        .navigationTitle("Market")
-                        .tabItem {
-                            Image(systemName: "1.circle")
-                            Text("Market")
+        NavigationView {
+            VStack(spacing: 0) {
+   
+                       switch selectedTab {
+                       case 1:
+                           MarketNav(isAuthenticated: $isAuthenticated)
+                       case 2:
+                           SocialNav(isAuthenticated: $isAuthenticated)
+                       case 3:
+                           ClosetNav(isAuthenticated: $isAuthenticated)
+                       default:
+                           SocialNav(isAuthenticated: $isAuthenticated)
+                       }
+                       
+                       Spacer()
+                       
+                       BottomNavBar(isAuthenticated: $isAuthenticated, selectedTab: $selectedTab)
+                    
+                   }
+                    .padding(.top, 90) 
+                    .edgesIgnoringSafeArea([.top, .bottom])
+        
+
+                    .alignmentGuide(.top) { _ in
+                            0
                         }
-                    SocialNav(isAuthenticated: $isAuthenticated)
-                        .tabItem {
-                            Image(systemName: "2.circle")
-                            Text("Social")
-                        }
-                    ClosetNav(isAuthenticated: $isAuthenticated)
-                        .tabItem {
-                            Image(systemName: "3.circle")
-                            Text("Closet")
-                        }
-                }
-            }
-        }
+                   .navigationBarHidden(true)
+               }
     }
 }
 
 struct DashboardNav_Previews: PreviewProvider {
     static var previews: some View {
         @State var isAuthenticated = true
+        @State var selectedTab = 1
         DashboardNav(isAuthenticated: $isAuthenticated, userProfile: "im not adi")
     }
 }
