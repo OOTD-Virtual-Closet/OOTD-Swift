@@ -56,6 +56,8 @@
 		34C8281F2B88581B007AE17F /* MarketNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281E2B88581B007AE17F /* MarketNav.swift */; };
 		52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52358BAC2B7FFC5E00619E85 /* Profile.swift */; };
 		52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A5802B801DCE00496804 /* DeleteAccount.swift */; };
+		6A7220942B8BCBED00FF45FE /* ImageSegmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7220932B8BCBED00FF45FE /* ImageSegmentation.swift */; };
+		6A7220962B8C0EA500FF45FE /* DeepLabV3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6A7220952B8C0EA500FF45FE /* DeepLabV3.mlmodel */; };
 		8915767D2B7F1422006947E4 /* Closet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767C2B7F1422006947E4 /* Closet.swift */; };
 		891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767F2B7F1440006947E4 /* BottomNavBar.swift */; };
 		8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */; };
@@ -112,6 +114,8 @@
 		34C8281E2B88581B007AE17F /* MarketNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketNav.swift; sourceTree = "<group>"; };
 		52358BAC2B7FFC5E00619E85 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		52D6A5802B801DCE00496804 /* DeleteAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccount.swift; sourceTree = "<group>"; };
+		6A7220932B8BCBED00FF45FE /* ImageSegmentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSegmentation.swift; sourceTree = "<group>"; };
+		6A7220952B8C0EA500FF45FE /* DeepLabV3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = DeepLabV3.mlmodel; path = ../../../../../Downloads/DeepLabV3.mlmodel; sourceTree = "<group>"; };
 		8915767C2B7F1422006947E4 /* Closet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closet.swift; sourceTree = "<group>"; };
 		8915767F2B7F1440006947E4 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		8985B7662B75D7A6000E8DED /* OOTD-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OOTD-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -258,6 +262,15 @@
 			path = MarketDashboard;
 			sourceTree = "<group>";
 		};
+		6A7220902B8BCA7400FF45FE /* ImageSegmentation */ = {
+			isa = PBXGroup;
+			children = (
+				6A7220952B8C0EA500FF45FE /* DeepLabV3.mlmodel */,
+				6A7220932B8BCBED00FF45FE /* ImageSegmentation.swift */,
+			);
+			path = ImageSegmentation;
+			sourceTree = "<group>";
+		};
 		8915767A2B7F13B3006947E4 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +322,7 @@
 		8985B7682B75D7A6000E8DED /* OOTD-Swift */ = {
 			isa = PBXGroup;
 			children = (
+				6A7220902B8BCA7400FF45FE /* ImageSegmentation */,
 				343F07822B86C93C007DBE14 /* ViewModels */,
 				343F07812B86C927007DBE14 /* Models */,
 				343F077B2B86B349007DBE14 /* Authentication */,
@@ -536,12 +550,14 @@
 				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
 				34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */,
 				34A178022B81557500265C56 /* FriendsView.swift in Sources */,
+				6A7220942B8BCBED00FF45FE /* ImageSegmentation.swift in Sources */,
 				8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */,
 				34A178042B81557F00265C56 /* PostsView.swift in Sources */,
 				34A1780C2B8156E600265C56 /* ClothesView.swift in Sources */,
 				34A177F62B8154FF00265C56 /* DashboardNav.swift in Sources */,
 				34A177FC2B81553400265C56 /* FavoritesView.swift in Sources */,
 				891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */,
+				6A7220962B8C0EA500FF45FE /* DeepLabV3.mlmodel in Sources */,
 				34A178082B81559600265C56 /* TrendingView.swift in Sources */,
 				34A177FA2B81552200265C56 /* OutfitsView.swift in Sources */,
 				34A1780A2B8155A500265C56 /* RecommendedView.swift in Sources */,
