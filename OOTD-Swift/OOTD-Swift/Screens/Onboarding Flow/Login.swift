@@ -94,7 +94,7 @@ struct Login: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
                         .padding(.bottom, 20)
-                        .padding(.top, 5)
+                        .padding(.top, 5) 
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
