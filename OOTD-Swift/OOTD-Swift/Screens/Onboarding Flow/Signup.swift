@@ -51,6 +51,7 @@ final class SignUpViewModel: ObservableObject {
         uid = user.uid
     }
     
+    
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)

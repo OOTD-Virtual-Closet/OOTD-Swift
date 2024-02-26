@@ -63,7 +63,6 @@ struct OutfitsView: View {
                             }
                             .padding(15)
                         }
-
             }
         }
     }

@@ -54,6 +54,17 @@ class LogInVM: ObservableObject {
                     print(user.displayName ?? "No Display Name.")
                     self.isLogin.toggle()
                     completion(true)
+                    
+                    // to add user details in firestore every time they log in
+                    var userViewModel = UserViewModel()
+                    userViewModel.setInitData(newUser: User(
+                        uid: user.uid,
+                        email: user.email ?? "emailUnknown",
+                        creationDate: Date()
+                    ))
+                    
+                    print("Google Auth User Details Added to DB...")
+                    
                 } else {
                     completion(false)
                 }
