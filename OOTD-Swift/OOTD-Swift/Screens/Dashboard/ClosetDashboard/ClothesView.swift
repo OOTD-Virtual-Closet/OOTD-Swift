@@ -6,9 +6,35 @@
 //
 
 import SwiftUI
+struct ClothingItem: Identifiable {
+    var id = UUID()
+    var name: String // Name or description of the item
+    var lastWorn: Date? // Optional last worn date
+    var color: String
+
+    init(name: String, lastWorn: Date? = nil, color: String = "") {
+        self.name = name
+        self.lastWorn = lastWorn
+        self.color = color
+    }
+}
 
 struct ClothesView: View {
-    let items = (1...10).map { "Item \($0)" }
+    @State private var items: [ClothingItem] = [
+        ClothingItem(name: "Item 1", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 21)), color: "Red"),
+        ClothingItem(name: "Item 2", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 22)), color: "Blue"),
+        ClothingItem(name: "Item 3", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 23)), color: "Green"),
+        ClothingItem(name: "Item 4", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 24)), color: "Yellow"),
+        ClothingItem(name: "Item 5", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 19)), color: "Orange"),
+        ClothingItem(name: "Item 6", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 18)), color: "Tomato Red"),
+        ClothingItem(name: "Item 7", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 17)), color: "Purple"),
+        ClothingItem(name: "Item 8", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 16)), color: "Indigo"),
+        ClothingItem(name: "Item 9", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 15)), color: "Violet"),
+        ClothingItem(name: "Item 10", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 14)), color: "Greenish Cob"),
+        
+        // Add more items as needed
+    ]
+//    let items = (1...10).map { "Item \($0)" }
     @State private var searchText = ""
     @State private var isEditing = false
     @State private var showPopUp = false
@@ -193,9 +219,10 @@ struct ClothesView: View {
                             }
                             ToolbarItem(placement: .navigationBarTrailing) {
                                 Button("Done") {
-                                    // Here, you can handle the selected date,
-                                    // e.g., filtering your items based on this date.
                                     showDatePicker = false
+                                    //Will print out the selected date correctly
+                                        //Need to substring the date tho
+                                    print(selectedDate)
                                 }
                             }
                         }
