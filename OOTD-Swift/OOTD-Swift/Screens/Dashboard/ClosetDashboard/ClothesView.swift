@@ -11,6 +11,9 @@ struct ClothesView: View {
     let items = (1...10).map { "Item \($0)" }
     @State private var searchText = ""
     @State private var isEditing = false
+    @State private var showPopUp = false
+    @State private var showDatePicker = false
+    @State private var selectedDate = Date()
 
 
     var body: some View {
@@ -61,12 +64,24 @@ struct ClothesView: View {
                             }
                     Spacer()
                     ZStack {
-                        Image(systemName: "slider.horizontal.3")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                            .padding(.trailing, 20)
+                        Button(action: {
+                            self.showPopUp.toggle()
+                        }) {
+                            Image(systemName: "slider.horizontal.3")
+                                .resizable()
+                                .foregroundColor(.black)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30, height: 30)
+                                .padding(.trailing, 20)
+                        }
+                    }
+                    .actionSheet(isPresented: $showPopUp) {
+                        ActionSheet(title: Text("Options"), buttons: [
+                            .default(Text("Date Last Worn")) {  self.showDatePicker = true  },
+                            .default(Text("Type of Clothing")) { /* Handle Option 2 */ },
+                            .default(Text("Color of Clothing")) { /* Handle Option 3 */ },
+                            .cancel()
+                        ])
                     }
                 }
                 HStack {
@@ -163,6 +178,28 @@ struct ClothesView: View {
                     .padding(10)
                 }.padding(.trailing, 15)
 
+            }
+            .sheet(isPresented: $showDatePicker) {
+                NavigationView {
+                    DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
+                        .datePickerStyle(GraphicalDatePickerStyle())
+                        .padding()
+                        .navigationTitle("Date Last Worn")
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button("Cancel") {
+                                    showDatePicker = false
+                                }
+                            }
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Done") {
+                                    // Here, you can handle the selected date,
+                                    // e.g., filtering your items based on this date.
+                                    showDatePicker = false
+                                }
+                            }
+                        }
+                }
             }
             Color.white
                     .frame(width: UIScreen.main.bounds.width, height: 100)
