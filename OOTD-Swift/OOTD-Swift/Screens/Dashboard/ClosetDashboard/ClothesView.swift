@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
-struct ClothingItem: Identifiable {
+struct ClothingItem: Identifiable, Hashable {
     var id = UUID()
     var name: String // Name or description of the item
     var lastWorn: Date? // Optional last worn date
     var color: String
+    var clothingType: String
 
-    init(name: String, lastWorn: Date? = nil, color: String = "") {
+    init(name: String, lastWorn: Date? = nil, color: String = "", clothingType: String = "") {
         self.name = name
         self.lastWorn = lastWorn
         self.color = color
+        self.clothingType = clothingType
     }
 }
 
@@ -23,7 +25,7 @@ struct ClothesView: View {
     @State private var items: [ClothingItem] = [
         ClothingItem(name: "Item 1", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 21)), color: "Red"),
         ClothingItem(name: "Item 2", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 22)), color: "Blue"),
-        ClothingItem(name: "Item 3", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 23)), color: "Green"),
+        ClothingItem(name: "earmuffs", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 23)), color: "Green"),
         ClothingItem(name: "Item 4", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 24)), color: "Yellow"),
         ClothingItem(name: "Item 5", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 19)), color: "Orange"),
         ClothingItem(name: "Item 6", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 18)), color: "Tomato Red"),
@@ -38,8 +40,14 @@ struct ClothesView: View {
     @State private var searchText = ""
     @State private var isEditing = false
     @State private var showPopUp = false
+    
+    // Classofications for the modals
     @State private var showDatePicker = false
+    @State private var showClothingCategory = false
+    @State private var selectedClothingCatergory = ""
     @State private var selectedDate = Date()
+    @State private var clothingCategories = ["Shirts", "Pants", "Hoodies & Jackets", "Shoes", "Accessories"]
+
 
 
     var body: some View {
@@ -104,7 +112,7 @@ struct ClothesView: View {
                     .actionSheet(isPresented: $showPopUp) {
                         ActionSheet(title: Text("Options"), buttons: [
                             .default(Text("Date Last Worn")) {  self.showDatePicker = true  },
-                            .default(Text("Type of Clothing")) { /* Handle Option 2 */ },
+                            .default(Text("Type of Clothing")) { self.showClothingCategory = true },
                             .default(Text("Color of Clothing")) { /* Handle Option 3 */ },
                             .cancel()
                         ])
@@ -126,9 +134,13 @@ struct ClothesView: View {
                 }
                 ScrollView(.horizontal, showsIndicators: true) {
                     LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                        ForEach(items, id: \.self) { item in
-                            Clothes(item: item)
-                                .frame(width: 112, height: 140)
+//                        ForEach(items, id: \.self) { item in
+//                            Clothes(item: item)
+//                                .frame(width: 112, height: 140)
+//                        }
+                        ForEach(items) { item in
+                                Clothes(item: item)
+                                    .frame(width: 112, height: 140)
                         }
                     }
                     .padding(10)
@@ -205,6 +217,9 @@ struct ClothesView: View {
                 }.padding(.trailing, 15)
 
             }
+            .sheet(isPresented: $showClothingCategory) {
+                ClothingTypeSelectionView(selectedClothingType: $selectedClothingCatergory, clothingCategories: clothingCategories)
+            }
             .sheet(isPresented: $showDatePicker) {
                 NavigationView {
                     DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
@@ -235,9 +250,36 @@ struct ClothesView: View {
     }
 }
 
+struct ClothingTypeSelectionView: View {
+    @Binding var selectedClothingType: String
+    var clothingCategories: [String]
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(clothingCategories, id: \.self) { category in
+                    Button(action: {
+                        self.selectedClothingType = category
+                    }) {
+                        Text(category)
+                    }
+                }
+            }
+            .navigationBarTitle(Text("Select Clothing Type"), displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
 
 struct Clothes: View {
-    let item: String
+    let item: ClothingItem
     
     var body: some View {
         VStack {
@@ -245,7 +287,7 @@ struct Clothes: View {
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: 112, height: 130)
                 .overlay(
-                    Text(item)
+                    Text(item.name)
                         .foregroundColor(.white)
                         .font(.headline)
                 )
