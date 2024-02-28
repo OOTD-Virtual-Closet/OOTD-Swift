@@ -10,8 +10,8 @@ import SwiftUI
 struct MarketNav: View {
     @State private var selectedContent: Int? = 1
     @Binding var isAuthenticated:Bool
-    var tabImageNames : [String] = ["person.2", "square.stack", "photo"]
-    var tabBarOptions: [String] = ["Friends", "Feed", "Posts"]
+    var tabImageNames : [String] = ["square.stack", "hand.thumbsup", "flame"]
+    var tabBarOptions: [String] = ["Categories", "Recommended", "Trending"]
     @State var currentTab: Int = 0
 
     var body: some View {
@@ -20,7 +20,7 @@ struct MarketNav: View {
             VStack {
                 HStack{
                     Spacer()
-                    Text("Social")
+                    Text("Marketplace")
                         .foregroundColor(.black)
                         .font(.system( size: 25))
                         .fontWeight(.heavy)
@@ -40,11 +40,11 @@ struct MarketNav: View {
                 VStack {
                     ZStack (alignment: .top) {
                         TabView(selection: self.$currentTab) {
-                            FriendsView()
+                            CategoriesView()
                                 .tag(0)
-                            FeedView()
+                            RecommendedView()
                                 .tag(1)
-                            PostsView().tag(2)
+                           TrendingView().tag(2)
                             
                         }.padding (.top, 50)
                         TabBarViewV2(currentTab: self.$currentTab, tabBarOptions: tabBarOptions, tabBarImages: tabImageNames, spacing: 40)

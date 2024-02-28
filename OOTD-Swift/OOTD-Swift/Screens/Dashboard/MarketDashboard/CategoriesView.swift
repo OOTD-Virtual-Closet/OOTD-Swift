@@ -8,8 +8,87 @@
 import SwiftUI
 
 struct CategoriesView: View {
+    @State private var searchText = ""
+    @State private var isEditing = false
+    @State private var showPopUp = false
+    private let gridItems = [GridItem(.flexible()), GridItem(.flexible())]
+    
     var body: some View {
-        Text("Categories")
+        ScrollView (showsIndicators: false) {
+            VStack (alignment: .leading) {
+                Text("36 items")
+                    .foregroundColor(.gray)
+                    .font(.system( size: 13))
+                    .fontWeight(.heavy)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 5)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                HStack {
+                    Image(systemName: "cart.fill")
+                    Text("Shopping Cart")
+                        .foregroundColor(.black)
+                        .font(.system( size: 18))
+                        .fontWeight(.heavy)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 15)
+                }
+                .padding(.leading, 35)
+                HStack {
+                    ZStack {
+                        TextField("", text: $searchText, onEditingChanged: { editing in
+                            isEditing = editing
+                        })
+                        .padding(.leading, 15)
+                        .frame(width: UIScreen.main.bounds.width - 90, height: 40)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(Color(hex: "E1DDED"))
+                                .padding(.leading, 15)
+                        )
+                        .overlay(
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                    .resizable()
+                                    .foregroundColor(.black)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 20, height: 20)
+                                    .padding(.leading, 27)
+                                Text("Search...")
+                                    .foregroundColor(.black)
+                                    .font(.system(size: 17))
+                                    .fontWeight(.heavy)
+                                    .padding(.leading, 5)
+                                Spacer()
+                            }
+                                .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
+                        )
+                    }
+                    Spacer()
+                    ZStack {
+                        Button(action: {
+                            self.showPopUp.toggle()
+                        }) {
+                            Image(systemName: "slider.horizontal.3")
+                                .resizable()
+                                .foregroundColor(.black)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30, height: 30)
+                                .padding(.trailing, 20)
+                        }
+                    }
+                }
+                Spacer()
+                LazyVGrid(columns: gridItems, spacing: 20) {
+                    ForEach(0..<8) { _ in
+                        Circle()
+                            .fill(Color.blue)     .frame(width: 100, height: 100)
+                    }
+                }
+                .padding(.top, 20)
+            }
+        }
     }
 }
 
