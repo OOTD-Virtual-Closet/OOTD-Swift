@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
 import GoogleSignInSwift
 
 enum LoginErrors: Error{
@@ -13,6 +15,8 @@ enum LoginErrors: Error{
     case InvalidPassword
     case InvalidUsername
     case InvalidPasswordUsername
+    case InvalidLogin
+    case InvalidSignup
 }
 
 final class LoginViewModel: ObservableObject {
@@ -36,13 +40,19 @@ final class LoginViewModel: ObservableObject {
         guard isValidEmail(email) else {
             throw LoginErrors.InvalidUsername
         }
-        let user = try await AuthManager.shared.signIn(email: email, password: password)
-        print("log in completed")
-        print(user.email)
-        print(user.uid)
-        UserDefaults.standard.set(user.email, forKey: "email")
-        UserDefaults.standard.set(user.uid, forKey: "uid")
-        print("Success")
+        do {
+            let user = try await AuthManager.shared.signIn(email: email, password: password)
+            print("log in completed")
+            print(user.email)
+            print(user.uid)
+            UserDefaults.standard.set(user.email, forKey: "email")
+            UserDefaults.standard.set(user.uid, forKey: "uid")
+            print("Success")
+        } catch {
+            print("Error")
+            throw LoginErrors.InvalidLogin
+        }
+
     }
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
@@ -174,6 +184,9 @@ struct Login: View {
                                 print("Invalid Password")
                                 showingAlert = true
                                 alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                            } catch LoginErrors.InvalidLogin {
+                                showingAlert = true
+                                alertMessage = "Invalid Login Credentials"
                             } catch LoginErrors.InvalidUsername {
                                 print("Invalid Username")
                                 showingAlert = true

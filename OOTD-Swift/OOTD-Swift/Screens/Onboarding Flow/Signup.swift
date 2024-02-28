@@ -28,15 +28,20 @@ final class SignUpViewModel: ObservableObject {
         guard isValidEmail(email) else {
             throw LoginErrors.InvalidUsername
         }
-        let user = try await AuthManager.shared.createUser(email: email, password: password)
-        print("Sign in completed")
-        print(user.email)
-        print(user.uid)
-        UserDefaults.standard.set(user.email, forKey: "email")
-        UserDefaults.standard.set(user.uid, forKey: "uid")
-        print("Success")
-        email = user.email ?? ""
-        uid = user.uid
+        do {
+            let user = try await AuthManager.shared.createUser(email: email, password: password)
+            print("Sign in completed")
+            print(user.email)
+            print(user.uid)
+            UserDefaults.standard.set(user.email, forKey: "email")
+            UserDefaults.standard.set(user.uid, forKey: "uid")
+            print("Success")
+            email = user.email ?? ""
+            uid = user.uid
+        } catch {
+            print("Invalid Sign Up")
+            throw LoginErrors.InvalidSignup
+        }
     }
     
     private func isValidEmail(_ email: String) -> Bool {
@@ -158,6 +163,9 @@ struct Signup: View {
                             } catch LoginErrors.InvalidPasswordUsername {
                                 showingAlert = true
                                 alertMessage = "Invalid Password and Username"
+                            } catch LoginErrors.InvalidSignup {
+                                showingAlert = true
+                                alertMessage = "Invalid Signup"
                             } catch LoginErrors.InvalidPassword {
                                 print("Invalid Password")
                                 showingAlert = true
