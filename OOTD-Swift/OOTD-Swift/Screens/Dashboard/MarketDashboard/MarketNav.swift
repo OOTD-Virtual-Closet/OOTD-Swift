@@ -10,71 +10,55 @@ import SwiftUI
 struct MarketNav: View {
     @State private var selectedContent: Int? = 1
     @Binding var isAuthenticated:Bool
+    var tabImageNames : [String] = ["person.2", "square.stack", "photo"]
+    var tabBarOptions: [String] = ["Friends", "Feed", "Posts"]
+    @State var currentTab: Int = 0
+
     var body: some View {
         // Navigation link must be embedded inside a nav stack
         NavigationStack {
-            ZStack {
-                Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                VStack{
-                    HStack{
-                        Spacer()
-                        NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
-                            Image("UserIcon")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 45, height: 45)
-                                .border(Color.gray)
-                                .padding(.trailing)
-                        }
-                    }
+            VStack {
+                HStack{
                     Spacer()
-                }
-                VStack {
-                    Text("Market")
-                        .foregroundStyle(Color(hex:"898989"))
-                        .font(.title3)
-                        .fontWeight(.heavy)
-                    Rectangle()
-                        .frame(height: 1)
+                    Text("Social")
                         .foregroundColor(.black)
-                    HStack{
-                        // Buttons to select content
-                        Button(action: {
-                            self.selectedContent = 1
-                        }) {
-                            Text("Categories")
-                        }
-                        Spacer()
-                        Button(action: {
-                            self.selectedContent = 2
-                        }) {
-                            Text("Recommended")
-                        }
-                        Spacer()
-                        Button(action: {
-                            self.selectedContent = 3
-                        }) {
-                            Text("Trending")
-                        }
-                    }
+                        .font(.system( size: 25))
+                        .fontWeight(.heavy)
+                        .padding(.leading, 20)
                     Spacer()
-                    // Content views
-                    if selectedContent == 1 {
-                        CategoriesView()
-                    } else if selectedContent == 2 {
-                        RecommendedView()
-                    } else if selectedContent == 3 {
-                        TrendingView()
+                    NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
+                        Image("UserIcon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 35, height: 35)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                            .padding(.trailing)
+                    }
+                }
+                
+                VStack {
+                    ZStack (alignment: .top) {
+                        TabView(selection: self.$currentTab) {
+                            FriendsView()
+                                .tag(0)
+                            FeedView()
+                                .tag(1)
+                            PostsView().tag(2)
+                            
+                        }.padding (.top, 50)
+                        TabBarViewV2(currentTab: self.$currentTab, tabBarOptions: tabBarOptions, tabBarImages: tabImageNames, spacing: 40)
                     }
                     Spacer()
                 }
-                .padding()
+                .padding(.bottom, -100)
                 
+            }
 
             }
         }
     }
-}
+
 
 struct MarketNav_Previews: PreviewProvider {
     static var previews: some View {
