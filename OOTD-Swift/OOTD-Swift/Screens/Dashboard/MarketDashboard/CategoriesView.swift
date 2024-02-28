@@ -81,9 +81,16 @@ struct CategoriesView: View {
                 }
                 Spacer()
                 LazyVGrid(columns: gridItems, spacing: 20) {
-                    ForEach(0..<8) { _ in
+                    ForEach(0..<4) { _ in
                         Circle()
-                            .fill(Color.blue)     .frame(width: 100, height: 100)
+                            .fill(Color.purple)
+                            .frame(width: 100, height: 100)
+                        
+                        Image("jacket")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
                     }
                 }
                 .padding(.top, 20)
