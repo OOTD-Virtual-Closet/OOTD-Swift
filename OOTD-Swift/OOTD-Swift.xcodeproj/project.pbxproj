@@ -60,7 +60,8 @@
 		891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767F2B7F1440006947E4 /* BottomNavBar.swift */; };
 		89791E1E2B8EEA4A00E28FE9 /* AddClothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E1D2B8EEA4A00E28FE9 /* AddClothes.swift */; };
 		89791E202B8EFDB400E28FE9 /* CustomDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E1F2B8EFDB400E28FE9 /* CustomDropDown.swift */; };
-		89791E222B8F169400E28FE9 /* Cloth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E212B8F169400E28FE9 /* Cloth.swift */; };
+		89791E242B8FCF5800E28FE9 /* ClothViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */; };
+		89791E262B8FD03100E28FE9 /* Cloth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E252B8FD03100E28FE9 /* Cloth.swift */; };
 		8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */; };
 		8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B76B2B75D7A6000E8DED /* Persistence.swift */; };
 		8985B76F2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8985B76D2B75D7A6000E8DED /* OOTD_Swift.xcdatamodeld */; };
@@ -122,7 +123,8 @@
 		8915767F2B7F1440006947E4 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		89791E1D2B8EEA4A00E28FE9 /* AddClothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothes.swift; sourceTree = "<group>"; };
 		89791E1F2B8EFDB400E28FE9 /* CustomDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDropDown.swift; sourceTree = "<group>"; };
-		89791E212B8F169400E28FE9 /* Cloth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloth.swift; sourceTree = "<group>"; };
+		89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothViewModel.swift; sourceTree = "<group>"; };
+		89791E252B8FD03100E28FE9 /* Cloth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cloth.swift; path = Models/Cloth.swift; sourceTree = SOURCE_ROOT; };
 		8985B7662B75D7A6000E8DED /* OOTD-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OOTD-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftApp.swift; sourceTree = "<group>"; };
 		8985B76B2B75D7A6000E8DED /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -212,8 +214,8 @@
 		343F07812B86C927007DBE14 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				89791E252B8FD03100E28FE9 /* Cloth.swift */,
 				343F07832B86C94F007DBE14 /* User.swift */,
-				89791E212B8F169400E28FE9 /* Cloth.swift */,
 			);
 			name = Models;
 			path = ../Models;
@@ -223,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				343F07852B86DA12007DBE14 /* UserViewModel.swift */,
+				89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -562,9 +565,9 @@
 				34A177F62B8154FF00265C56 /* DashboardNav.swift in Sources */,
 				34A177FC2B81553400265C56 /* FavoritesView.swift in Sources */,
 				891576802B7F1440006947E4 /* BottomNavBar.swift in Sources */,
-				89791E222B8F169400E28FE9 /* Cloth.swift in Sources */,
 				34A178082B81559600265C56 /* TrendingView.swift in Sources */,
 				34A177FA2B81552200265C56 /* OutfitsView.swift in Sources */,
+				89791E262B8FD03100E28FE9 /* Cloth.swift in Sources */,
 				34A1780A2B8155A500265C56 /* RecommendedView.swift in Sources */,
 				89F139852B8B2163007BF7CC /* TabUnderlineViews.swift in Sources */,
 				52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */,
@@ -573,6 +576,7 @@
 				34A178002B81556900265C56 /* FeedView.swift in Sources */,
 				343F077D2B86B35E007DBE14 /* ApplicationUtility.swift in Sources */,
 				CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */,
+				89791E242B8FCF5800E28FE9 /* ClothViewModel.swift in Sources */,
 				34A178062B81558E00265C56 /* CategoriesView.swift in Sources */,
 				89791E202B8EFDB400E28FE9 /* CustomDropDown.swift in Sources */,
 				343F077F2B86B3A0007DBE14 /* LoginViewModel.swift in Sources */,

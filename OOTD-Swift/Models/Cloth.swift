@@ -10,10 +10,11 @@ import SwiftUI
 
 struct Cloth: Codable, Identifiable {
     var id: String = UUID().uuidString
+    var name: String?
     var type: String?
     var size: String?
     var color: String?
     var brand: String?
-    var image: Date?
+    var image: String?
     var tags: [String]?
 }

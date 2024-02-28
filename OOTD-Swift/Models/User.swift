@@ -14,5 +14,6 @@ struct User: Codable, Identifiable {
     var name: String?
     var email: String?
     var username: String?
+    var clothes : [String]?
     var creationDate: Date?
 }

@@ -43,7 +43,7 @@ struct FavoriteClothes: View {
                 ScrollView(.horizontal, showsIndicators: true) {
                     LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
                         ForEach(items, id: \.self) { item in
-                            Clothes(item: item)
+                            TestClothes(item: item)
                                 .frame(width: 120, height: 140)
                         }
                     }
@@ -66,7 +66,7 @@ struct FavoriteClothes: View {
                 ScrollView(.horizontal, showsIndicators: true) {
                     LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
                         ForEach(items, id: \.self) { item in
-                            Clothes(item: item)
+                            TestClothes(item: item)
                                 .frame(width: 112, height: 140)
                         }
                     }
@@ -88,7 +88,7 @@ struct FavoriteClothes: View {
                 ScrollView(.horizontal, showsIndicators: true) {
                     LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
                         ForEach(items, id: \.self) { item in
-                            Clothes(item: item)
+                            TestClothes(item: item)
                                 .frame(width: 112, height: 140)
                         }
                     }
@@ -110,7 +110,7 @@ struct FavoriteClothes: View {
                 ScrollView(.horizontal, showsIndicators: true) {
                     LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
                         ForEach(items, id: \.self) { item in
-                            Clothes(item: item)
+                            TestClothes(item: item)
                                 .frame(width: 120, height: 140)
                         }
                     }
