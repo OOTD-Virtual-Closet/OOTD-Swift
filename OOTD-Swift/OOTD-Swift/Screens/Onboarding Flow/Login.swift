@@ -16,6 +16,8 @@ enum LoginErrors: Error{
     case InvalidUsername
     case InvalidPasswordUsername
     case InvalidLogin
+    case UserDoesNotExist
+    case WrongPassword
     case InvalidSignup
 }
 
@@ -40,6 +42,7 @@ final class LoginViewModel: ObservableObject {
         guard isValidEmail(email) else {
             throw LoginErrors.InvalidUsername
         }
+        
         do {
             let user = try await AuthManager.shared.signIn(email: email, password: password)
             print("log in completed")
@@ -48,9 +51,25 @@ final class LoginViewModel: ObservableObject {
             UserDefaults.standard.set(user.email, forKey: "email")
             UserDefaults.standard.set(user.uid, forKey: "uid")
             print("Success")
-        } catch {
-            print("Error")
-            throw LoginErrors.InvalidLogin
+        } catch let error as NSError {
+            if error.domain == AuthErrorDomain {
+                let errorCode = AuthErrorCode(_nsError: error)
+                switch errorCode.code {
+                case .userNotFound:
+                    print("User does not exist")
+                    throw LoginErrors.UserDoesNotExist
+                case .wrongPassword:
+                    print("Wrong Password")
+                    throw LoginErrors.WrongPassword
+                default:
+                    print("Error: \(error.localizedDescription)")
+                    throw LoginErrors.InvalidLogin
+                }
+            } else {
+                // If the error is not from Firebase Auth
+                print("Non-Firebase Error: \(error.localizedDescription)")
+                throw LoginErrors.InvalidLogin
+            }
         }
 
     }
@@ -184,6 +203,12 @@ struct Login: View {
                                 print("Invalid Password")
                                 showingAlert = true
                                 alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                            } catch LoginErrors.WrongPassword {
+                                showingAlert = true
+                                alertMessage = "The password you have entered doesn't match with username credentials"
+                            } catch LoginErrors.UserDoesNotExist {
+                                showingAlert = true
+                                alertMessage = "User does not exist"
                             } catch LoginErrors.InvalidLogin {
                                 showingAlert = true
                                 alertMessage = "Invalid Login Credentials"
