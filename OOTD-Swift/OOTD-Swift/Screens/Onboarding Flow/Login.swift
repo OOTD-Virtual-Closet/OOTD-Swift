@@ -54,17 +54,9 @@ final class LoginViewModel: ObservableObject {
         } catch let error as NSError {
             if error.domain == AuthErrorDomain {
                 let errorCode = AuthErrorCode(_nsError: error)
-                switch errorCode.code {
-                case .userNotFound:
-                    print("User does not exist")
-                    throw LoginErrors.UserDoesNotExist
-                case .wrongPassword:
-                    print("Wrong Password")
-                    throw LoginErrors.WrongPassword
-                default:
+
                     print("Error: \(error.localizedDescription)")
                     throw LoginErrors.InvalidLogin
-                }
             } else {
                 // If the error is not from Firebase Auth
                 print("Non-Firebase Error: \(error.localizedDescription)")
