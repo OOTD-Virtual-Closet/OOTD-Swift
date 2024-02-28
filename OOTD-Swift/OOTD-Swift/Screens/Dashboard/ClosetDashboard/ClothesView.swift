@@ -47,6 +47,8 @@ struct ClothesView: View {
     @State private var selectedClothingCatergory = ""
     @State private var selectedDate = Date()
     @State private var clothingCategories = ["Shirts", "Pants", "Hoodies & Jackets", "Shoes", "Accessories"]
+    @State private var showColorPicker = false
+    @State private var selectedColor: String = ""
 
 
 
@@ -113,7 +115,9 @@ struct ClothesView: View {
                         ActionSheet(title: Text("Options"), buttons: [
                             .default(Text("Date Last Worn")) {  self.showDatePicker = true  },
                             .default(Text("Type of Clothing")) { self.showClothingCategory = true },
-                            .default(Text("Color of Clothing")) { /* Handle Option 3 */ },
+                            .default(Text("Color of Clothing")) {
+                            self.showColorPicker = true
+                            },
                             .cancel()
                         ])
                     }
@@ -217,6 +221,9 @@ struct ClothesView: View {
                 }.padding(.trailing, 15)
 
             }
+            .sheet(isPresented: $showColorPicker) {
+                ColorSelectionView(selectedColor: $selectedColor)
+            }
             .sheet(isPresented: $showClothingCategory) {
                 ClothingTypeSelectionView(selectedClothingType: $selectedClothingCatergory, clothingCategories: clothingCategories)
             }
@@ -249,6 +256,33 @@ struct ClothesView: View {
         }
     }
 }
+struct ColorSelectionView: View {
+    @Binding var selectedColor: String
+    let colors = ["Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Indigo", "Violet", "Tomato Red", "Greenish Cob"]
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(colors, id: \.self) { color in
+                    Button(color) {
+                        selectedColor = color
+                        print(selectedColor)
+                        dismiss()
+                    }
+                }
+            }
+            .navigationBarTitle(Text("Select Color"), displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
 
 struct ClothingTypeSelectionView: View {
     @Binding var selectedClothingType: String
@@ -261,6 +295,8 @@ struct ClothingTypeSelectionView: View {
                 ForEach(clothingCategories, id: \.self) { category in
                     Button(action: {
                         self.selectedClothingType = category
+                        print(selectedClothingType)
+                        dismiss()
                     }) {
                         Text(category)
                     }
@@ -270,6 +306,7 @@ struct ClothingTypeSelectionView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
+                        print(selectedClothingType)
                         dismiss()
                     }
                 }
