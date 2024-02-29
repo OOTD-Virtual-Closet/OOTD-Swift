@@ -10,6 +10,20 @@ import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
 
+import UIKit
+
+extension UIImage {
+    func resize(to size: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+        defer { UIGraphicsEndImageContext() }
+        
+        self.draw(in: CGRect(origin: .zero, size: size))
+        guard let resizedImage = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        
+        return resizedImage
+    }
+}
+
 struct AddClothes: View {
     @Environment(\.presentationMode) var presentationMode
 
@@ -98,8 +112,10 @@ struct AddClothes: View {
 
     func uploadImage() -> String {
         guard selectedImage != nil else {
+            print("failed 1")
             return ""
         }
+        selectedImage = selectedImage?.resize(to: CGSize(width: 200, height: 200)) ?? selectedImage
         
         //create storage reference
         let storageRef = Storage.storage().reference()
@@ -108,6 +124,7 @@ struct AddClothes: View {
         let imageData = selectedImage!.pngData()
         
         guard imageData != nil else {
+            print("failed")
             return ""
         }
         // specify filepath and name
@@ -238,7 +255,7 @@ struct AddClothes: View {
                     .ignoresSafeArea(.all)
                 HStack {
                     Button(action: {
-                        let image = getImageForSelectedType()
+                        selectedImage = getImageForSelectedType()
                         let path = uploadImage()
                         
                         if searchText == "" || searchText2 == "" || selectedType == nil || selectedColor == nil || selectedSize == nil {
