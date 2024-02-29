@@ -6,26 +6,95 @@
 //
 
 import SwiftUI
-//import GoogleSignInSwift
+import GoogleSignInSwift
+
+enum LoginErrors: Error{
+    case BlankForm
+    case InvalidPassword
+    case InvalidUsername
+    case InvalidPasswordUsername
+}
+
+final class LoginViewModel: ObservableObject {
+    @Published var email = ""
+    @Published var uid = ""
+    @Published var password = ""
+    
+    func login() async throws {
+        print("Email: \(email)")
+        print("Password: \(password)")
+        guard !email.isEmpty, !password.isEmpty else {
+            print("No user email or password found")
+            throw LoginErrors.BlankForm
+        }
+        guard isValidEmail(email) || isValidPassword(password) else {
+            throw LoginErrors.InvalidPasswordUsername
+        }
+        guard isValidPassword(password) else {
+            throw LoginErrors.InvalidPassword
+        }
+        guard isValidEmail(email) else {
+            throw LoginErrors.InvalidUsername
+        }
+        let user = try await AuthManager.shared.signIn(email: email, password: password)
+        print("log in completed")
+        print(user.email)
+        print(user.uid)
+        UserDefaults.standard.set(user.email, forKey: "email")
+        UserDefaults.standard.set(user.uid, forKey: "uid")
+        print("Success")
+    }
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
+        return emailTest.evaluate(with: email)
+
+    }
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
+    }
+}
 
 struct Login: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
-    var body: some View {
+//    @Binding var currentShowingView: String
+    @StateObject private var viewModel = LoginViewModel()
+    @State private var loginButton: Bool = false
+    @State private var signUpActive: Bool = false
+    @State private var showSignInView: Bool = false // remove? i dont see where this is used
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
+    @Binding var isAuthenticated:Bool
+    @EnvironmentObject var loginVM: LogInVM
+    
+    private func isValidPassword(_ password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         
+        return passwordRegex.evaluate(with: password)
+    }
+    
+    
+    var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
-                HStack {
+                VStack {
                     Text("Hello Welcome!")
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        .frame(maxWidth: 300, alignment: .center)
                         .font(.largeTitle)
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
-                }
-                .padding()
-                .padding()
-                VStack {
+                        .padding(.bottom, 20)
+                        .padding(.top, 5)
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
@@ -38,11 +107,17 @@ struct Login: View {
                 }
                 VStack {
                     HStack {
-                        TextField("Email...", text: $email)
-    //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(.green)
+                        TextField("Email...", text: $viewModel.email)
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
+                        if (viewModel.email == "") {
+                            Image(systemName: "envelope.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: viewModel.email.isValidEmail() ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(viewModel.email.isValidEmail() ? .green : .red)
+                        }
                     }
                     .padding()
                     .overlay(
@@ -52,11 +127,15 @@ struct Login: View {
                     )
                     .padding()
                     HStack {
-                        TextField("Password...", text: $password)
-    //                        .foregroundStyle(Color(hex:"898989"))
-                        Image(systemName: "checkmark")
-                            .fontWeight(.bold)
-                            .foregroundColor(.green)
+                        SecureField("Password...", text: $viewModel.password)
+                        if (viewModel.password == "") {
+                            Image(systemName: "lock.fill")
+                                .fontWeight(.bold)
+                        } else {
+                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                                .fontWeight(.bold)
+                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                        }
                     }
                     .padding()
                     .overlay(
@@ -79,30 +158,62 @@ struct Login: View {
                 }
                 
                 VStack (spacing:10){
-                    NavigationLink (destination: DashboardNav(userProfile:"tempstring"),
-                                    label: {
-                        Text("Login")
-                            .padding()
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                            .background(Color(hex:"CBC3E3"))
-                            .foregroundColor(.black)
-                            .fontWeight(.bold)
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                            .padding(.bottom, 20)
+                    Button {
+                        print("Login Pressed...")
+                        Task {
+                            do {
+                                try await viewModel.login()
+                                isAuthenticated = true
+                            } catch LoginErrors.BlankForm {
+                                print("Password or Username Field is blank")
+                                showingAlert = true
+                                alertMessage = "Password or username field is blank"
+                            } catch LoginErrors.InvalidPasswordUsername {
+                                showingAlert = true
+                                alertMessage = "Invalid Password and Username"
+                            } catch LoginErrors.InvalidPassword {
+                                print("Invalid Password")
+                                showingAlert = true
+                                alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                            } catch LoginErrors.InvalidUsername {
+                                print("Invalid Username")
+                                showingAlert = true
+                                alertMessage = "The username you have entered seems to be invalid"
+                            }
                         }
-                    )
+                    } label: {
+                        Text("Login")
+                            .font(.title3)
+                            .foregroundColor(.black)
+                            .bold()
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(hex: "CBC3E3"))
+                                    .padding(.horizontal)
+                            )
+                            .padding(.bottom, 20)
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                    }
+                    
                     HStack {
                         Text("Don't have an account?")
                             .foregroundStyle(Color(hex:"898989"))
                             .fontWeight(.heavy)
-                        NavigationLink(
-                            destination: Signup(), label: {
-                                Text("Signup!")
-                            }
-                        )
-                        .foregroundColor(Color(hex:"CBC3E3"))
-                        .fontWeight(.heavy)
+                        Button(action: {
+                            print("Sign Up")
+                            signUpActive = true
+                        }) {
+                            Text("Sign Up?")
+                                .foregroundStyle(Color(hex: "CBC3E3"))
+                                .fontWeight(.heavy)
+                        }
+                        .background(NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated), isActive: $signUpActive) { EmptyView() }.hidden())
+                        .navigationBarBackButtonHidden(true)
+                        .environmentObject(LogInVM())
                     }
                     
                     Text("OR")
@@ -110,18 +221,22 @@ struct Login: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
-                    
-                    //#####NEED TO IMPLEMENT#####
-                    
-                    Button (action: {
-                       // handle google login
-                        print("Login with google")
-                    }) {
-                        HStack {
-                            Text("Log In with Google")
-                                .foregroundColor(.black)
+                    GoogleSignInButton(action: {
+                        loginVM.signUpWithGoogle { success in
+                            DispatchQueue.main.async {
+                                isAuthenticated = success
+                            }
                         }
-                    }
+                    })
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .bold()
+                    .frame(maxWidth: 350)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.black, lineWidth: 1)
+                    )
+                    
                     Button (action: {
                        // handle google login
                         print("Login with Apple")
@@ -137,6 +252,15 @@ struct Login: View {
             }
         }
 
+    }
+}
+extension String {
+    func isValidEmail() -> Bool {
+        // test@email.com == true
+        // test.com == false
+        let regex = try! NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
+        
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
     }
 }
 
@@ -169,6 +293,11 @@ extension Color {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login()
+        @State var showSignInView = false
+        @State var isAuthenticated = false
+        NavigationStack {
+        Login(isAuthenticated: $isAuthenticated)
+            .environmentObject(LogInVM())
+        }
     }
 }
