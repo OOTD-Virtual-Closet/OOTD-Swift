@@ -25,7 +25,7 @@ struct CustomDropDown: View {
                 .opacity(0.8)
             
             VStack {
-                Button(action: {withAnimation(.snappy) {isExpanded.toggle()}
+                Button(action: {withAnimation() {isExpanded.toggle()}
                 }) {
                                 HStack {
                                     Text(selection ?? prompt)
@@ -44,7 +44,7 @@ struct CustomDropDown: View {
                         ForEach(options, id: \.self) {
                             option in
                             Button(action: {
-                                withAnimation(.snappy) {
+                                withAnimation() {
                                     selection = option
                                     isExpanded.toggle()}
                             }) {HStack {

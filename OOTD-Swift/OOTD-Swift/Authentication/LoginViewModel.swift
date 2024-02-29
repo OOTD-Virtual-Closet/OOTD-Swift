@@ -51,10 +51,11 @@ user.accessToken.tokenString)
                 if let user = result?.user {
                     print(user.displayName ?? "No Display Name.")
                     self.isLogin.toggle()
+                    UserDefaults.standard.set(user.email, forKey: "email")
+                    UserDefaults.standard.set(user.uid, forKey: "uid")
+
                 }
-
             }
-
         }
     }
 }

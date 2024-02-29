@@ -218,15 +218,15 @@ struct ClothesView: View {
                                 .padding(.top, 20)
                             Spacer()
                         }
-                        ScrollView(.horizontal, showsIndicators: true) {
-                            LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                                ForEach(items, id: \.self) { item in
-                                    TestClothes(item: item)
-                                        .frame(width: 120, height: 140)
-                                }
-                            }
-                            .padding(10)
-                        }.padding(.trailing, 15)
+//                        ScrollView(.horizontal, showsIndicators: true) {
+//                            LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
+//                                ForEach(items, id: \.self) { item in
+//                                    TestClothes(item: item)
+//                                        .frame(width: 120, height: 140)
+//                                }
+//                            }
+//                            .padding(10)
+//                        }.padding(.trailing, 15)
 
                     }
                     .sheet(isPresented: $showColorPicker) {
