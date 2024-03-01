@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Cloth: Codable, Identifiable {
+struct Cloth: Codable, Identifiable, Hashable {
     var id: String = UUID().uuidString
     var name: String?
     var type: String?

@@ -45,6 +45,7 @@ class ClothViewModel: ObservableObject {
 extension Cloth {
     var dictionary: [String: Any] {
         return [
+            "name" : name,
             "id": id,
             "type": type ?? "",
             "size": size ?? "",

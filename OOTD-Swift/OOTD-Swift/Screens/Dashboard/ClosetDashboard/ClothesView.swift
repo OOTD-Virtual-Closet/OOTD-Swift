@@ -8,39 +8,30 @@
 import SwiftUI
 import FirebaseFirestore
 import FirebaseStorage
-struct ClothingItem: Identifiable, Hashable {
-    var id = UUID()
-    var name: String // Name or description of the item
-    var lastWorn: Date? // Optional last worn date
-    var color: String
-    var clothingType: String
+//struct ClothingItem: Identifiable, Hashable {
+  //  var id = UUID()
+   // var name: String // Name or description of the item
+   // var lastWorn: Date? // Optional last worn date
+   // var color: String
+   // var clothingType: String
     
-    init(name: String, lastWorn: Date? = nil, color: String = "", clothingType: String = "") {
-        self.name = name
-        self.lastWorn = lastWorn
-        self.color = color
-        self.clothingType = clothingType
-    }
-}
+    //init(name: String, lastWorn: Date? = nil, color: String = "", clothingType: String = "") {
+     //   self.name = name
+     //   self.lastWorn = lastWorn
+     //   self.color = color
+     //   self.clothingType = clothingType
+   // }
+//}
 
 struct ClothesView: View {
     
-    var clothes = UserDefaults.standard.stringArray(forKey: "clothes") ?? []
+    var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+
+    @State private var tops : [Cloth]?
+    @State private var bottoms : [Cloth]?
+    @State private var jackets : [Cloth]?
+    @State private var shoes : [Cloth]?
     
-    @State private var items: [ClothingItem] = [
-        ClothingItem(name: "Item 1", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 21)), color: "Red"),
-        ClothingItem(name: "Item 2", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 22)), color: "Blue"),
-        ClothingItem(name: "earmuffs", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 23)), color: "Green"),
-        ClothingItem(name: "Item 4", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 24)), color: "Yellow"),
-        ClothingItem(name: "Item 5", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 19)), color: "Orange"),
-        ClothingItem(name: "Item 6", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 18)), color: "Tomato Red"),
-        ClothingItem(name: "Item 7", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 17)), color: "Purple"),
-        ClothingItem(name: "Item 8", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 16)), color: "Indigo"),
-        ClothingItem(name: "Item 9", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 15)), color: "Violet"),
-        ClothingItem(name: "Item 10", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 14)), color: "Greenish Cob"),
-        
-        // Add more items as needed
-    ]
 //    let items = (1...10).map { "Item \($0)" }
     @State private var searchText = ""
     @State private var isEditing = false
@@ -55,6 +46,52 @@ struct ClothesView: View {
     @State private var showColorPicker = false
     @State private var selectedColor: String = ""
     @State private var addClothesPresented = false
+    
+    private func populateArrays(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(uid)
+        userRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let clothes = document.data()?["clothes"] as? [String] {
+                    var loadedCloths = [Cloth]()
+                    let dispatchGroup = DispatchGroup()
+                    
+                    for item in clothes {
+                        dispatchGroup.enter()
+                        
+                        let docRef = db.collection("clothes").document(item)
+                        docRef.getDocument { document, error in
+                            defer {
+                                dispatchGroup.leave()
+                            }
+                            if let document = document, document.exists {
+                                do {
+                                    let cloth =  try document.data(as: Cloth.self)
+                                        loadedCloths.append(cloth)
+                                    
+                                } catch {
+                                    print("Error decoding cloth document: \(error.localizedDescription)")
+                                }
+                            } else {
+                                print("Cloth document does not exist")
+                            }
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) {
+                        tops = loadedCloths.filter { $0.type == "Tops" }
+                        bottoms = loadedCloths.filter { $0.type == "Bottoms" }
+                        jackets = loadedCloths.filter { $0.type == "Jackets/Hoodies" }
+                        shoes = loadedCloths.filter { $0.type == "Shoes" }
+                        
+                        completion()
+                    }
+                }
+            } else {
+                print("User document does not exist")
+            }
+        }
+    }
 
 
 
@@ -131,32 +168,29 @@ struct ClothesView: View {
                             }
                         }
                         HStack {
-                            Text("Shirts")
+                            Text("Tops")
                                 .foregroundColor(.black)
                                 .font(.system( size: 20))
                                 .fontWeight(.heavy)
                                 .padding(.leading, 15)
                                 .padding(.top, 20)
-                            Text("(1)")
+                            Text("\(tops?.count ?? 0)")
                                 .foregroundColor(.gray)
                                 .font(.system( size: 20))
                                 .fontWeight(.heavy)
                                 .padding(.top, 20)
                             Spacer()
                         }
-                        ScrollView(.horizontal, showsIndicators: true) {
-                            LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-        //                        ForEach(items, id: \.self) { item in
-        //                            Clothes(item: item)
-        //                                .frame(width: 112, height: 140)
-        //                        }
-                                ForEach(items) { item in
-                                        TestClothes(item: item)
-                                            .frame(width: 112, height: 140)
+                        ScrollView(.horizontal) {
+                            LazyHStack(spacing: 10) {
+                                ForEach(tops ?? [], id: \.self) { view in
+                                    Clothes(item: view.id)
+                                        .frame(width: 112, height: 140)
                                 }
-                            }
-                            .padding(10)
-                        }.padding(.trailing, 15)
+                            }.padding(10)
+                        }
+                        .padding(.trailing, 15)
+                        
                         
                         HStack {
                             Text("Hoodies & Jackets")
@@ -165,21 +199,20 @@ struct ClothesView: View {
                                 .fontWeight(.heavy)
                                 .padding(.leading, 15)
                                 .padding(.top, 20)
-                            Text("(1)")
+                            Text("\(jackets?.count ?? 0)")
                                 .foregroundColor(.gray)
                                 .font(.system( size: 20))
                                 .fontWeight(.heavy)
                                 .padding(.top, 20)
                             Spacer()
                         }
-                        ScrollView(.horizontal, showsIndicators: true) {
-                            LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                                ForEach(items, id: \.self) { item in
-                                    TestClothes(item: item)
+                        ScrollView(.horizontal) {
+                            LazyHStack(spacing: 10) {
+                                ForEach(jackets ?? [], id: \.self) { view in
+                                    Clothes(item: view.id)
                                         .frame(width: 112, height: 140)
                                 }
-                            }
-                            .padding(10)
+                            }.padding(10)
                         }.padding(.trailing, 15)
                         HStack {
                             Text("Pants")
@@ -188,22 +221,22 @@ struct ClothesView: View {
                                 .fontWeight(.heavy)
                                 .padding(.leading, 15)
                                 .padding(.top, 20)
-                            Text("(5)")
+                            Text("\(bottoms?.count ?? 0)")
                                 .foregroundColor(.gray)
                                 .font(.system( size: 20))
                                 .fontWeight(.heavy)
                                 .padding(.top, 20)
                             Spacer()
                         }
-                        ScrollView(.horizontal, showsIndicators: true) {
-                            LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                                ForEach(items, id: \.self) { item in
-                                    TestClothes(item: item)
+                        ScrollView(.horizontal) {
+                            LazyHStack(spacing: 10) {
+                                ForEach(bottoms ?? [], id: \.self) { view in
+                                    Clothes(item: view.id)
                                         .frame(width: 112, height: 140)
                                 }
-                            }
-                            .padding(10)
-                        }.padding(.trailing, 15)
+                            }.padding(10)
+                        }
+                        .padding(.trailing, 15)
                         HStack {
                             Text("Shoes")
                                 .foregroundColor(.black)
@@ -211,24 +244,22 @@ struct ClothesView: View {
                                 .fontWeight(.heavy)
                                 .padding(.leading, 15)
                                 .padding(.top, 20)
-                            Text("(2)")
+                            Text("\(shoes?.count ?? 0)")
                                 .foregroundColor(.gray)
                                 .font(.system( size: 20))
                                 .fontWeight(.heavy)
                                 .padding(.top, 20)
                             Spacer()
                         }
-//                        ScrollView(.horizontal, showsIndicators: true) {
-//                            LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-//                                ForEach(items, id: \.self) { item in
-//                                    TestClothes(item: item)
-//                                        .frame(width: 120, height: 140)
-//                                }
-//                            }
-//                            .padding(10)
-//                        }.padding(.trailing, 15)
-
+//                        ScrollView(.horizontal) {
+                        LazyHStack(spacing: 10) {
+                            ForEach(shoes ?? [], id: \.self) { view in
+                                Clothes(item: view.id)
+                                    .frame(width: 112, height: 140)
+                            }
+                        }.padding(10)
                     }
+                    .padding(.trailing, 15)
                     .sheet(isPresented: $showColorPicker) {
                         ColorSelectionView(selectedColor: $selectedColor)
                     }
@@ -288,10 +319,18 @@ struct ClothesView: View {
                                
                        }
                        .padding(.bottom, 50)
-                       .sheet(isPresented: $addClothesPresented) {
+                       .sheet(isPresented: $addClothesPresented,onDismiss: {
+                           populateArrays {
+                               print("Arrays are updated")
+                           }
+                       }) {
                            AddClothes()
                        }
             
+        }.onAppear {
+            populateArrays {
+                    print("Arrays are updated")
+                }
         }
     }
 }
@@ -354,62 +393,60 @@ struct ClothingTypeSelectionView: View {
     }
 }
 
-struct TestClothes: View {
-    let item: ClothingItem
+//struct TestClothes: View {
+   // let item: ClothingItem
     
-    var body: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color(hex: "E1DDED"))
-                .frame(width: 112, height: 130)
-                .overlay(
-                    Text(item.name)
-                        .foregroundColor(.white)
-                        .font(.headline)
-                )
-            Text("Item Title")
-                .foregroundColor(.black)
-                .font(.system( size: 12))
-                .fontWeight(.heavy)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 5)
-            Text("Last Worn")
-                .foregroundColor(.gray)
-                .font(.system( size: 9))
-                .fontWeight(.heavy)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 5)
-        }
-    }
-}
+   // var body: some View {
+   //     VStack {
+     //       RoundedRectangle(cornerRadius: 10)
+    //            .foregroundColor(Color(hex: "E1DDED"))
+       //         .frame(width: 112, height: 130)
+        //        .overlay(
+         //           Text(item.name)
+          //              .foregroundColor(.white)
+           //             .font(.headline)
+           //     )
+         //   Text("Item Title")
+           //     .foregroundColor(.black)
+           //     .font(.system( size: 12))
+           //     .fontWeight(.heavy)
+           //     .frame(maxWidth: .infinity, alignment: .leading)
+           //     .padding(.leading, 5)
+          //  Text("Last Worn")
+           //     .foregroundColor(.gray)
+           //     .font(.system( size: 9))
+           //     .fontWeight(.heavy)
+             //   .frame(maxWidth: .infinity, alignment: .leading)
+             //   .padding(.leading, 5)
+        //}
+   // }
+//}
 
 struct Clothes: View {
     let item: String // UUID of the cloth document
     
-    @State private var cloth: Cloth? // Cloth object fetched from Fire
+    @State var cloth: Cloth? // Cloth object fetched from Fire
     
-    @State var clothImage: UIImage?
+    @StateObject var imageLoader = ImageLoader() // Image load
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: 112, height: 130)
                 .overlay(
-                    Group {
-                                   if let image = clothImage {
-                                    
-                                       Image(uiImage: image)
-                                           .resizable()
-                                           .aspectRatio(contentMode: .fill)
-                                           .frame(width: 100, height: 100)
-                                           .clipShape(RoundedRectangle(cornerRadius: 10))
-                                   } else {
-                              
-                                       RoundedRectangle(cornerRadius: 10)
-                                           .foregroundColor(Color(hex: "E1DDED"))
-                                           .frame(width: 112, height: 130)
-                                   }
-                               }
+                        Group {
+                                                if let image = imageLoader.image {
+                                                    Image(uiImage: image)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 100, height: 100)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                } else {
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .foregroundColor(Color(hex: "E1DDED"))
+                                                        .frame(width: 112, height: 130)
+                                                }
+                                            }
                 )
             Text(cloth?.name ?? "Name")
                 .foregroundColor(.black)
@@ -417,7 +454,7 @@ struct Clothes: View {
                 .fontWeight(.heavy)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 5)
-            Text("Last Worn 2/28/2024")
+            Text("Last Worn 2/30/2024")
                 .foregroundColor(.gray)
                 .font(.system(size: 9))
                 .fontWeight(.heavy)
@@ -425,45 +462,49 @@ struct Clothes: View {
                 .padding(.leading, 5)
         }
         .onAppear {
-            fetchClothFromFirestore()
+            fetchClothFromFirestore {
+                print("fetched cloth and stuff")
+            }
         }
     }
 
     
     
-    private func fetchClothFromFirestore() {
-            let docRef = Firestore.firestore().collection("clothes").document(item)
-            docRef.getDocument { document, error in
-                if let document = document, document.exists {
-                    do {
-                        var url : String?
-                        // Decode cloth document into Cloth object
-                        cloth = try document.data(as: Cloth.self)
-                        
-                        url = cloth?.image
+    private func fetchClothFromFirestore(completion: @escaping () -> Void) {
+        let docRef = Firestore.firestore().collection("clothes").document(item)
+        docRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    cloth = try document.data(as: Cloth.self)
+                    print("Cloth successfully fetched")
+                    
+                    if let imageUrl = cloth?.image {
                         let storageRef = Storage.storage().reference()
-                        let fileRef = storageRef.child(url!)
-                        fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
-                            
-                            if error == nil && data != nil {
-                                if let image = UIImage(data: data!) {
-                                    clothImage = image
-                                }
-                                
+                        storageRef.child(imageUrl).downloadURL { url, error in
+                            if let url = url {
+                                // Load image using image loader
+                                imageLoader.loadImage(from: url)
+                            } else if let error = error {
+                                print("Error downloading image: \(error.localizedDescription)")
                             }
+                            completion() // Call completion handler after fetching image
                         }
-                        
-                    } catch {
-                        print("Error decoding cloth document: \(error.localizedDescription)")
+                    } else {
+                        completion() // Call completion handler if image URL is nil
                     }
-                } else {
-                    print("Cloth document does not exist")
+                } catch {
+                    print("Error decoding cloth document: \(error.localizedDescription)")
+                    completion() // Call completion handler if error occurs during decoding
                 }
+            } else {
+                print("Cloth document does not exist")
+                completion() // Call completion handler if document does not exist
             }
         }
+    }
 }
 struct ClothesView_Previews: PreviewProvider {
     static var previews: some View {
-        ClothesView()
+        Clothes(item: "17211A52-1FB4-4423-9649-9C300F45D91E")
     }
 }

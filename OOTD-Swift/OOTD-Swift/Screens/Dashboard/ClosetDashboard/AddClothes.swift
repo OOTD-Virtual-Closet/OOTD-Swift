@@ -55,43 +55,36 @@ struct AddClothes: View {
             case "Tops":
                 var randomVal = Int.random(in: 1...3)
                 if randomVal == 1 {
-                    var image = Image("shirt")
-                    let uiImage = convertImageToUIImage(image)
+                    var uiImage = UIImage(named: "shirt")
                     return uiImage
                 }
                 if randomVal == 2 {
-                    var image = Image("shirt2")
-                    let uiImage = convertImageToUIImage(image)
+                    var uiImage = UIImage(named: "shirt2")
                     return uiImage
                 }
-                var image = Image("shirt3")
-                let uiImage = convertImageToUIImage(image)
+                var uiImage = UIImage(named: "shirt3")
                 return uiImage
             case "Bottoms":
-                var image = Image("jeans")
-                let uiImage = convertImageToUIImage(image)
+                var uiImage = UIImage(named: "jeans")
                 return uiImage
             case "Jackets/Hoodies":
                 var randomVal = Int.random(in: 1...3)
                 if randomVal == 1 {
-                    var image = Image("jacket")
-                    let uiImage = convertImageToUIImage(image)
+                    var uiImage = UIImage(named: "jacket")
                     return uiImage
                 }
                 if randomVal == 2 {
-                    var image = Image("hoodie")
-                    let uiImage = convertImageToUIImage(image)
+                    var uiImage = UIImage(named: "hoodie")
                     return uiImage
                 }
-                var image = Image("jacket")
-                let uiImage = convertImageToUIImage(image)
+                var uiImage = UIImage(named: "jacket")
                 return uiImage
             case "Shoes":
-                var image = Image("hoodie")
-                let uiImage = convertImageToUIImage(image)
+                var uiImage = UIImage(named: "hoodie")
                 return uiImage
             default:
-                return nil
+                var uiImage = UIImage(named: "hoodie")
+                return uiImage
             }
         }
     func convertImageToUIImage(_ image: Image) -> UIImage {
@@ -115,7 +108,7 @@ struct AddClothes: View {
             print("failed 1")
             return ""
         }
-        selectedImage = selectedImage?.resize(to: CGSize(width: 200, height: 200)) ?? selectedImage
+       // selectedImage = selectedImage?.resize(to: CGSize(width: 200, height: 200)) ?? selectedImage
         
         //create storage reference
         let storageRef = Storage.storage().reference()
@@ -270,6 +263,7 @@ struct AddClothes: View {
                              let clothViewModel = ClothViewModel()
                              
                              clothViewModel.addClothToCurrentUser(cloth: cloth)
+                             presentationMode.wrappedValue.dismiss()
                          }
                         
                     }) {
