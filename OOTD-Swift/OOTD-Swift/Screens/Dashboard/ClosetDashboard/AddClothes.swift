@@ -80,10 +80,10 @@ struct AddClothes: View {
                 var uiImage = UIImage(named: "jacket")
                 return uiImage
             case "Shoes":
-                var uiImage = UIImage(named: "hoodie")
+                var uiImage = UIImage(named: "shoes")
                 return uiImage
             default:
-                var uiImage = UIImage(named: "hoodie")
+                var uiImage = UIImage(named: "shirt2")
                 return uiImage
             }
         }

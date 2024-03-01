@@ -15,8 +15,8 @@ struct User: Codable, Identifiable {
     var email: String
     var creationDate: Date?
     var username: String?
-    var clothesId: [String]?
-    var outfitsId: [String]?
+    var clothes: [String]?
+    var outfits: [String]?
     var friendsId: [String]?
     var friendsRequestId: [String]?
     var postsId: [String]?
