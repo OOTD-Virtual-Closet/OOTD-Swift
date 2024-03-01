@@ -59,7 +59,11 @@ struct RecommendedView: View {
                                 print("Keep button tapped")
                             }) {
                                 Text("Keep")
-                                // Styling
+                                    .foregroundColor(.black)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 30)
+                                    .background(Color(hex:"489FB5"))
+                                    .cornerRadius(15)
                             }
                             .padding(.bottom, 10)
                             
@@ -69,6 +73,11 @@ struct RecommendedView: View {
                                 print("Like button tapped")
                             }) {
                                 Text("Like")
+                                    .foregroundColor(.black)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 30)
+                                    .background(Color(hex:"CBC3E3"))
+                                    .cornerRadius(15)
                                 // Styling
                             }
                             .padding(.top, 10)
@@ -144,12 +153,13 @@ struct ImageCardView: View {
 
 struct ClothingDetailSheet: View {
     var item: ClothingItemElements
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
             Image(item.image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 300, height: 300)
+                .frame(width: 200, height: 300)
             
             HStack {
                 Text(item.name)
@@ -160,6 +170,7 @@ struct ClothingDetailSheet: View {
                     .fontWeight(.heavy)
                 Spacer()
             }
+            .padding(.leading, 20)
             
             HStack {
                 Text(item.descrption)
@@ -167,6 +178,7 @@ struct ClothingDetailSheet: View {
                     .padding(.leading, 10)
                 Spacer()
             }
+            .padding(.leading, 20)
             HStack {
                 Text("Color")
                     .font(.title3)
@@ -174,64 +186,70 @@ struct ClothingDetailSheet: View {
                     .padding()
                 Spacer()
             }
+            .padding(.leading, 20)
             HStack {
                 Circle()
                     .fill(Color(hex: item.color))
-                    .frame(width: 24, height: 24) //
+                    .frame(width: 24, height: 24)
+                Spacer()
+            }
+            .padding(.leading, 40)
+            HStack {
+                Text("Size")
+                    .font(.title3)
+                    .fontWeight(.heavy)
                     .padding()
                 Spacer()
             }
+            .padding(.leading, 20)
             HStack {
                 Circle()
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(hex:"F6F6F6"))
                     .overlay(
                         Text("XS")
                             .foregroundColor(.black)
                             .font(.caption)
                     )
                     .frame(width: 40, height: 40)
-                    .padding()
                 Circle()
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(hex:"F6F6F6"))
                     .overlay(
                         Text("S")
                             .foregroundColor(.black)
                             .font(.caption)
                     )
                     .frame(width: 40, height: 40)
-                    .padding()
                 Circle()
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(hex:"F6F6F6"))
                     .overlay(
                         Text("M")
                             .foregroundColor(.black)
                             .font(.caption)
                     )
                     .frame(width: 40, height: 40)
-                    .padding()
                 Circle()
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(hex:"F6F6F6"))
                     .overlay(
                         Text("L")
                             .foregroundColor(.black)
                             .font(.caption)
                     )
                     .frame(width: 40, height: 40)
-                    .padding()
                 Circle()
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(hex:"F6F6F6"))
                     .overlay(
                         Text("XL")
                             .foregroundColor(.black)
                             .font(.caption)
                     )
                     .frame(width: 40, height: 40)
-                    .padding()
                 Spacer()
             }
+            .padding(.leading, 40)
             HStack {
                 Button(action: {
                     print("Cancel")
+                    self.presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Cancel")
                         .foregroundColor(.black)
