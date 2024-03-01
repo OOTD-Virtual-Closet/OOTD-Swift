@@ -32,7 +32,7 @@ struct ClosetNav: View {
                             Image("UserIcon")
                                 .resizable()
                                     .scaledToFit()
-                                    .frame(width: 35, height: 35)
+                                    .frame(width: 45, height: 45)
                                     .clipShape(Circle())
                                     .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                                     .padding(.trailing)

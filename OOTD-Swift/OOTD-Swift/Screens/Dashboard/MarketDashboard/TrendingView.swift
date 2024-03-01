@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct TrendingView: View {
+    let trendingItems = ["clothing1", "clothing2", "clothing3"]
     var body: some View {
-        Text("trending")
+        Text("Hello")
     }
 }
-
 struct TrendingView_Previews: PreviewProvider {
     static var previews: some View {
         TrendingView()

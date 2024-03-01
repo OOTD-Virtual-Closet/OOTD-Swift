@@ -15,7 +15,6 @@ struct DashboardNav: View {
     let userProfile: String
     var body: some View {
         NavigationView {
-            
             VStack(spacing: 0) {
    
                        switch selectedTab {
@@ -37,6 +36,14 @@ struct DashboardNav: View {
                    .navigationBarHidden(true)
                }            .ignoresSafeArea(.all)
             .padding(.top, -125)
+            .onAppear {
+                self.confirmDocOnFirebase()
+            }
+    }
+    func confirmDocOnFirebase() {
+        let userViewModel = UserViewModel()
+        
+        print("View appeared!")
     }
 }
 
