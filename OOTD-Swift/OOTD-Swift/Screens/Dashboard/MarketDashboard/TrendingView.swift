@@ -8,37 +8,11 @@
 import SwiftUI
 
 struct TrendingView: View {
+    let trendingItems = ["clothing1", "clothing2", "clothing3"]
     var body: some View {
-        VStack {
-            Text("Trending 🔥")
-                .font(.system( size: 25))
-                .fontWeight(.heavy)
-                .padding(.top, 10)
-            Text("36 items")
-                .foregroundColor(.gray)
-                .font(.system( size: 13))
-                .fontWeight(.heavy)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 15)
-                .padding(.vertical, 5)
-                .padding(.top, 5)
-                .padding(.leading, 10)
-            HStack {
-                Image(systemName: "cart.fill")
-                Text("Shopping Cart")
-                    .foregroundColor(.black)
-                    .font(.system( size: 18))
-                    .fontWeight(.heavy)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 15)
-            }
-            .padding(.leading, 35)
-            Spacer()
-            .padding(.top, 20)
-        }
+        Text("Hello")
     }
 }
-
 struct TrendingView_Previews: PreviewProvider {
     static var previews: some View {
         TrendingView()
