@@ -47,6 +47,9 @@ struct ClothesView: View {
     @State private var selectedColor: String = ""
     @State private var addClothesPresented = false
     
+    @State private var expandedClothesPresented = false;
+    @State private var expandedClothesChosen : Cloth?
+    
     private func populateArrays(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(uid)
@@ -184,8 +187,15 @@ struct ClothesView: View {
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 10) {
                                 ForEach(tops ?? [], id: \.self) { view in
-                                    Clothes(item: view.id)
-                                        .frame(width: 112, height: 140)
+                                    Button(action: {
+                                        expandedClothesPresented.toggle()
+                                        expandedClothesChosen = view
+                                 
+                                    }) {
+                                        Clothes(item: view.id)
+                                            .frame(width: 112, height: 140)
+                                            
+                                    }
                                 }
                             }.padding(10)
                         }
@@ -209,8 +219,16 @@ struct ClothesView: View {
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 10) {
                                 ForEach(jackets ?? [], id: \.self) { view in
-                                    Clothes(item: view.id)
-                                        .frame(width: 112, height: 140)
+                                    Button(action: {
+                                        expandedClothesPresented.toggle()
+                                        expandedClothesChosen = view
+
+                                    }) {
+                                        
+                                        Clothes(item: view.id)
+                                            .frame(width: 112, height: 140)
+                                            
+                                    }
                                 }
                             }.padding(10)
                         }.padding(.trailing, 15)
@@ -231,8 +249,16 @@ struct ClothesView: View {
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 10) {
                                 ForEach(bottoms ?? [], id: \.self) { view in
-                                    Clothes(item: view.id)
-                                        .frame(width: 112, height: 140)
+                                    Button(action: {
+                                        expandedClothesPresented.toggle()
+                                        expandedClothesChosen = view
+
+                                    }) {
+                                        
+                                        Clothes(item: view.id)
+                                            .frame(width: 112, height: 140)
+                                            
+                                    }
                                 }
                             }.padding(10)
                         }
@@ -254,8 +280,15 @@ struct ClothesView: View {
 //                        ScrollView(.horizontal) {
                         LazyHStack(spacing: 10) {
                             ForEach(shoes ?? [], id: \.self) { view in
-                                Clothes(item: view.id)
-                                    .frame(width: 112, height: 140)
+                                Button(action: {
+                                    expandedClothesPresented.toggle()
+                                    expandedClothesChosen = view
+                             
+                                }) {
+                                    
+                                    Clothes(item: view.id)
+                                        .frame(width: 112, height: 140)
+                                }
                             }
                         }.padding(10)
                     }
@@ -319,6 +352,12 @@ struct ClothesView: View {
                                
                        }
                        .padding(.bottom, 50)
+                       .sheet(isPresented: $expandedClothesPresented) {
+                
+                           if let expandedClothesChosen = expandedClothesChosen {
+                               ExpandedClothesView(mainClothe: expandedClothesChosen)
+                           }
+                       }
                        .sheet(isPresented: $addClothesPresented,onDismiss: {
                            populateArrays {
                                print("Arrays are updated")
