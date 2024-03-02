@@ -64,8 +64,12 @@ struct ProfileSummary: View {
                 .padding(.top, 25)
                 // Action Buttons
                 VStack(spacing: 15) {
+                    /*
                     Button(action: {
                         // Handle change password
+                        //TODO: ADD FIREBASE METHOD HERE
+                        
+                        
                         print("change password pressed")
                     }) {
                         Label("Change Password", systemImage: "lock.rotation")
@@ -76,22 +80,55 @@ struct ProfileSummary: View {
                     .cornerRadius(10)
                     .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 0)
                     .padding(.bottom, 15)
+*/
+                    
+                    NavigationLink(destination: ChangePasswordUI()) {
+                        Label("Change Password", systemImage: "lock.rotation")
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        .frame(height:50)
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                        .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                        .padding(.bottom, 15)
+                    }
                     
                     
                     NavigationLink(destination: DeleteAccountUI()) {
-                        Text("Delete Account")
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                            .frame(height:50)
-                            
-                            .foregroundColor(.white)
-                            .fontWeight(.bold)
-                            .padding(.horizontal)
-                            .background(Color("UIpurple"))
-                            .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
-                            .cornerRadius(10)
-                            
+                        Label("Delete Account", systemImage: "trash")
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        .frame(height:50)
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .background(Color(hex: "CBC3E3"))
+                        .cornerRadius(10)
+                        .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                        .padding(.bottom, 15)
                     }
+                    //.padding(.horizontal)
                     
+                    /*
+                    Button(action: {
+                        // Handle account deletion
+                        do {
+                            try viewModel.signOut()
+                            isAuthenticated = false
+                        } catch {
+                            print("Error signing out: \(error.localizedDescription)")
+                        }
+                        print("Delete Account");
+                    }) {
+                        Label("Delete Account", systemImage: "trash")
+                    }
+                    .buttonStyle(ProfileButtonStyle())
+                    .buttonStyle(ProfileButtonStyle())
+                    .padding(.horizontal)
+                    .background(Color(hex: "CBC3E3"))
+                    .cornerRadius(10)
+                    .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                    .padding(.bottom, 15)
+                    */
                     Button(action: {
                         // Handle log out
                         do {
