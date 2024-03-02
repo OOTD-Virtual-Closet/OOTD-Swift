@@ -77,19 +77,20 @@ struct ProfileSummary: View {
                     .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 0)
                     .padding(.bottom, 15)
                     
-                    Button(action: {
-                        // Handle account deletion
-                        print("Delete Account");
-                    }) {
-                        Label("Delete Account", systemImage: "trash")
+                    
+                    NavigationLink(destination: DeleteAccountUI()) {
+                        Text("Delete Account")
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .frame(height:50)
+                            
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                            .padding(.horizontal)
+                            .background(Color("UIpurple"))
+                            .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                            .cornerRadius(10)
+                            
                     }
-                    .buttonStyle(ProfileButtonStyle())
-                    .buttonStyle(ProfileButtonStyle())
-                    .padding(.horizontal)
-                    .background(Color(hex: "CBC3E3"))
-                    .cornerRadius(10)
-                    .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
-                    .padding(.bottom, 15)
                     
                     Button(action: {
                         // Handle log out
