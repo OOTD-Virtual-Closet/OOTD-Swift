@@ -64,7 +64,7 @@ final class AuthManager {
                 if user.isEmailVerified {
                     user.delete { error in
                     }
-                    print("email is verified")
+                    print("email is verified and account deleted")
                     
                 } else {
                     print("not verified")
