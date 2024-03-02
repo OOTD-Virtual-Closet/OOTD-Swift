@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
 import GoogleSignInSwift
 
 enum LoginErrors: Error{
@@ -13,6 +15,10 @@ enum LoginErrors: Error{
     case InvalidPassword
     case InvalidUsername
     case InvalidPasswordUsername
+    case InvalidLogin
+    case UserDoesNotExist
+    case WrongPassword
+    case InvalidSignup
 }
 
 final class LoginViewModel: ObservableObject {
@@ -36,13 +42,28 @@ final class LoginViewModel: ObservableObject {
         guard isValidEmail(email) else {
             throw LoginErrors.InvalidUsername
         }
-        let user = try await AuthManager.shared.signIn(email: email, password: password)
-        print("log in completed")
-        print(user.email)
-        print(user.uid)
-        UserDefaults.standard.set(user.email, forKey: "email")
-        UserDefaults.standard.set(user.uid, forKey: "uid")
-        print("Success")
+        
+        do {
+            let user = try await AuthManager.shared.signIn(email: email, password: password)
+            print("log in completed")
+            print(user.email)
+            print(user.uid)
+            UserDefaults.standard.set(user.email, forKey: "email")
+            UserDefaults.standard.set(user.uid, forKey: "uid")
+            print("Success")
+        } catch let error as NSError {
+            if error.domain == AuthErrorDomain {
+                let errorCode = AuthErrorCode(_nsError: error)
+
+                    print("Error: \(error.localizedDescription)")
+                    throw LoginErrors.InvalidLogin
+            } else {
+                // If the error is not from Firebase Auth
+                print("Non-Firebase Error: \(error.localizedDescription)")
+                throw LoginErrors.InvalidLogin
+            }
+        }
+
     }
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
@@ -94,7 +115,7 @@ struct Login: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
                         .padding(.bottom, 20)
-                        .padding(.top, 5)
+                        .padding(.top, 5) 
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
@@ -175,6 +196,15 @@ struct Login: View {
                                 print("Invalid Password")
                                 showingAlert = true
                                 alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                            } catch LoginErrors.WrongPassword {
+                                showingAlert = true
+                                alertMessage = "The password you have entered doesn't match with username credentials"
+                            } catch LoginErrors.UserDoesNotExist {
+                                showingAlert = true
+                                alertMessage = "User does not exist"
+                            } catch LoginErrors.InvalidLogin {
+                                showingAlert = true
+                                alertMessage = "Invalid Login Credentials"
                             } catch LoginErrors.InvalidUsername {
                                 print("Invalid Username")
                                 showingAlert = true
@@ -221,21 +251,20 @@ struct Login: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
+
+                    // #### NEED TO ADD NAV LOCATIONS ####
                     GoogleSignInButton(action: {
-                        loginVM.signUpWithGoogle { success in
-                            DispatchQueue.main.async {
-                                isAuthenticated = success
-                            }
-                        }
+                        loginVM.signUpWithGoogle()
+                        isAuthenticated = true;
                     })
-                    .foregroundColor(.white)
-                    .font(.title)
-                    .bold()
-                    .frame(maxWidth: 350)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.black, lineWidth: 1)
-                    )
+                        .foregroundColor(.white)
+                        .font(.title)
+                        .bold()
+                        .frame(maxWidth: 350)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.black, lineWidth: 1)
+                        )
                     
                     Button (action: {
                        // handle google login

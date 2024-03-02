@@ -8,8 +8,71 @@
 import SwiftUI
 
 struct FriendsView: View {
+    @State private var searchText = ""
+    @State private var isEditing = false
     var body: some View {
-        Text("friends view")
+        ScrollView {
+            VStack {
+                ZStack {
+                            TextField("", text: $searchText, onEditingChanged: { editing in
+                                isEditing = editing
+                            })
+                            .padding(.leading, 30)
+                            .frame(width: UIScreen.main.bounds.width - 90, height: 40)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(hex: "F4F4F4"))
+                                    .padding(.leading, 15)
+                            )
+                            .overlay(
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
+                                        .resizable()
+                                        .foregroundColor(.black)
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 20)
+                                        .padding(.leading, 27)
+                                    Text("Search...")
+                                        .foregroundColor(.black)
+                                        .font(.system(size: 17))
+                                        .fontWeight(.heavy)
+                                        .padding(.leading, 5)
+                                    Spacer()
+                                }
+                                .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
+                            )
+                        }
+                        VStack(spacing: 20) {
+                            ForEach(0..<10) { _ in
+                                FriendDisplay()
+                            }
+                        }.padding(.top, 20)
+            }
+        }.padding (.top, 50)
+    }
+}
+
+struct FriendDisplay: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(Color(hex: "E1DDED"))
+                .frame(width: UIScreen.main.bounds.width - 40, height: 60)
+            HStack {
+                Image("UserIcon")
+                    .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                Text("User")
+                    .foregroundColor(.black)
+                    .font(.system( size: 15))
+                    .fontWeight(.bold)
+                Spacer()
+            }.padding(.leading, 40)
+
+        }
     }
 }
 

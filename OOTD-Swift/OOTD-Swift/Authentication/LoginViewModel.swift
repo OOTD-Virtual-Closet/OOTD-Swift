@@ -53,13 +53,11 @@ class LogInVM: ObservableObject {
                 if let user = result?.user {
                     print(user.displayName ?? "No Display Name.")
                     self.isLogin.toggle()
-                    completion(true)
-                } else {
-                    completion(false)
+                    UserDefaults.standard.set(user.email, forKey: "email")
+                    UserDefaults.standard.set(user.uid, forKey: "uid")
+
                 }
-
             }
-
         }
     }
 }
