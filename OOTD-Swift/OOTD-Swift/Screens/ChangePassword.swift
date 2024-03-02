@@ -8,10 +8,31 @@
 
 import SwiftUI
 
+
+enum ChangePasswordtErrors: Error{
+    case invalidNewPass
+}
+
 @MainActor
 final class ProfileViewModelChangePassword: ObservableObject {
     func ChangePassword(password:String) throws {
         try AuthManager.shared.changePassword(password: password)
+    }
+    
+    func ChangePass(pass1: String, pass2: String) async throws {
+        guard isValidPassword(password: pass2) else {
+            throw ChangePasswordtErrors.invalidNewPass;
+        }
+    }
+    
+    private func isValidPassword(password: String) -> Bool {
+        // checks if the password that is passed is a valid password
+        // minimum 6 characters long
+        // 1 uppercase character
+        // 1 special character
+        let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
+        
+        return passwordRegex.evaluate(with: password)
     }
 }
 
@@ -19,6 +40,9 @@ struct ChangePasswordUI: View {
     @StateObject private var viewModel = ProfileViewModelChangePassword()
     @State private var oldPass: String = ""
     @State private var newPass: String = ""
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -64,7 +88,7 @@ struct ChangePasswordUI: View {
                         .padding()
                         
                         NavigationLink(destination: WelcomePage3()) {
-                            //TODO: REDIRECT TO FORGOT PASSWORD ONCE CREATED
+                             //TODO: REDIRECT TO FORGOT PASSWORD ONCE CREATED
                             
                             Text("Forgot Password?")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
@@ -81,7 +105,7 @@ struct ChangePasswordUI: View {
                         @State var isAuthenticated = false
                         NavigationLink(destination: ProfileSummary(isAuthenticated:$isAuthenticated)) {
                             Text("BACK")
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .frame(maxWidth: .infinity)
                             .frame(height:50)
                             .foregroundColor(.black)
                             .fontWeight(.bold)
@@ -90,18 +114,27 @@ struct ChangePasswordUI: View {
                             .cornerRadius(10)
                         }
                         .padding(.horizontal)
-                        
-                        Button (action: {
-                            do {
-                                try viewModel.ChangePassword(password: newPass)
-                            } catch {
-                                print("An error occurred: \(error)")
+                    
+
+                        Button {
+                            Task {
+                                do {
+                                    //checks errors on if the password is correct or not
+                                    try await viewModel.ChangePass(pass1: oldPass, pass2: newPass)
+                                } catch LoginErrors.InvalidPassword {
+                                    print("Invalid Password")
+                                    showingAlert = true
+                                    alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
+                                }
+                                do {
+                                    
+                                    try viewModel.ChangePassword(password: newPass)
+                                } catch {
+                                    print("issue")
+                                }
                             }
-                        }) {
+                        } label: {
                             HStack {
-                                @State var isAuthenticated = false
-                                NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
-                                    .environmentObject(LogInVM())) {
                                     Text("CHANGE PASSWORD")
                                     .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                                     .frame(height:50)
@@ -110,10 +143,13 @@ struct ChangePasswordUI: View {
                                     .padding(.horizontal)
                                     .background(Color("UIpurple"))
                                     .cornerRadius(10)
-                                }
+                                
                             }
                         }
                         .padding(.horizontal)
+                        .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                        }
                     }
                     Spacer()
                 }
