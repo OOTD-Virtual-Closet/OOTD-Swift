@@ -253,10 +253,10 @@ struct Login: View {
                     
 
                     // #### NEED TO ADD NAV LOCATIONS ####
-                    GoogleSignInButton(action: {
-                        loginVM.signUpWithGoogle()
-                        isAuthenticated = true;
-                    })
+                //    GoogleSignInButton(action: {
+                     //   loginVM.signUpWithGoogle()
+                    //    isAuthenticated = true;
+                    //})
                         .foregroundColor(.white)
                         .font(.title)
                         .bold()
