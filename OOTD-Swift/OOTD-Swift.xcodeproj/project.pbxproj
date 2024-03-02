@@ -25,6 +25,7 @@
 		34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281A2B885804007AE17F /* ClosetNav.swift */; };
 		34C8281D2B885812007AE17F /* SocialNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281C2B885812007AE17F /* SocialNav.swift */; };
 		34C8281F2B88581B007AE17F /* MarketNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281E2B88581B007AE17F /* MarketNav.swift */; };
+		520B6E822B93009000146162 /* WelcomeDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B6E812B93009000146162 /* WelcomeDirections.swift */; };
 		52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52358BAC2B7FFC5E00619E85 /* Profile.swift */; };
 		52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A5802B801DCE00496804 /* DeleteAccount.swift */; };
 		8915767D2B7F1422006947E4 /* Closet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915767C2B7F1422006947E4 /* Closet.swift */; };
@@ -123,6 +124,7 @@
 		34C8281A2B885804007AE17F /* ClosetNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetNav.swift; sourceTree = "<group>"; };
 		34C8281C2B885812007AE17F /* SocialNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialNav.swift; sourceTree = "<group>"; };
 		34C8281E2B88581B007AE17F /* MarketNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketNav.swift; sourceTree = "<group>"; };
+		520B6E812B93009000146162 /* WelcomeDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeDirections.swift; sourceTree = "<group>"; };
 		52358BAC2B7FFC5E00619E85 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		52D6A5802B801DCE00496804 /* DeleteAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccount.swift; sourceTree = "<group>"; };
 		8915767C2B7F1422006947E4 /* Closet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closet.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				CCDE677E2B7F1E9C00599FE8 /* Login.swift */,
 				CCDE67832B8138BD00599FE8 /* Signup.swift */,
 				CC95B8F92B82AC360034B352 /* AuthManager.swift */,
+				520B6E812B93009000146162 /* WelcomeDirections.swift */,
 			);
 			path = "Onboarding Flow";
 			sourceTree = "<group>";
@@ -572,6 +575,7 @@
 				CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */,
 				CC95B8FA2B82AC360034B352 /* AuthManager.swift in Sources */,
 				34C8281D2B885812007AE17F /* SocialNav.swift in Sources */,
+				520B6E822B93009000146162 /* WelcomeDirections.swift in Sources */,
 				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
 				89396F192B922E770041F5F0 /* ExpandedClothesView.swift in Sources */,
 				34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */,

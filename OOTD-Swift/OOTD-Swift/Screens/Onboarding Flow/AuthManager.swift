@@ -45,4 +45,27 @@ final class AuthManager {
     func signout() throws {
        try Auth.auth().signOut()
     }
+    
+    func changePassword(password: String) throws {
+        Auth.auth().currentUser?.updatePassword(to: password) { error in
+            /*
+            if let error = error {
+                //there was an error
+            }
+             */
+        }
+    }
+    
+    func deleteAccount() throws {
+        let user = Auth.auth().currentUser
+        user?.delete { error in
+            /*
+            if let error = error {
+                // An error happened.
+            } else {
+                // Account deleted.
+            }
+             */
+        }
+    }
 }
