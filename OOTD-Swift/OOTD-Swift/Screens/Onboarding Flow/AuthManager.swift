@@ -73,4 +73,13 @@ final class AuthManager {
         }
     }
     
+    func reAuthenticateUser() throws {
+        
+    }
+    
+    
+    func forgotPassword(email: String) throws {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in }
+    }
+    
 }
