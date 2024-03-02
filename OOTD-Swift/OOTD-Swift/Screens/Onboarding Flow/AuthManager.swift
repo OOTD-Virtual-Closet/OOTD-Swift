@@ -56,16 +56,21 @@ final class AuthManager {
         }
     }
     
-    func deleteAccount() throws {
-        let user = Auth.auth().currentUser
-        user?.delete { error in
-            /*
-            if let error = error {
-                // An error happened.
-            } else {
-                // Account deleted.
+    
+    func verifyDelete() throws {
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if let user = Auth.auth().currentUser {
+                user.sendEmailVerification();
+                if user.isEmailVerified {
+                    user.delete { error in
+                    }
+                    print("email is verified")
+                    
+                } else {
+                    print("not verified")
+                }
             }
-             */
         }
     }
+    
 }
