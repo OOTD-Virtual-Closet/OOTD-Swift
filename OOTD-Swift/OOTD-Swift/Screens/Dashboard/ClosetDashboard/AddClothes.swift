@@ -103,7 +103,7 @@ struct AddClothes: View {
         return uiImage
     }
 
-    func uploadImage() -> String {
+    func uploadClothImage() -> String {
         guard selectedImage != nil else {
             print("failed 1")
             return ""
@@ -121,7 +121,7 @@ struct AddClothes: View {
             return ""
         }
         // specify filepath and name
-        let path = "images/\(UUID().uuidString).png"
+        let path = "clothes/\(UUID().uuidString).png"
         let fileRef = storageRef.child(path)
         
         // Upload dis data
@@ -249,7 +249,7 @@ struct AddClothes: View {
                 HStack {
                     Button(action: {
                         selectedImage = getImageForSelectedType()
-                        let path = uploadImage()
+                        let path = uploadClothImage()
                         
                         if searchText == "" || searchText2 == "" || selectedType == nil || selectedColor == nil || selectedSize == nil {
                             showAlert = true
