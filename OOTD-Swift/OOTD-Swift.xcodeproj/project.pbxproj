@@ -11,7 +11,6 @@
 		343F077F2B86B3A0007DBE14 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F077E2B86B3A0007DBE14 /* LoginViewModel.swift */; };
 		343F07842B86C94F007DBE14 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F07832B86C94F007DBE14 /* User.swift */; };
 		343F07862B86DA12007DBE14 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F07852B86DA12007DBE14 /* UserViewModel.swift */; };
-		343F07882B870FE4007DBE14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 343F07872B870FE4007DBE14 /* Assets.xcassets */; };
 		34A177F62B8154FF00265C56 /* DashboardNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A177F52B8154FF00265C56 /* DashboardNav.swift */; };
 		34A177FA2B81552200265C56 /* OutfitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A177F92B81552200265C56 /* OutfitsView.swift */; };
 		34A177FC2B81553400265C56 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A177FB2B81553400265C56 /* FavoritesView.swift */; };
@@ -54,6 +53,7 @@
 		89F139852B8B2163007BF7CC /* TabUnderlineViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139842B8B2163007BF7CC /* TabUnderlineViews.swift */; };
 		89F139872B8B224F007BF7CC /* FavoriteClothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139862B8B224F007BF7CC /* FavoriteClothes.swift */; };
 		89F139892B8B225A007BF7CC /* FavoriteOutfits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */; };
+		CC1AAF4A2BA802B80093EAA6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */; };
 		CC6D90C82B9028A300920505 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90C72B9028A300920505 /* FirebaseAnalytics */; };
 		CC6D90CA2B9028A300920505 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90C92B9028A300920505 /* FirebaseAnalyticsOnDeviceConversion */; };
 		CC6D90CC2B9028A300920505 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90CB2B9028A300920505 /* FirebaseAnalyticsSwift */; };
@@ -84,7 +84,6 @@
 		CC6D90FE2B9028AA00920505 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90FD2B9028AA00920505 /* GoogleSignIn */; };
 		CC6D91002B9028AA00920505 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90FF2B9028AA00920505 /* GoogleSignInSwift */; };
 		CC95B8FA2B82AC360034B352 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC95B8F92B82AC360034B352 /* AuthManager.swift */; };
-		CC9C53CF2B82992E00A616D2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC9C53CE2B82992E00A616D2 /* GoogleService-Info.plist */; };
 		CCA40F9F2B86F92E0032EFFF /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA40F9E2B86F92E0032EFFF /* SplashScreenView.swift */; };
 		CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE677E2B7F1E9C00599FE8 /* Login.swift */; };
 		CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE67832B8138BD00599FE8 /* Signup.swift */; };
@@ -159,8 +158,8 @@
 		89F139842B8B2163007BF7CC /* TabUnderlineViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabUnderlineViews.swift; sourceTree = "<group>"; };
 		89F139862B8B224F007BF7CC /* FavoriteClothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClothes.swift; sourceTree = "<group>"; };
 		89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteOutfits.swift; sourceTree = "<group>"; };
+		CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CC95B8F92B82AC360034B352 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
-		CC9C53CE2B82992E00A616D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CCA40F9E2B86F92E0032EFFF /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		CCDE677E2B7F1E9C00599FE8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		CCDE67832B8138BD00599FE8 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
@@ -357,10 +356,10 @@
 		8985B7682B75D7A6000E8DED /* OOTD-Swift */ = {
 			isa = PBXGroup;
 			children = (
+				CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */,
 				343F07822B86C93C007DBE14 /* ViewModels */,
 				343F07812B86C927007DBE14 /* Models */,
 				343F077B2B86B349007DBE14 /* Authentication */,
-				CC9C53CE2B82992E00A616D2 /* GoogleService-Info.plist */,
 				8915767E2B7F142C006947E4 /* Components */,
 				8915767A2B7F13B3006947E4 /* Screens */,
 				8985B7692B75D7A6000E8DED /* OOTD_SwiftApp.swift */,
@@ -506,7 +505,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					8985B7652B75D7A6000E8DED = {
 						CreatedOnToolsVersion = 15.2;
@@ -552,8 +551,7 @@
 			files = (
 				8985B7772B75D7A7000E8DED /* Preview Assets.xcassets in Resources */,
 				8985B7732B75D7A7000E8DED /* Assets.xcassets in Resources */,
-				343F07882B870FE4007DBE14 /* Assets.xcassets in Resources */,
-				CC9C53CF2B82992E00A616D2 /* GoogleService-Info.plist in Resources */,
+				CC1AAF4A2BA802B80093EAA6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,6 +691,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -754,6 +753,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -781,8 +781,9 @@
 				CODE_SIGN_ENTITLEMENTS = "OOTD-Swift/OOTD_Swift.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"OOTD-Swift/Preview Content\"";
-				DEVELOPMENT_TEAM = 4MHGHK9Q7Z;
+				DEVELOPMENT_TEAM = S868VFYS2W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OOTD-Swift/GoogleService-Info.plist";
@@ -821,8 +822,9 @@
 				CODE_SIGN_ENTITLEMENTS = "OOTD-Swift/OOTD_Swift.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"OOTD-Swift/Preview Content\"";
-				DEVELOPMENT_TEAM = 4MHGHK9Q7Z;
+				DEVELOPMENT_TEAM = S868VFYS2W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OOTD-Swift/GoogleService-Info.plist";
@@ -860,6 +862,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -882,6 +885,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -903,6 +907,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -924,6 +929,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
