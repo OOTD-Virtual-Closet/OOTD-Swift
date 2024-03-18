@@ -15,6 +15,10 @@ final class ProfileViewModel: ObservableObject {
     func signOut() throws {
         try AuthManager.shared.signout()
     }
+    
+    func deleteAccount() async throws {
+        try await AuthManager.shared.deleteAccount()
+    }
 }
 
 struct ProfileSummary: View {
@@ -79,7 +83,15 @@ struct ProfileSummary: View {
                     
                     Button(action: {
                         // Handle account deletion
-                        print("Delete Account");
+                        Task {
+                            do {
+                               try await viewModel.deleteAccount()
+                               isAuthenticated = false
+                           } catch {
+                               print("Error deleting account: \(error.localizedDescription)")
+                           }
+                        }
+//                        print("Delete Account");
                     }) {
                         Label("Delete Account", systemImage: "trash")
                     }

@@ -43,6 +43,13 @@ final class AuthManager {
     }
     
     func signout() throws {
-       try Auth.auth().signOut()
+        try Auth.auth().signOut()
+    }
+    func deleteAccount() async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No user signed in."])
+        }
+        
+        try await user.delete()
     }
 }

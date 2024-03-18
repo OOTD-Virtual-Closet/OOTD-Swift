@@ -257,15 +257,15 @@ struct Login: View {
                      //   loginVM.signUpWithGoogle()
                     //    isAuthenticated = true;
                     //})
-                        .foregroundColor(.white)
-                        .font(.title)
-                        .bold()
-                        .frame(maxWidth: 350)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.black, lineWidth: 1)
-                        )
-                    
+//                        .foregroundColor(.white)
+//                        .font(.title)
+//                        .bold()
+//                        .frame(maxWidth: 350)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 8)
+//                                .stroke(Color.black, lineWidth: 1)
+//                        )
+//                    
                     Button (action: {
                        // handle google login
                         print("Login with Apple")
