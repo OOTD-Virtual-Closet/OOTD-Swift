@@ -20,6 +20,8 @@ struct AuthDataResultModel {
 }
 final class AuthManager {
     static let shared = AuthManager()
+    private let db = Firestore.firestore()
+    
     private init() {
         
     }
@@ -51,6 +53,14 @@ final class AuthManager {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No user signed in."])
         }
         
+        try await deleteUserFromFirestore(uid: user.uid)
+        
         try await user.delete()
+    }
+    
+    private func deleteUserFromFirestore(uid: String) async throws {
+        let userRef = db.collection("users").document(uid)
+        
+        try await userRef.delete()
     }
 }
