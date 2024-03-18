@@ -53,37 +53,37 @@ struct AddClothes: View {
             
             switch selectedType {
             case "Tops":
-                var randomVal = Int.random(in: 1...3)
+                let randomVal = Int.random(in: 1...3)
                 if randomVal == 1 {
-                    var uiImage = UIImage(named: "shirt")
+                    let uiImage = UIImage(named: "shirt")
                     return uiImage
                 }
                 if randomVal == 2 {
-                    var uiImage = UIImage(named: "shirt2")
+                    let uiImage = UIImage(named: "shirt2")
                     return uiImage
                 }
-                var uiImage = UIImage(named: "shirt3")
+                let uiImage = UIImage(named: "shirt3")
                 return uiImage
             case "Bottoms":
-                var uiImage = UIImage(named: "jeans")
+                let uiImage = UIImage(named: "jeans")
                 return uiImage
             case "Jackets/Hoodies":
-                var randomVal = Int.random(in: 1...3)
+                let randomVal = Int.random(in: 1...3)
                 if randomVal == 1 {
-                    var uiImage = UIImage(named: "jacket")
+                    let uiImage = UIImage(named: "jacket")
                     return uiImage
                 }
                 if randomVal == 2 {
-                    var uiImage = UIImage(named: "hoodie")
+                    let uiImage = UIImage(named: "hoodie")
                     return uiImage
                 }
-                var uiImage = UIImage(named: "jacket")
+                let uiImage = UIImage(named: "jacket")
                 return uiImage
             case "Shoes":
-                var uiImage = UIImage(named: "shoes")
+                let uiImage = UIImage(named: "shoes")
                 return uiImage
             default:
-                var uiImage = UIImage(named: "shirt2")
+                let uiImage = UIImage(named: "shirt2")
                 return uiImage
             }
         }

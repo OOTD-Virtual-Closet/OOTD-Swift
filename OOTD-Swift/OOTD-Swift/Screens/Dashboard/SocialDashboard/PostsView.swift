@@ -8,15 +8,38 @@
 import SwiftUI
 
 struct PostsView: View {
+    @State var addPostPresented = false
     var body: some View {
-        ScrollView {
-                    VStack(spacing: 20) {
-                        ForEach(0..<10) { _ in
-                            UserPost()
+        ZStack(alignment: .bottom) {
+            ScrollView {
+                        VStack(spacing: 20) {
+                            ForEach(0..<10) { _ in
+                                    PostView()
+                            }
                         }
+                       
                     }
-                   
-                }.padding (.top, 50)
+            .padding (.top, 50)
+            Button(action: {
+                           addPostPresented.toggle()
+                       }) {
+                           HStack {
+                               Spacer()
+                               Image(systemName: "plus")
+                                   .font(.title)
+                                   .foregroundColor(.black)
+                                   .frame(width: 50, height: 50)
+                                   .background(Color(hex: "E1DDED"))
+                                   .clipShape(Circle())
+                                   .overlay(Circle()
+                                            .stroke(Color.black,
+                                                    lineWidth: 2)
+                                    )
+                                   .padding(.trailing, 20)
+                           }
+                       }
+                       .padding(.bottom, 50)
+        }
     }
 }
 

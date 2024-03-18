@@ -17,7 +17,8 @@ struct User: Codable, Identifiable {
     var username: String?
     var clothes: [String]?
     var outfits: [String]?
-    var friendsId: [String]?
-    var friendsRequestId: [String]?
+    var friends: [String]?
+    var friendRequestsSent: [String]?
+    var friendRequestsReceived: [String]?
     var postsId: [String]?
 }
