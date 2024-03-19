@@ -45,7 +45,8 @@ extension Post {
             "id": id,
             "owner": owner,
             "image": image ?? Date(),
-            "caption": caption ?? []
+            "caption": caption ?? [],
+            "creationDate": Date()
         ]
     }
 }

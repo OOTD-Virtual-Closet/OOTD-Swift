@@ -14,4 +14,5 @@ struct Post: Codable, Identifiable, Hashable {
     var owner: String?
     var caption: String?
     var image: String?
+    var creationDate: String?
 }

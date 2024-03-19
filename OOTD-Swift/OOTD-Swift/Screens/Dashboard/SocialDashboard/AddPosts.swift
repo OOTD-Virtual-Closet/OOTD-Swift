@@ -170,15 +170,17 @@ struct AddPosts: View {
                 HStack {
                     Button(action: {
                         selectedImage = getImageForSelectedType()
-                        let path = uploadPostImage()
                         
                         if searchText == "" {
                             showAlert = true
                         }
-                         else if path == "" {
-                            showAlert = true
-                             alertMessage = "Photo upload failed"
-                         } else {
+                        else {
+                             let path = uploadPostImage()
+                               if path == "" {
+                                 showAlert = true
+                                  alertMessage = "Photo upload failed"
+                              }
+
                              let post = Post(owner:  UserDefaults.standard.string(forKey: "uid") ?? "uid", caption: searchText  ,image: path)
                              
                              let postViewModel = PostViewModel()
