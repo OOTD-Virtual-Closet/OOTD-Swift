@@ -19,7 +19,6 @@
 		34A178042B81557F00265C56 /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A178032B81557F00265C56 /* PostsView.swift */; };
 		34A178062B81558E00265C56 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A178052B81558E00265C56 /* CategoriesView.swift */; };
 		34A178082B81559600265C56 /* TrendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A178072B81559600265C56 /* TrendingView.swift */; };
-		34A1780A2B8155A500265C56 /* RecommendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A178092B8155A500265C56 /* RecommendedView.swift */; };
 		34A1780C2B8156E600265C56 /* ClothesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A1780B2B8156E600265C56 /* ClothesView.swift */; };
 		34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281A2B885804007AE17F /* ClosetNav.swift */; };
 		34C8281D2B885812007AE17F /* SocialNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281C2B885812007AE17F /* SocialNav.swift */; };
@@ -55,6 +54,7 @@
 		89F139872B8B224F007BF7CC /* FavoriteClothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139862B8B224F007BF7CC /* FavoriteClothes.swift */; };
 		89F139892B8B225A007BF7CC /* FavoriteOutfits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */; };
 		CC1AAF4A2BA802B80093EAA6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */; };
+		CC22F0D82BAC82D200648F7F /* RecommendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC22F0D72BAC82D200648F7F /* RecommendedView.swift */; };
 		CC6D90C82B9028A300920505 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90C72B9028A300920505 /* FirebaseAnalytics */; };
 		CC6D90CA2B9028A300920505 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90C92B9028A300920505 /* FirebaseAnalyticsOnDeviceConversion */; };
 		CC6D90CC2B9028A300920505 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CC6D90CB2B9028A300920505 /* FirebaseAnalyticsSwift */; };
@@ -121,7 +121,6 @@
 		34A178032B81557F00265C56 /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
 		34A178052B81558E00265C56 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		34A178072B81559600265C56 /* TrendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingView.swift; sourceTree = "<group>"; };
-		34A178092B8155A500265C56 /* RecommendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedView.swift; sourceTree = "<group>"; };
 		34A1780B2B8156E600265C56 /* ClothesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesView.swift; sourceTree = "<group>"; };
 		34C8281A2B885804007AE17F /* ClosetNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetNav.swift; sourceTree = "<group>"; };
 		34C8281C2B885812007AE17F /* SocialNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialNav.swift; sourceTree = "<group>"; };
@@ -161,6 +160,7 @@
 		89F139862B8B224F007BF7CC /* FavoriteClothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClothes.swift; sourceTree = "<group>"; };
 		89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteOutfits.swift; sourceTree = "<group>"; };
 		CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CC22F0D72BAC82D200648F7F /* RecommendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedView.swift; sourceTree = "<group>"; };
 		CC95B8F92B82AC360034B352 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		CCA40F9E2B86F92E0032EFFF /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		CCDE677E2B7F1E9C00599FE8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
@@ -270,6 +270,7 @@
 				34A177F92B81552200265C56 /* OutfitsView.swift */,
 				34A177FB2B81553400265C56 /* FavoritesView.swift */,
 				34A1780B2B8156E600265C56 /* ClothesView.swift */,
+				CC22F0D72BAC82D200648F7F /* RecommendedView.swift */,
 				34C8281A2B885804007AE17F /* ClosetNav.swift */,
 				89F139862B8B224F007BF7CC /* FavoriteClothes.swift */,
 				89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */,
@@ -299,7 +300,6 @@
 			children = (
 				34A178052B81558E00265C56 /* CategoriesView.swift */,
 				34A178072B81559600265C56 /* TrendingView.swift */,
-				34A178092B8155A500265C56 /* RecommendedView.swift */,
 				34C8281E2B88581B007AE17F /* MarketNav.swift */,
 			);
 			path = MarketDashboard;
@@ -601,7 +601,6 @@
 				34A178082B81559600265C56 /* TrendingView.swift in Sources */,
 				34A177FA2B81552200265C56 /* OutfitsView.swift in Sources */,
 				89791E262B8FD03100E28FE9 /* Cloth.swift in Sources */,
-				34A1780A2B8155A500265C56 /* RecommendedView.swift in Sources */,
 				89F139852B8B2163007BF7CC /* TabUnderlineViews.swift in Sources */,
 				52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */,
 				890AC72C2BA776FC00BBF24F /* Post.swift in Sources */,
@@ -612,6 +611,7 @@
 				CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */,
 				89791E242B8FCF5800E28FE9 /* ClothViewModel.swift in Sources */,
 				89396F032B9167AC0041F5F0 /* ImageLoader.swift in Sources */,
+				CC22F0D82BAC82D200648F7F /* RecommendedView.swift in Sources */,
 				34A178062B81558E00265C56 /* CategoriesView.swift in Sources */,
 				89791E202B8EFDB400E28FE9 /* CustomDropDown.swift in Sources */,
 				343F077F2B86B3A0007DBE14 /* LoginViewModel.swift in Sources */,

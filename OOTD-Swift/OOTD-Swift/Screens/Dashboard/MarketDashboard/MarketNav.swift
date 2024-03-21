@@ -11,11 +11,10 @@ struct MarketNav: View {
     @State private var selectedContent: Int? = 1
     @Binding var isAuthenticated:Bool
     var tabImageNames : [String] = ["square.stack", "hand.thumbsup", "flame"]
-    var tabBarOptions: [String] = ["Categories", "Recommended", "Trending"]
+    var tabBarOptions: [String] = ["Categories", "Trending"]
     @State var currentTab: Int = 0
 
     var body: some View {
-        // Navigation link must be embedded inside a nav stack
         NavigationStack {
             VStack {
                 HStack{
@@ -42,9 +41,7 @@ struct MarketNav: View {
                         TabView(selection: self.$currentTab) {
                             CategoriesView()
                                 .tag(0)
-                            RecommendedView()
-                                .tag(1)
-                           TrendingView().tag(2)
+                           TrendingView().tag(1)
                             
                         }.padding (.top, 50)
                         TabBarViewV2(currentTab: self.$currentTab, tabBarOptions: tabBarOptions, tabBarImages: tabImageNames, spacing: 40)
