@@ -6,6 +6,15 @@
 //
 
 import SwiftUI
+struct ClothingItemElements: Identifiable {
+    var id: UUID = UUID()
+    var name: String
+    var descrption: String
+    var image: String
+    var price: String
+    var description: String
+    var color: String
+}
 
 struct TrendingView: View {
     @State private var currentIndex = 0
