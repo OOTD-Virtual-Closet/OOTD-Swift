@@ -129,6 +129,24 @@ struct ExpandedClothesView: View {
 
                         
                     }
+                    Button(action: {
+                        let clothViewModel = ClothViewModel()
+                        clothViewModel.deleteCloth(cloth: mainClothe)
+                        presentationMode.wrappedValue.dismiss()
+                            }) {
+                                HStack(spacing: 10) {
+                                    Image(systemName: "trash.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.white)
+                                    Text("Delete")
+                                        .foregroundColor(.white)
+                                }
+                                .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                                .background(Color.red)
+                                .cornerRadius(10)
+                            }
                 }
                 Rectangle()
                     .foregroundColor(Color(hex: "9278E0"))

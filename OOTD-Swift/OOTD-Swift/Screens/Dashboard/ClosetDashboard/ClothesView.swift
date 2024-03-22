@@ -352,7 +352,11 @@ struct ClothesView: View {
                                
                        }
                        .padding(.bottom, 50)
-                       .sheet(isPresented: $expandedClothesPresented) {
+                       .sheet(isPresented: $expandedClothesPresented, onDismiss: {
+                           populateArrays {
+                               print("Arrays are updated again")
+                           }
+                       }) {
                 
                            if let expandedClothesChosen = expandedClothesChosen {
                                ExpandedClothesView(mainClothe: expandedClothesChosen)
