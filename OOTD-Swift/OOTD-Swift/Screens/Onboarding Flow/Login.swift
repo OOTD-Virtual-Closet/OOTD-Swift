@@ -13,12 +13,13 @@ import GoogleSignInSwift
 enum LoginErrors: Error{
     case BlankForm
     case InvalidPassword
-    case InvalidUsername
+    case EmailNotExist
     case InvalidPasswordUsername
     case InvalidLogin
     case UserDoesNotExist
     case WrongPassword
     case InvalidSignup
+    case InvalidUsername
 }
 
 final class LoginViewModel: ObservableObject {
@@ -40,7 +41,7 @@ final class LoginViewModel: ObservableObject {
             throw LoginErrors.InvalidPassword
         }
         guard isValidEmail(email) else {
-            throw LoginErrors.InvalidUsername
+            throw LoginErrors.EmailNotExist
         }
         
         do {
@@ -205,7 +206,7 @@ struct Login: View {
                             } catch LoginErrors.InvalidLogin {
                                 showingAlert = true
                                 alertMessage = "Invalid Login Credentials"
-                            } catch LoginErrors.InvalidUsername {
+                            } catch LoginErrors.EmailNotExist {
                                 print("Invalid Username")
                                 showingAlert = true
                                 alertMessage = "The username you have entered seems to be invalid"
