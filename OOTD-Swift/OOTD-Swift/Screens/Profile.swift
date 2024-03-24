@@ -24,6 +24,9 @@ final class ProfileViewModel: ObservableObject {
 struct ProfileSummary: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var isAuthenticated: Bool
+    @AppStorage("staySignedIn") private var staySignedIn: Bool = UserDefaults.standard.bool(forKey: "staySignedIn")
+    
+    
     var email = UserDefaults.standard.string(forKey: "email") ?? "atharva.gu@gmail.com"
     var name = "Atharva Gupta"
     var phoneNumber = "(510) 335-9060"
@@ -68,6 +71,8 @@ struct ProfileSummary: View {
                 .padding(.top, 25)
                 // Action Buttons
                 VStack(spacing: 15) {
+                    Toggle("Quick Login", isOn: $staySignedIn)
+                                    .padding()
                     Button(action: {
                         // Handle change password
                         print("change password pressed")
