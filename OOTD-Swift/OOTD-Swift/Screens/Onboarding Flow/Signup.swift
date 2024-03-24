@@ -13,6 +13,7 @@ final class SignUpViewModel: ObservableObject {
     @Published var email = ""
     @Published var uid = ""
     @Published var password = ""
+    @Published var usernameEntered = ""
     
     func signIn() async throws {
         guard !email.isEmpty, !password.isEmpty else {
@@ -26,12 +27,16 @@ final class SignUpViewModel: ObservableObject {
             throw LoginErrors.InvalidPassword
         }
         guard isValidEmail(email) else {
+            throw LoginErrors.EmailNotExist
+        }
+        guard isValidUsername(usernameEntered) else {
             throw LoginErrors.InvalidUsername
         }
+        
         do {
             let user = try await AuthManager.shared.createUser(email: email, password: password)
             print("Sign in completed")
-            print(user.email)
+            //print(user.email)
             print(user.uid)
             UserDefaults.standard.set(user.email, forKey: "email")
             UserDefaults.standard.set(user.uid, forKey: "uid")
@@ -39,11 +44,13 @@ final class SignUpViewModel: ObservableObject {
             userViewModel.setInitData(newUser: User(
                 uid: user.uid,
                 email: user.email ?? "emailUnknown",
-                creationDate: Date()
+                creationDate: Date(),
+                username: usernameEntered
             ))
             print("Success")
             email = user.email ?? ""
             uid = user.uid
+            
         } catch {
             print("Invalid Sign Up")
             throw LoginErrors.InvalidSignup
@@ -56,6 +63,7 @@ final class SignUpViewModel: ObservableObject {
         return emailTest.evaluate(with: email)
 
     }
+    
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
         // minimum 6 characters long
@@ -64,6 +72,14 @@ final class SignUpViewModel: ObservableObject {
         let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         
         return passwordRegex.evaluate(with: password)
+    }
+    
+    private func isValidUsername (_ username: String) -> Bool {
+        let strlen = username.utf8.count;
+        if (strlen >= 15) {
+            return false;
+        }
+        return true;
     }
 }
 
@@ -151,6 +167,18 @@ struct Signup: View {
                             .foregroundColor(Color(hex:"898989"))
                     )
                     .padding()
+                    
+                    HStack {
+                        SecureField("Enter username...", text: $viewModel.usernameEntered)
+
+                    }
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(lineWidth: 2.0)
+                            .foregroundColor(Color(hex:"898989"))
+                    )
+                    .padding()
                 }
                 Spacer()
                 VStack (spacing:20){
@@ -175,7 +203,7 @@ struct Signup: View {
                                 print("Invalid Password")
                                 showingAlert = true
                                 alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
-                            } catch LoginErrors.InvalidUsername {
+                            } catch LoginErrors.EmailNotExist {
                                 print("Invalid Username")
                                 showingAlert = true
                                 alertMessage = "The username you have entered seems to be invalid"
