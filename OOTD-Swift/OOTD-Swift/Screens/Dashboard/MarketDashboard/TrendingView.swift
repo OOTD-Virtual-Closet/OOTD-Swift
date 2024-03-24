@@ -51,7 +51,7 @@ struct TrendingView: View {
                 isShowingDetails = true
             }) {
                 RoundedRectangle(cornerRadius: 15)
-                    .foregroundColor(.uIpurple.opacity(0.6))
+                    .foregroundColor(Color("UIpurple").opacity(0.6))
                     .frame(width: 210, height: 310)
                     .overlay(
                         Image(trendingItems[currentIndex].image)
@@ -85,7 +85,7 @@ struct TrendingView: View {
                     Text("Next")
                         .padding(.horizontal, 15)
                         .padding(.vertical, 10)
-                        .background(Color.uIpurple)
+                        .background(Color("UIpurple"))
                         .foregroundColor(.black)
                         .cornerRadius(10)
                 }

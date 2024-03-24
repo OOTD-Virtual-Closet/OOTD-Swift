@@ -48,11 +48,11 @@ struct RecommendedView: View {
                             .padding(.horizontal, 20)
                             .padding(.bottom, 20)
                         }
-                        .background(Color.uIpurple.opacity(0.6))
+                        .background(Color("UIpurple").opacity(0.6))
                         .cornerRadius(15)
                     }
                 }
-                .background(Color.uIpurple.opacity(0.6))
+                .background(Color("UIpurple").opacity(0.6))
                 .cornerRadius(15)
             }
             
@@ -78,7 +78,7 @@ struct RecommendedView: View {
                     Text("Next")
                         .padding(.horizontal, 15)
                         .padding(.vertical, 10)
-                        .background(Color.uIpurple)
+                        .background(Color("UIpurple"))
                         .foregroundColor(.black)
                         .cornerRadius(10)
                 }

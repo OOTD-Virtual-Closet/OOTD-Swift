@@ -91,136 +91,139 @@ struct AddOutfit: View {
         ZStack(alignment: .top) {
             ScrollView(showsIndicators: false) {
                     VStack {
-                        HStack {
-                            Text("Tops")
-                                .foregroundColor(.black)
-                                .font(.system( size: 20))
-                                .fontWeight(.heavy)
-                                .padding(.leading, 15)
-                                .padding(.top, 20)
-                            Spacer()
-                        }
-                        
-                        ScrollView(.horizontal) {
-                            LazyHStack(spacing: 10) {
-                                ForEach(tops ?? [], id: \.self) { view in
-                                    Button(action: {
-                                                    selectedTop = view.id 
-                                                }) {
-                                                    Clothes(item: view.id)
-                                                        .frame(width: 112, height: 140)
-                                                }.overlay(
-                                                    
-                                                    selectedTop == view.id ?
-                                                        Image(systemName: "checkmark.circle.fill")
-                                                            .foregroundColor(.purple)
-                                                            .font(.system(size: 24))
-                                                            .padding(5)
-                                                            .background(Color.white)
-                                                            .clipShape(Circle())
-                                                            .offset(x: 50, y: -50)
-                                                        : nil
-                                                )
-                                }
-                            }.padding(10)
-                        }
-                        .padding(.trailing, 15)
-                        HStack {
-                            Text("Jackets/Hoodies")
-                                .foregroundColor(.black)
-                                .font(.system( size: 20))
-                                .fontWeight(.heavy)
-                                .padding(.leading, 15)
-                                .padding(.top, 20)
-                            Spacer()
-                        }
-                        ScrollView(.horizontal) {
-                            LazyHStack(spacing: 10) {
-                                ForEach(jackets ?? [], id: \.self) { view in
-                                    Button(action: {
-                                                    selectedJacket = view.id // Update selectedTop with the UUID of the selected top
-                                                }) {
-                                                    Clothes(item: view.id)
-                                                        .frame(width: 112, height: 140)
-                                                }.overlay(
-                                                    
-                                                    selectedJacket == view.id ?
-                                                        Image(systemName: "checkmark.circle.fill")
-                                                            .foregroundColor(.purple)
-                                                            .font(.system(size: 24))
-                                                            .padding(5)
-                                                            .background(Color.white)
-                                                            .clipShape(Circle())
-                                                            .offset(x: 50, y: -50)
-                                                        : nil
-                                                )
-                                }
-                            }.padding(10)
-                        }
-                        HStack {
-                            Text("Bottoms")
-                                .foregroundColor(.black)
-                                .font(.system( size: 20))
-                                .fontWeight(.heavy)
-                                .padding(.leading, 15)
-                                .padding(.top, 20)
-                            Spacer()
-                        }
-                        ScrollView(.horizontal) {
-                            LazyHStack(spacing: 10) {
-                                ForEach(bottoms ?? [], id: \.self) { view in
-                                    Button(action: {
-                                                    selectedBottom = view.id // Update selectedTop with the UUID of the selected top
-                                                }) {
-                                                    Clothes(item: view.id)
-                                                        .frame(width: 112, height: 140)
-                                                } .overlay(
-                                                    
-                                                    selectedBottom == view.id ?
-                                                        Image(systemName: "checkmark.circle.fill")
-                                                            .foregroundColor(.purple)
-                                                            .font(.system(size: 24))
-                                                            .padding(5)
-                                                            .background(Color.white)
-                                                            .clipShape(Circle())
-                                                            .offset(x: 50, y: -50)
-                                                        : nil
-                                                )
-                                }
-                            }.padding(10)
-                        }
-                        .padding(.trailing, 15)
-                        HStack {
-                            Text("Shoes")
-                                .foregroundColor(.black)
-                                .font(.system( size: 20))
-                                .fontWeight(.heavy)
-                                .padding(.leading, 15)
-                                .padding(.top, 20)
-                            Spacer()
-                        }
-                        ScrollView(.horizontal) {
-                            LazyHStack(spacing: 10) {
-                                ForEach(shoes ?? [], id: \.self) { view in
-                                    Button(action: {
-                                                    selectedShoes = view.id
-                                                }) {
-                                                    Clothes(item: view.id)
-                                                        .frame(width: 112, height: 140)
-                                                }.overlay(
-                                                    
-                                                    selectedShoes == view.id ?
-                                                        Image(systemName: "checkmark.circle.fill")
-                                                            .foregroundColor(.purple)
-                                                            .font(.system(size: 24))
-                                                            .padding(5)
-                                                            .background(Color.white)
-                                                            .clipShape(Circle())
-                                                            .offset(x: 50, y: -50)
-                                                        : nil
-                                                )
-                                }
-                            }.padding(10)
+                        Group {
+                            HStack {
+                                Text("Tops")
+                                    .foregroundColor(.black)
+                                    .font(.system( size: 20))
+                                    .fontWeight(.heavy)
+                                    .padding(.leading, 15)
+                                    .padding(.top, 20)
+                                Spacer()
+                            }
+                            
+                            ScrollView(.horizontal) {
+                                LazyHStack(spacing: 10) {
+                                    ForEach(tops ?? [], id: \.self) { view in
+                                        Button(action: {
+                                                        selectedTop = view.id
+                                                    }) {
+                                                        Clothes(item: view.id)
+                                                            .frame(width: 112, height: 140)
+                                                    }.overlay(
+                                                        
+                                                        selectedTop == view.id ?
+                                                            Image(systemName: "checkmark.circle.fill")
+                                                                .foregroundColor(.purple)
+                                                                .font(.system(size: 24))
+                                                                .padding(5)
+                                                                .background(Color.white)
+                                                                .clipShape(Circle())
+                                                                .offset(x: 50, y: -50)
+                                                            : nil
+                                                    )
+                                    }
+                                }.padding(10)
+                            }
+                            .padding(.trailing, 15)
+                            HStack {
+                                Text("Jackets/Hoodies")
+                                    .foregroundColor(.black)
+                                    .font(.system( size: 20))
+                                    .fontWeight(.heavy)
+                                    .padding(.leading, 15)
+                                    .padding(.top, 20)
+                                Spacer()
+                            }
+                            ScrollView(.horizontal) {
+                                LazyHStack(spacing: 10) {
+                                    ForEach(jackets ?? [], id: \.self) { view in
+                                        Button(action: {
+                                                        selectedJacket = view.id // Update selectedTop with the UUID of the selected top
+                                                    }) {
+                                                        Clothes(item: view.id)
+                                                            .frame(width: 112, height: 140)
+                                                    }.overlay(
+                                                        
+                                                        selectedJacket == view.id ?
+                                                            Image(systemName: "checkmark.circle.fill")
+                                                                .foregroundColor(.purple)
+                                                                .font(.system(size: 24))
+                                                                .padding(5)
+                                                                .background(Color.white)
+                                                                .clipShape(Circle())
+                                                                .offset(x: 50, y: -50)
+                                                            : nil
+                                                    )
+                                    }
+                                }.padding(10)
+                            }
+                            HStack {
+                                Text("Bottoms")
+                                    .foregroundColor(.black)
+                                    .font(.system( size: 20))
+                                    .fontWeight(.heavy)
+                                    .padding(.leading, 15)
+                                    .padding(.top, 20)
+                                Spacer()
+                            }
+                            ScrollView(.horizontal) {
+                                LazyHStack(spacing: 10) {
+                                    ForEach(bottoms ?? [], id: \.self) { view in
+                                        Button(action: {
+                                                        selectedBottom = view.id // Update selectedTop with the UUID of the selected top
+                                                    }) {
+                                                        Clothes(item: view.id)
+                                                            .frame(width: 112, height: 140)
+                                                    } .overlay(
+                                                        
+                                                        selectedBottom == view.id ?
+                                                            Image(systemName: "checkmark.circle.fill")
+                                                                .foregroundColor(.purple)
+                                                                .font(.system(size: 24))
+                                                                .padding(5)
+                                                                .background(Color.white)
+                                                                .clipShape(Circle())
+                                                                .offset(x: 50, y: -50)
+                                                            : nil
+                                                    )
+                                    }
+                                }.padding(10)
+                            }
+                            .padding(.trailing, 15)
+                            HStack {
+                                Text("Shoes")
+                                    .foregroundColor(.black)
+                                    .font(.system( size: 20))
+                                    .fontWeight(.heavy)
+                                    .padding(.leading, 15)
+                                    .padding(.top, 20)
+                                Spacer()
+                            }
+                            ScrollView(.horizontal) {
+                                LazyHStack(spacing: 10) {
+                                    ForEach(shoes ?? [], id: \.self) { view in
+                                        Button(action: {
+                                                        selectedShoes = view.id
+                                                    }) {
+                                                        Clothes(item: view.id)
+                                                            .frame(width: 112, height: 140)
+                                                    }.overlay(
+                                                        
+                                                        selectedShoes == view.id ?
+                                                            Image(systemName: "checkmark.circle.fill")
+                                                                .foregroundColor(.purple)
+                                                                .font(.system(size: 24))
+                                                                .padding(5)
+                                                                .background(Color.white)
+                                                                .clipShape(Circle())
+                                                                .offset(x: 50, y: -50)
+                                                            : nil
+                                                    )
+                                    }
+                                }.padding(10)
+                            }
+
                         }
                         .padding(.trailing, 15)
                         HStack {

@@ -47,6 +47,8 @@ final class AuthManager {
     
     func signout() throws {
         try Auth.auth().signOut()
+        UserDefaults.standard.set(false, forKey: "staySignedIn")
+
     }
     func deleteAccount() async throws {
         guard let user = Auth.auth().currentUser else {

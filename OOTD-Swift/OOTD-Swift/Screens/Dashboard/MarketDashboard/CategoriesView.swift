@@ -63,7 +63,7 @@ struct CategoriesView: View {
                                     .padding(.horizontal, 15)
                                     .padding(.vertical, 8)
                                     .foregroundColor(selectedCategory == category ? .white : .gray)
-                                    .background(selectedCategory == category ? Color.black : Color.uIpurple)
+                                    .background(selectedCategory == category ? Color.black : Color("UIpurple"))
                                     .cornerRadius(10)
                             }
                         }

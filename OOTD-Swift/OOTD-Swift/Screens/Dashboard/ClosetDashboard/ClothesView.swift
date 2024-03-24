@@ -103,19 +103,21 @@ struct ClothesView: View {
             ScrollView(showsIndicators: false) {
                 
                     VStack (alignment: .leading) {
-                        Text("0 Items")
-                            .foregroundColor(.gray)
-                            .font(.system( size: 13))
-                            .fontWeight(.heavy)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 15)
-                            .padding(.vertical, 5)
-                        Text("Your Closet")
-                            .foregroundColor(.black)
-                            .font(.system( size: 25))
-                            .fontWeight(.heavy)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 15)
+                        Group {
+                            Text("0 Items")
+                                .foregroundColor(.gray)
+                                .font(.system( size: 13))
+                                .fontWeight(.heavy)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 15)
+                                .padding(.vertical, 5)
+                            Text("Your Closet")
+                                .foregroundColor(.black)
+                                .font(.system( size: 25))
+                                .fontWeight(.heavy)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 15)
+                        }
                         HStack {
                             ZStack {
                                         TextField("", text: $searchText, onEditingChanged: { editing in

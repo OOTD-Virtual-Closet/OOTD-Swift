@@ -11,6 +11,7 @@ import SwiftUI
 struct DashboardNav: View {
     @Binding var isAuthenticated:Bool
     @State private var selectedTab = 1
+    @State private var stayLoggedInAlert = false
     
     let userProfile: String
     var body: some View {
@@ -34,12 +35,30 @@ struct DashboardNav: View {
                     
                    }
                    .navigationBarHidden(true)
-               }            .ignoresSafeArea(.all)
-            .padding(.top, -125)
-            .onAppear {
-                self.confirmDocOnFirebase()
+               }
+                .ignoresSafeArea(.all)
+                .padding(.top, -125)
+                .onAppear {
+                    self.confirmDocOnFirebase()
+                    if (UserDefaults.standard.bool(forKey: "staySignedIn") == false) {
+                        stayLoggedInAlert = true
+                    }
+
+            }
+            .alert(isPresented: $stayLoggedInAlert) {
+                Alert(
+                    title: Text("Confirmation"),
+                    message: Text("Do you want to stay signed in?"),
+                    primaryButton: .default(Text("Yes")) {
+                        UserDefaults.standard.set(true, forKey: "staySignedIn")
+                    },
+                    secondaryButton: .cancel(Text("No")) {
+                        UserDefaults.standard.set(false, forKey: "staySignedIn")
+                    }
+                )
             }
     }
+
     func confirmDocOnFirebase() {
         let userViewModel = UserViewModel()
         

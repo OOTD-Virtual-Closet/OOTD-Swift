@@ -100,13 +100,14 @@ struct ProfileSummary: View {
                     .padding(.horizontal)
                     .background(Color(hex: "CBC3E3"))
                     .cornerRadius(10)
-                    .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                    .shadow(color: Color("UIpurple").opacity(0.3), radius: 5, x: 0, y: 0)
                     .padding(.bottom, 15)
                     
                     Button(action: {
                         // Handle log out
                         do {
                             try viewModel.signOut()
+                            UserDefaults.standard.set(false, forKey: "staySignedIn")
                             isAuthenticated = false
                         } catch {
                             print("Error signing out: \(error.localizedDescription)")

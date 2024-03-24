@@ -15,7 +15,7 @@ struct ContentView: View {
         animation: .default)
     private var items: FetchedResults<Item>
 
-    @State private var isAuthenticated = false
+    @State private var isAuthenticated = UserDefaults.standard.bool(forKey: "staySignedIn")
     @State var userProfile = ""
     //@EnvironmentObject var loginVM: LogInVM
     //TODO: make a class to store user info after auth
