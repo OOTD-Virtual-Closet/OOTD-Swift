@@ -48,14 +48,15 @@ final class AuthManager {
     
     func changePassword(password: String) throws {
         Auth.auth().currentUser?.updatePassword(to: password) { error in
-            /*
-            if let error = error {
-                //there was an error
-            }
-             */
         }
     }
     
+    func changeUsername(username: String) throws {
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        changeRequest?.displayName = username
+        changeRequest?.commitChanges { error in
+        }
+    }
     
     func verifyDelete() throws {
         Auth.auth().addStateDidChangeListener { auth, user in
