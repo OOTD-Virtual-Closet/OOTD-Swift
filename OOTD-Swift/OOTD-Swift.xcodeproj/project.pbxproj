@@ -256,6 +256,7 @@
 		34A177F12B81542D00265C56 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				34CD5D442BB0DFF200B13350 /* Calendar */,
 				34A177F42B81544400265C56 /* MarketDashboard */,
 				34A177F32B81543C00265C56 /* SocialDashboard */,
 				34A177F22B81543400265C56 /* ClosetDashboard */,
@@ -303,6 +304,13 @@
 				34C8281E2B88581B007AE17F /* MarketNav.swift */,
 			);
 			path = MarketDashboard;
+			sourceTree = "<group>";
+		};
+		34CD5D442BB0DFF200B13350 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 		8915767A2B7F13B3006947E4 /* Screens */ = {

@@ -17,24 +17,6 @@ struct MarketNav: View {
     var body: some View {
         NavigationStack {
             VStack {
-                HStack{
-                    Spacer()
-                    Text("Marketplace")
-                        .foregroundColor(.black)
-                        .font(.system( size: 25))
-                        .fontWeight(.heavy)
-                        .padding(.leading, 20)
-                    Spacer()
-                    NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
-                        Image("UserIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 45, height: 45)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                            .padding(.trailing)
-                    }
-                }
                 
                 VStack {
                     ZStack (alignment: .top) {

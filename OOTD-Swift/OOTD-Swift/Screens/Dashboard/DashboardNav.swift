@@ -17,6 +17,26 @@ struct DashboardNav: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
+                HStack{
+                    Spacer()
+                    Text(getTabName(for:selectedTab))
+                        .foregroundColor(.black)
+                        .font(.system( size: 25))
+                        .fontWeight(.heavy)
+                        .padding(.leading, 20)
+                        .multilineTextAlignment(.center)
+                    Spacer()
+                    NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
+                        Image("UserIcon")
+                            .resizable()
+                                .scaledToFit()
+                                .frame(width: 45, height: 45)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                .padding(.trailing)
+
+                    }
+                }
    
                        switch selectedTab {
                        case 1:
@@ -63,6 +83,19 @@ struct DashboardNav: View {
         let userViewModel = UserViewModel()
         
         print("View appeared!")
+    }
+    
+    func getTabName (for value:Int) -> String {
+        switch value {
+        case 1:
+            return "Marketplace"
+        case 2:
+            return "Social"
+        case 3:
+            return "Closet"
+        default:
+            return "Social"
+        }
     }
 }
 
