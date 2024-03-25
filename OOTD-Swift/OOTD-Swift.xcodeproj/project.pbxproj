@@ -23,6 +23,8 @@
 		34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281A2B885804007AE17F /* ClosetNav.swift */; };
 		34C8281D2B885812007AE17F /* SocialNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281C2B885812007AE17F /* SocialNav.swift */; };
 		34C8281F2B88581B007AE17F /* MarketNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C8281E2B88581B007AE17F /* MarketNav.swift */; };
+		34CD5D462BB0E9CB00B13350 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CD5D452BB0E9CB00B13350 /* CalendarView.swift */; };
+		34CD5D4A2BB0EA3C00B13350 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CD5D492BB0EA3C00B13350 /* CalendarViewModel.swift */; };
 		52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52358BAC2B7FFC5E00619E85 /* Profile.swift */; };
 		52D6A5812B801DCE00496804 /* DeleteAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A5802B801DCE00496804 /* DeleteAccount.swift */; };
 		890AC72A2BA773C300BBF24F /* AddPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890AC7292BA773C300BBF24F /* AddPosts.swift */; };
@@ -125,6 +127,8 @@
 		34C8281A2B885804007AE17F /* ClosetNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetNav.swift; sourceTree = "<group>"; };
 		34C8281C2B885812007AE17F /* SocialNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialNav.swift; sourceTree = "<group>"; };
 		34C8281E2B88581B007AE17F /* MarketNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketNav.swift; sourceTree = "<group>"; };
+		34CD5D452BB0E9CB00B13350 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		34CD5D492BB0EA3C00B13350 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		52358BAC2B7FFC5E00619E85 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		52D6A5802B801DCE00496804 /* DeleteAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccount.swift; sourceTree = "<group>"; };
 		890AC7292BA773C300BBF24F /* AddPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPosts.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 				89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */,
 				89396F062B91A86C0041F5F0 /* OutfitViewModel.swift */,
 				890AC72D2BA7776B00BBF24F /* PostViewModel.swift */,
+				34CD5D492BB0EA3C00B13350 /* CalendarViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -309,6 +314,7 @@
 		34CD5D442BB0DFF200B13350 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				34CD5D452BB0E9CB00B13350 /* CalendarView.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -591,6 +597,7 @@
 				CC95B8FA2B82AC360034B352 /* AuthManager.swift in Sources */,
 				34C8281D2B885812007AE17F /* SocialNav.swift in Sources */,
 				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
+				34CD5D462BB0E9CB00B13350 /* CalendarView.swift in Sources */,
 				89396F192B922E770041F5F0 /* ExpandedClothesView.swift in Sources */,
 				34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */,
 				34A178022B81557500265C56 /* FriendsView.swift in Sources */,
@@ -610,6 +617,7 @@
 				34A177FA2B81552200265C56 /* OutfitsView.swift in Sources */,
 				89791E262B8FD03100E28FE9 /* Cloth.swift in Sources */,
 				89F139852B8B2163007BF7CC /* TabUnderlineViews.swift in Sources */,
+				34CD5D4A2BB0EA3C00B13350 /* CalendarViewModel.swift in Sources */,
 				52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */,
 				890AC72C2BA776FC00BBF24F /* Post.swift in Sources */,
 				8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */,
