@@ -18,6 +18,13 @@ struct DashboardNav: View {
         NavigationView {
             VStack(spacing: 0) {
                 HStack{
+                    NavigationLink(destination: CalendarView()) {
+                        Image("calendar")
+                            .resizable()
+                                .scaledToFit()
+                                .frame(width: 35, height: 35)
+                                .padding(.leading)
+                    }
                     Spacer()
                     Text(getTabName(for:selectedTab))
                         .foregroundColor(.black)

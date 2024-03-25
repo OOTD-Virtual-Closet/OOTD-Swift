@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CategoriesView: View {
+    
     @State private var searchText = ""
     @State private var isEditing = false
     @State private var showPopUp = false

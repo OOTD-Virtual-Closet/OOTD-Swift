@@ -13,7 +13,6 @@ struct CalendarView: View {
     @State var startDate: Date = Date()
     @State var months = [MonthModel(id: "id", month: "December", monthOfTheYear: 12, year: 2022), MonthModel(id: "id2", month: "January", monthOfTheYear: 1, year: 2023), MonthModel(id: "id3", month: "February", monthOfTheYear: 2, year: 2023)] // on appear, calculate all months in between dec 2022 - today
 
-    @Environment(\.presentationMode) var mode
     @StateObject var viewModel = CalendarViewModel()
 
     private var daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"]
@@ -74,13 +73,10 @@ struct CalendarView: View {
             .padding(.top, 75)
             
         }
-        .navigationBarHidden(true)
+        .navigationBarTitle("Calendar", displayMode: .inline)
         .overlay(
-            VStack(spacing: 15) {
-                Text("Progress")
-                    .font(.headline)
-                    .padding(.top, 7)
-                VStack {
+            VStack(spacing: 30) {
+                VStack() {
                     HStack(spacing: 0) {
                         Spacer()
                         ForEach(daysOfTheWeek, id: \.self) { d in
@@ -88,24 +84,12 @@ struct CalendarView: View {
                             Spacer()
                         }
                     }
+                    .padding(.top, 10)
                     .font(.caption.weight(.semibold))
                     .foregroundColor(.primary)
                 }
             }
             , alignment: .top
-        )
-        .overlay(
-            Button {
-                mode.wrappedValue.dismiss()
-            } label: {
-                Image(systemName: "arrow.backward")
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .padding(10)
-            }
-            .padding(.leading)
-            
-            , alignment: .topLeading
         )
         .overlay(
             VStack {
@@ -122,7 +106,9 @@ struct CalendarView: View {
 
 }
 
-struct CalendarView_Previews: PreviewProvider { static var previews: some View { CalendarView() } }
+struct CalendarView_Previews: PreviewProvider {
+    static var previews: some View { CalendarView() }
+}
 
     struct CalendarCell: View {
 
