@@ -12,6 +12,34 @@ import FirebaseFirestore
 class ClothViewModel: ObservableObject {
     let db = Firestore.firestore()
     
+    func deleteCloth(cloth: Cloth) {
+         let userUUID = Auth.auth().currentUser?.uid ?? "uid"
+        let clothUUID = cloth.id
+           let userRef = db.collection("users").document(userUUID)
+           userRef.updateData(["clothes": FieldValue.arrayRemove([clothUUID])]) { error in
+               if let error = error {
+                   print("Error removing cloth from user's cloth array: \(error)")
+               } else {
+                   print("Cloth removed from user's cloth array successfully")
+                   self.deleteClothDocument(cloth: cloth)
+               }
+           }
+       }
+    
+    func deleteClothDocument(cloth: Cloth) {
+        let clothUUID = cloth.id
+        let clothRef = db.collection("clothes").document(clothUUID)
+        clothRef.delete {
+            error in
+            if let error = error {
+                print("error removing cloth document: \(error)")
+            } else {
+                print("Cloth Document deleted successfully")
+            }
+        }
+        
+    }
+    
     func addClothToCurrentUser(cloth: Cloth) {
         if let userId = Auth.auth().currentUser?.uid {
             let userRef = db.collection("users").document(userId)

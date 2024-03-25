@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
 struct AuthDataResultModel {
     let uid: String
@@ -19,6 +20,8 @@ struct AuthDataResultModel {
 }
 final class AuthManager {
     static let shared = AuthManager()
+    private let db = Firestore.firestore()
+    
     private init() {
         
     }
@@ -43,6 +46,21 @@ final class AuthManager {
     }
     
     func signout() throws {
-       try Auth.auth().signOut()
+        try Auth.auth().signOut()
+    }
+    func deleteAccount() async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No user signed in."])
+        }
+        
+        try await deleteUserFromFirestore(uid: user.uid)
+        
+        try await user.delete()
+    }
+    
+    private func deleteUserFromFirestore(uid: String) async throws {
+        let userRef = db.collection("users").document(uid)
+        
+        try await userRef.delete()
     }
 }

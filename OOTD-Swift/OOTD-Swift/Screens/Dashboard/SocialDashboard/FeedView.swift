@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseStorage
+import FirebaseFirestore
 
 struct FeedView: View {
     @State private var searchText = ""
@@ -43,65 +45,16 @@ struct FeedView: View {
                     }
                     VStack(spacing: 20) {
                         ForEach(0..<10) { _ in
-                            Post()
+                           // PostView()
                         }
                     }
                 }.padding (.top, 50)
     }
 }
 
-struct Post: View {
-    var body: some View {
-        VStack {
-            HStack {
-                Image("UserIcon")
-                    .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                Text("User")
-                    .foregroundColor(.black)
-                    .font(.system( size: 15))
-                    .fontWeight(.bold)
-                Spacer()
-            }.padding(.leading, 20)
-            HStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(Color(hex: "E1DDED"))
-                    .frame(width: UIScreen.main.bounds.width - 40, height: 300)
-                Spacer()
-            }.padding(.leading, 20)
-            HStack {
-                Text("cool caption")
-                    .foregroundColor(.black)
-                    .font(.system( size: 12))
-                    .fontWeight(.semibold)
-                Spacer()
-            }.padding(.leading, 25)
-        }
-    }
-}
 
-struct UserPost: View {
-    var body: some View {
-        VStack {
-            HStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(Color(hex: "E1DDED"))
-                    .frame(width: UIScreen.main.bounds.width - 40, height: 300)
-                Spacer()
-            }.padding(.leading, 20)
-            HStack {
-                Text("cool caption")
-                    .foregroundColor(.black)
-                    .font(.system( size: 12))
-                    .fontWeight(.semibold)
-                Spacer()
-            }.padding(.leading, 25)
-        }
-    }
-}
+
+
 
 struct FeedView_Previews: PreviewProvider {
     static var previews: some View {

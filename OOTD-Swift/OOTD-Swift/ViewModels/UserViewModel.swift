@@ -29,8 +29,9 @@ class UserViewModel: ObservableObject {
                 "username": newUser.username ?? "",
                 "clothes": newUser.clothes,
                 "outfits": newUser.outfits,
-                "friendsId": newUser.friendsId,
-                "friendsRequestsId": newUser.friendsRequestId,
+                "friends": newUser.friends,
+                "friendRequestsSent": newUser.friendRequestsSent,
+                "friendRequestsReceived": newUser.friendRequestsReceived,
                 "postsId": newUser.postsId
             ])
         }

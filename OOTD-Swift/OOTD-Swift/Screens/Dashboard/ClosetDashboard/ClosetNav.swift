@@ -11,8 +11,8 @@ struct ClosetNav: View {
     @State private var selectedContent: Int = 1
     @Binding var isAuthenticated:Bool
     @State var currentTab: Int = 0
-    var tabImageNames : [String] = ["tshirt", "figure", "star"]
-    var tabBarOptions: [String] = ["Clothes", "Outfits", "Favorites"]
+    var tabImageNames : [String] = ["tshirt", "figure", "hand.thumbsup", "star"]
+    var tabBarOptions: [String] = ["Clothes", "Outfits", "Recommended", "Favorites"]
 
 
     var body: some View {
@@ -47,7 +47,8 @@ struct ClosetNav: View {
                                 .tag(0)
                             OutfitsView()
                                 .tag(1)
-                            FavoritesView().tag(2)
+                            RecommendedView().tag(2)
+                            FavoritesView().tag(3)
 
                         }.padding (.top, 50)
                         TabBarViewV2(currentTab: self.$currentTab, tabBarOptions: tabBarOptions, tabBarImages: tabImageNames,spacing: 30)
