@@ -5,50 +5,102 @@
 //  Created by Aaryan Srivastava on 2/25/24.
 //
 
-import Foundation
+import FirebaseFirestore
+import FirebaseStorage
 import SwiftUI
 
+
 struct FavoriteClothes: View {
-    //@State private var items: [ClothingItem] = [
-    //    ClothingItem(name: "Item 1", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 21)), color: "Red"),
-     //   ClothingItem(name: "Item 2", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 22)), color: "Blue"),
-     //   ClothingItem(name: "Item 3", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 23)), color: "Green"),
-      //  ClothingItem(name: "Item 4", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 24)), color: "Yellow"),
-      //  ClothingItem(name: "Item 5", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 19)), color: "Orange"),
-      //  ClothingItem(name: "Item 6", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 18)), color: "Tomato Red"),
-      //  ClothingItem(name: "Item 7", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 17)), color: "Purple"),
-      //  ClothingItem(name: "Item 8", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 16)), color: "Indigo"),
-      //  ClothingItem(name: "Item 9", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 15)), color: "Violet"),
-       // ClothingItem(name: "Item 10", lastWorn: Calendar.current.date(from: DateComponents(year: 2024, month: 2, day: 14)), color: "Greenish Cob"),
-        
-        // Add more items as needed
-    //]
+    
+    @State private var expandedClothesPresented = false;
+    @State private var expandedClothesChosen : Cloth?
+
+    @State private var tops : [Cloth]?
+    @State private var bottoms : [Cloth]?
+    @State private var jackets : [Cloth]?
+    @State private var shoes : [Cloth]?
+    var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+
+    private func populateArrays(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(uid)
+        userRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let clothes = document.data()?["favorites"] as? [String] {
+                    var loadedCloths = [Cloth]()
+                    let dispatchGroup = DispatchGroup()
+                    
+                    for item in clothes {
+                        dispatchGroup.enter()
+                        
+                        let docRef = db.collection("clothes").document(item)
+                        docRef.getDocument { document, error in
+                            defer {
+                                dispatchGroup.leave()
+                            }
+                            if let document = document, document.exists {
+                                do {
+                                    let cloth =  try document.data(as: Cloth.self)
+                                        loadedCloths.append(cloth)
+                                    
+                                } catch {
+                                    print("Error decoding cloth document: \(error.localizedDescription)")
+                                }
+                            } else {
+                                print("Cloth document does not exist")
+                            }
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) {
+                        tops = loadedCloths.filter { $0.type == "Tops" }
+                        bottoms = loadedCloths.filter { $0.type == "Bottoms" }
+                        jackets = loadedCloths.filter { $0.type == "Jackets/Hoodies" }
+                        shoes = loadedCloths.filter { $0.type == "Shoes" }
+                        
+                        completion()
+                    }
+                }
+            } else {
+                print("User document does not exist")
+            }
+        }
+    }
 
     var body: some View {
         ScrollView {
             VStack {
                 HStack {
-                    Text("Shirts")
+                    Text("Tops")
                         .foregroundColor(.black)
                         .font(.system( size: 20))
                         .fontWeight(.heavy)
                         .padding(.leading, 15)
                         .padding(.top, 20)
-                    Text("(1)")
+                    Text("\(tops?.count ?? 0)")
                         .foregroundColor(.gray)
                         .font(.system( size: 20))
                         .fontWeight(.heavy)
                         .padding(.top, 20)
+                    Spacer()
                 }
-                // ScrollView(.horizontal, showsIndicators: true) {
-                //    LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                //    ForEach(items, id: \.self) { item in
-                //     TestClothes(item: item)
-                //        .frame(width: 120, height: 140)
-                //    }
-                //  }
-                //   .padding(10)
-                // }.padding(.trailing, 15)
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 10) {
+                        ForEach(tops ?? [], id: \.self) { view in
+                            Button(action: {
+                                expandedClothesPresented.toggle()
+                                expandedClothesChosen = view
+                                
+                            }) {
+                                Clothes(item: view.id)
+                                    .frame(width: 112, height: 140)
+                                
+                            }
+                        }
+                    }.padding(10)
+                }
+                .padding(.trailing, 15)
+                
                 
                 HStack {
                     Text("Hoodies & Jackets")
@@ -57,21 +109,29 @@ struct FavoriteClothes: View {
                         .fontWeight(.heavy)
                         .padding(.leading, 15)
                         .padding(.top, 20)
-                    Text("(1)")
+                    Text("\(jackets?.count ?? 0)")
                         .foregroundColor(.gray)
                         .font(.system( size: 20))
                         .fontWeight(.heavy)
                         .padding(.top, 20)
+                    Spacer()
                 }
-                //ScrollView(.horizontal, showsIndicators: true) {
-                //  LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                //  ForEach(items, id: \.self) { item in
-                //   TestClothes(item: item)
-                //  .frame(width: 112, height: 140)
-                //  }
-                // }
-                // .padding(10)
-                // }.padding(.trailing, 15)
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 10) {
+                        ForEach(jackets ?? [], id: \.self) { view in
+                            Button(action: {
+                                expandedClothesPresented.toggle()
+                                expandedClothesChosen = view
+                                
+                            }) {
+                                
+                                Clothes(item: view.id)
+                                    .frame(width: 112, height: 140)
+                                
+                            }
+                        }
+                    }.padding(10)
+                }.padding(.trailing, 15)
                 HStack {
                     Text("Pants")
                         .foregroundColor(.black)
@@ -79,21 +139,30 @@ struct FavoriteClothes: View {
                         .fontWeight(.heavy)
                         .padding(.leading, 15)
                         .padding(.top, 20)
-                    Text("(5)")
+                    Text("\(bottoms?.count ?? 0)")
                         .foregroundColor(.gray)
                         .font(.system( size: 20))
                         .fontWeight(.heavy)
                         .padding(.top, 20)
+                    Spacer()
                 }
-                // ScrollView(.horizontal, showsIndicators: true) {
-                //   LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                //   ForEach(items, id: \.self) { item in
-                //     TestClothes(item: item)
-                //      .frame(width: 112, height: 140)
-                //  }
-                //   }
-                //  .padding(10)
-                // }.padding(.trailing, 15)
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 10) {
+                        ForEach(bottoms ?? [], id: \.self) { view in
+                            Button(action: {
+                                expandedClothesPresented.toggle()
+                                expandedClothesChosen = view
+                                
+                            }) {
+                                
+                                Clothes(item: view.id)
+                                    .frame(width: 112, height: 140)
+                                
+                            }
+                        }
+                    }.padding(10)
+                }
+                .padding(.trailing, 15)
                 HStack {
                     Text("Shoes")
                         .foregroundColor(.black)
@@ -101,32 +170,52 @@ struct FavoriteClothes: View {
                         .fontWeight(.heavy)
                         .padding(.leading, 15)
                         .padding(.top, 20)
-                    Text("(2)")
+                    Text("\(shoes?.count ?? 0)")
                         .foregroundColor(.gray)
                         .font(.system( size: 20))
                         .fontWeight(.heavy)
                         .padding(.top, 20)
+                    Spacer()
                 }
-                //  ScrollView(.horizontal, showsIndicators: true) {
-                //     LazyHGrid(rows: [GridItem(.fixed(130))], spacing: 10) {
-                //    ForEach(items, id: \.self) { item in
-                //    TestClothes(item: item)
-                //        .frame(width: 120, height: 140)
-                //    }
-                //  }
-                //.padding(10)
-                //  }.padding(.trailing, 15)
-                
-                Color.white
-                    .frame(width: UIScreen.main.bounds.width, height: 100)
-                
+                //                        ScrollView(.horizontal) {
+                LazyHStack(spacing: 10) {
+                    ForEach(shoes ?? [], id: \.self) { view in
+                        Button(action: {
+                            expandedClothesPresented.toggle()
+                            expandedClothesChosen = view
+                            
+                        }) {
+                            
+                            Clothes(item: view.id)
+                                .frame(width: 112, height: 140)
+                        }
+                    }
+                }
+                .sheet(isPresented: $expandedClothesPresented, onDismiss: {
+                    populateArrays {
+                        print("Arrays are updated again")
+                    }
+                }) {
+                    
+                    if let expandedClothesChosen = expandedClothesChosen {
+                        ExpandedClothesView(mainClothe: expandedClothesChosen)
+                    }
+                }
+                .padding(10)
+                .onAppear {
+                    populateArrays {
+                        print("Arrays are updated")
+                    }
+                    Color.white
+                        .frame(width: UIScreen.main.bounds.width, height: 100)
+                    
+                }
             }
+            .padding(.top, 40)
+            .ignoresSafeArea(.all)
         }
-        .padding(.top, 40)
-        .ignoresSafeArea(.all)
-    }
         
-    
+    }
 }
 
 

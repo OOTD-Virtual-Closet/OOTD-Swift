@@ -50,8 +50,9 @@ struct ExpandedClothesView: View {
            }
        }
    }
-
-
+    @State var showAlert =  false
+    @State var showSheet = false
+    
     var body: some View {
             ZStack(alignment: .top) {
                 ScrollView(showsIndicators: false){
@@ -129,24 +130,63 @@ struct ExpandedClothesView: View {
 
                         
                     }
-                    Button(action: {
-                        let clothViewModel = ClothViewModel()
-                        clothViewModel.deleteCloth(cloth: mainClothe)
-                        presentationMode.wrappedValue.dismiss()
-                            }) {
-                                HStack(spacing: 10) {
-                                    Image(systemName: "trash.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 20, height: 20)
-                                        .foregroundColor(.white)
-                                    Text("Delete")
-                                        .foregroundColor(.white)
+                    //buttons
+                    HStack {
+                        Button(action: {
+                            showAlert.toggle()
+                                }) {
+                                    HStack(spacing: 10) {
+                                        Image(systemName: "trash.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 20, height: 20)
+                                            .foregroundColor(.white)
+                                        Text("Delete")
+                                            .foregroundColor(.white)
+                                    }
+                                    .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                                    .background(Color.red)
+                                    .cornerRadius(10)
                                 }
-                                .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                .background(Color.red)
-                                .cornerRadius(10)
-                            }
+                        Button(action: {
+                            showSheet.toggle()
+                                }) {
+                                    HStack(spacing: 10) {
+                                        Image(systemName: "applepencil.gen1")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 20, height: 20)
+                                            .foregroundColor(.white)
+                                        Text("Edit")
+                                            .foregroundColor(.white)
+                                    }
+                                    .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                                    .background(Color.blue)
+                                    .cornerRadius(10)
+                                }
+                        Button(action: {
+                            let clothViewModel = ClothViewModel()
+                            clothViewModel.addClothToFavorites(cloth: mainClothe)
+                            presentationMode.wrappedValue.dismiss()
+                                }) {
+                                    HStack(spacing: 10) {
+                                        Image(systemName: "star.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 20, height: 20)
+                                            .foregroundColor(.white)
+                                        Text("Favorite")
+                                            .foregroundColor(.white)
+                                    }
+                                    .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                                    .background(Color(hex: "9278E0"))
+                                    .cornerRadius(10)
+                                }
+
+                        
+                    }
+                    
+                    
                 }
                 Rectangle()
                     .foregroundColor(Color(hex: "9278E0"))
@@ -162,10 +202,21 @@ struct ExpandedClothesView: View {
                     Spacer()
                 }.padding(.top, 20)
                 
-            }.onAppear {
+            }
+            .onAppear {
                 fetchClothFromFirestore {
                     print("fetched cloth and stuff")
                 }
+            }
+            .sheet(isPresented: $showSheet) {
+                EditClothesView(mainClothe: mainClothe)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Error"), message: Text("If any outfits contain this cloth, they will be deleted as well. Are you sure you want to proceed?"), primaryButton: .destructive(Text("Delete")) {
+                    let clothViewModel = ClothViewModel()
+                    clothViewModel.deleteCloth(cloth: mainClothe)
+                    presentationMode.wrappedValue.dismiss()
+                }, secondaryButton: .cancel(Text("Cancel")))
             }
         }
 }
