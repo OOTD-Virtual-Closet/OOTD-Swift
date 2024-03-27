@@ -12,6 +12,55 @@ import FirebaseFirestore
 class OutfitViewModel: ObservableObject {
     let db = Firestore.firestore()
     
+    func addFitToFavorites(outfit: Outfit) {
+        let userId = Auth.auth().currentUser?.uid ?? ""
+        let userRef = db.collection("users").document(userId)
+        
+        userRef.updateData([
+            "favoriteFits": FieldValue.arrayUnion([outfit.id])
+        ]) { error in
+            if let error = error {
+                print("Error updating user document: \(error)")
+            } else {
+                print("User document updated successfully!")
+            }
+        }
+        
+    }
+    
+    func deleteFit(outfit: Outfit) {
+        let userId = Auth.auth().currentUser?.uid ?? ""
+        let fitUUID = outfit.id
+        
+        let userRef = db.collection("users").document(userId)
+        userRef.updateData(["outfits": FieldValue.arrayRemove([fitUUID])]) { error in
+            if let error = error {
+                print("Error removing cloth from user's cloth array: \(error)")
+            } else {
+                print("Cloth removed from user's cloth array successfully")
+            }
+        }
+        userRef.updateData([
+                "favoriteFits": FieldValue.arrayRemove([fitUUID])
+            ]) { error in
+                if let error = error {
+                    print("Error removing outfit from user's favorites: \(error)")
+                } else {
+                    print("Outfit removed from user's favorites successfully")
+                }
+            }
+        let fitRef = db.collection("outfits").document(fitUUID)
+        fitRef.delete {
+            error in
+            if let error = error {
+                print("error removing fit document: \(error)")
+            } else {
+                print("Outfit Document deleted successfully")
+            }
+        }
+        
+    }
+    
     func addOutfitToCurrentUser(outfit: Outfit) {
         if let userId = Auth.auth().currentUser?.uid {
             let userRef = db.collection("users").document(userId)
