@@ -30,7 +30,7 @@ struct TrendingView: View {
     
     var body: some View {
         VStack {
-            Text("36 items")
+            Text("\(cartItems.count) items")
                 .foregroundColor(.gray)
                 .font(.system( size: 13))
                 .fontWeight(.heavy)
@@ -44,11 +44,12 @@ struct TrendingView: View {
                     isShowingCart.toggle()
                 }) {
                     Image(systemName: "cart.fill")
+                        .foregroundColor(.black)
                 }
                 .sheet(isPresented: $isShowingCart) {
                     ShoppingCartView(cartItems: cartItems)
                 }
-                Text("Shopping Cart")
+                Text("Wish List")
                     .foregroundColor(.black)
                     .font(.system( size: 18))
                     .fontWeight(.heavy)
@@ -108,6 +109,9 @@ struct TrendingView: View {
         .sheet(isPresented: $isShowingDetails) {
             ClothingItemDetailsView(item: trendingItems[currentIndex], addToCart: {item in cartItems.append(item)
                 print("Item added to cart: \(item.name)")
+                if let index = trendingItems.firstIndex(where: { $0.id == item.id }) {
+                                        currentIndex = index
+                                    }
             })
         }
     }
@@ -117,11 +121,16 @@ struct ShoppingCartView: View {
     
     var body: some View {
         VStack {
-            Text("Shopping Cart")
+            Text("Wish List")
                 .font(.title)
                 .fontWeight(.bold)
             List(cartItems) { item in
-                Text(item.name)
+                HStack {
+                    Image(item.image)
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                    Text(item.name)
+                }
             }
             Spacer()
         }
@@ -243,7 +252,7 @@ struct ClothingItemDetailsView: View {
                     addToCart(item)
                     presentationMode.wrappedValue.dismiss()
                 }) {
-                    Text("Add to Cart")
+                    Text("Add to WishList")
                         .foregroundColor(.black)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 10)

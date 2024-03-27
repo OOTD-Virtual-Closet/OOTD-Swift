@@ -1,30 +1,31 @@
 import SwiftUI
-
-struct ClothingItem: Codable {
-    let name:String
-    let price:String
-    let imageURL: URL
-}
+import FirebaseStorage
+import FirebaseFirestore
 
 struct CategoriesView: View {
     @State private var searchText = ""
     @State private var isEditing = false
     @State private var showPopUp = false
     @State private var selectedCategory: String?
-    @State private var isLoading = false
-    @State private var clothingItems: [ClothingItem] = []
+    
     private let gridItems = [GridItem(.flexible()), GridItem(.flexible())]
     
     let categories = ["Shirts", "Jackets", "Shoes", "Pants", "Hats"]
     
+    let clothingItems: [ClothingItemElements] = [
+        ClothingItemElements(name: "Shirts", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing1", price: "$49.99", description: "A cool piece of clothing.", color: "#33673B"),
+        ClothingItemElements(name: "Clothing 2", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing2", price: "$59.99", description: "Another cool piece of clothing.", color: "#3E8989"),
+        ClothingItemElements(name: "Clothing 3", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing3", price: "$39.99", description: "Yet another cool piece of clothing.", color: "#D1B490"),
+        ClothingItemElements(name: "Clothing 1", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing1", price: "$39.99", description: "Yet another cool piece of clothing.", color: "#D1B490")
+    ]
     
-    //    var filteredItems: [ClothingItemElements] {
-    //        if let selectedCategory = selectedCategory {
-    //            return clothingItems.filter { $0.name == selectedCategory }
-    //        } else {
-    //            return clothingItems
-    //        }
-    //    }
+    var filteredItems: [ClothingItemElements] {
+        if let selectedCategory = selectedCategory {
+            return clothingItems.filter { $0.name == selectedCategory }
+        } else {
+            return clothingItems
+        }
+    }
     
     var body: some View {
         ScrollView (showsIndicators: false) {
@@ -54,6 +55,7 @@ struct CategoriesView: View {
                         ForEach(categories, id: \.self) { category in
                             Button(action: {
                                 if selectedCategory == category {
+                                    // Deselect the category if it's already selected
                                     selectedCategory = nil
                                 } else {
                                     selectedCategory = category
@@ -72,67 +74,42 @@ struct CategoriesView: View {
                 }
                 
                 Spacer()
-//                if isLoading {
-//                    ProgressView()
-//                        .padding()
-//                } else {
-//                    ForEach(clothingItems, id: \.name) {item in
-//                        ClothingTileView(item: item)
-//                    }
-//                }
-            }
-        }
-        .onAppear {
-            fetchClothingItems()
-        }
-    }
-    func fetchClothingItems() {
-        isLoading = true
-        let headers = [
-            "X-RapidAPI-Key": "7e761747e3msh0b7e60525a8cee7p17fdd2jsn0647c8fd67f0",
-            "X-RapidAPI-Host": "asos-com1.p.rapidapi.com"
-        ]
-        guard let url = URL(string: "https://asos-com1.p.rapidapi.com/products/detail?url=only-sons%2Fonly-sons-oversized-twill-worker-jacket-in-camo%2Fprd%2F203998871") else {
-            print("Invalid URL")
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print("No data received: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                print(httpResponse)
-            }
-            
-            do {
-                        let clothingItemDetail = try JSONDecoder().decode(ClothingItem.self, from: data)
-                        DispatchQueue.main.async {
-                            // Update UI to display the clothing item detail
-                            self.clothingItems = [clothingItemDetail]
-                            self.isLoading = false
-                        }
-                    } catch {
-                        print("Error decoding JSON: \(error.localizedDescription)")
+                
+                LazyVGrid(columns: gridItems, spacing: 20) {
+                    ForEach(filteredItems) { item in
+                        ClothingTileView(item: item)
                     }
-        }.resume()
+                }
+                .padding(.horizontal, 15)
+                .padding(.bottom, 20)
+            }
+        }
     }
 }
 
+func fetchClothFromFirestore(completion: @escaping () -> Void, item: String) {
+    @StateObject var imageLoader = ImageLoader() // Image load
+    let storageRef = Storage.storage().reference()
+    storageRef.child("clothesDataset/1163.jpeg").downloadURL { url, error in
+        if let url = url {
+            // Load image using image loader
+            imageLoader.loadImage(from: url)
+        } else if let error = error {
+            print("Error downloading image: \(error.localizedDescription)")
+        }
+        completion() // Call completion handler after fetching image
+    }
+}
 
 struct ClothingTileView: View {
-    let item: ClothingItem
+    let item: ClothingItemElements
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            AsyncImage(url: item.imageURL)
-                .frame(width: 150, height:200)
+            Image(item.image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 150, height: 200)
                 .cornerRadius(25)
             
             Text(item.name)
@@ -145,40 +122,6 @@ struct ClothingTileView: View {
         .padding(8)
         .background(Color.white)
         .cornerRadius(10)
-    }
-}
-
-struct AsyncImage: View {
-    @StateObject private var imageLoader = ImageLoader2()
-    let url: URL
-    
-    var body: some View {
-        if let image = imageLoader.image {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-        } else {
-            ProgressView()
-                .onAppear {
-                    imageLoader.loadImage(from: url)
-                }
-        }
-    }
-}
-
-class ImageLoader2: ObservableObject {
-    @Published var image: UIImage?
-    
-    func loadImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else {
-                print("No data received: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            DispatchQueue.main.async {
-                self.image = UIImage(data: data)
-            }
-        }.resume()
     }
 }
 
