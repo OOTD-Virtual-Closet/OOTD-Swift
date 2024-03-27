@@ -251,7 +251,6 @@ struct Login: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
-
                     // #### NEED TO ADD NAV LOCATIONS ####
                 //    GoogleSignInButton(action: {
                      //   loginVM.signUpWithGoogle()
@@ -265,7 +264,8 @@ struct Login: View {
 //                            RoundedRectangle(cornerRadius: 8)
 //                                .stroke(Color.black, lineWidth: 1)
 //                        )
-//                    
+//
+                    
                     Button (action: {
                        // handle google login
                         print("Login with Apple")
@@ -280,7 +280,6 @@ struct Login: View {
                 Spacer()
             }
         }
-
     }
 }
 extension String {
