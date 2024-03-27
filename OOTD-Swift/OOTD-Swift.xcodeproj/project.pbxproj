@@ -167,6 +167,7 @@
 		CC22F0D72BAC82D200648F7F /* RecommendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedView.swift; sourceTree = "<group>"; };
 		CC95B8F92B82AC360034B352 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		CCA40F9E2B86F92E0032EFFF /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		CCAA74822BB3916100D08997 /* TestOOTD.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; name = TestOOTD.mobileprovision; path = ../../../../Downloads/TestOOTD.mobileprovision; sourceTree = "<group>"; };
 		CCDE677E2B7F1E9C00599FE8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		CCDE67832B8138BD00599FE8 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -366,6 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */,
+				CCAA74822BB3916100D08997 /* TestOOTD.mobileprovision */,
 				343F07822B86C93C007DBE14 /* ViewModels */,
 				343F07812B86C927007DBE14 /* Models */,
 				343F077B2B86B349007DBE14 /* Authentication */,
