@@ -1,3 +1,4 @@
+
 //
 //  TrendingView.swift
 //  OOTD-Swift
@@ -19,11 +20,14 @@ struct ClothingItemElements: Identifiable {
 struct TrendingView: View {
     @State private var currentIndex = 0
     @State private var isShowingDetails = false
+    @State private var isShowingCart = false
     let trendingItems: [ClothingItemElements] = [
         ClothingItemElements(name: "Clothing 1", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing1", price: "$49.99", description: "A cool piece of clothing.", color: "#33673B"),
         ClothingItemElements(name: "Clothing 2",descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing2", price: "$59.99", description: "Another cool piece of clothing.", color: "#3E8989"),
         ClothingItemElements(name: "Clothing 3",descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing3", price: "$39.99", description: "Yet another cool piece of clothing.", color: "#D1B490")
     ]
+    @State private var cartItems: [ClothingItemElements] = []
+    
     var body: some View {
         VStack {
             Text("36 items")
@@ -35,7 +39,15 @@ struct TrendingView: View {
                 .padding(.leading, 10)
                 .padding(.top, 10)
             HStack {
-                Image(systemName: "cart.fill")
+                
+                Button(action: {
+                    isShowingCart.toggle()
+                }) {
+                    Image(systemName: "cart.fill")
+                }
+                .sheet(isPresented: $isShowingCart) {
+                    ShoppingCartView(cartItems: cartItems)
+                }
                 Text("Shopping Cart")
                     .foregroundColor(.black)
                     .font(.system( size: 18))
@@ -45,7 +57,7 @@ struct TrendingView: View {
             }
             .padding(.leading, 35)
             .padding(.bottom, 20)
-//            Spacer()
+            //            Spacer()
             
             Button(action: {
                 isShowingDetails = true
@@ -94,12 +106,31 @@ struct TrendingView: View {
             Spacer()
         }
         .sheet(isPresented: $isShowingDetails) {
-            ClothingItemDetailsView(item: trendingItems[currentIndex])
+            ClothingItemDetailsView(item: trendingItems[currentIndex], addToCart: {item in cartItems.append(item)
+                print("Item added to cart: \(item.name)")
+            })
         }
     }
 }
+struct ShoppingCartView: View {
+    var cartItems: [ClothingItemElements]
+    
+    var body: some View {
+        VStack {
+            Text("Shopping Cart")
+                .font(.title)
+                .fontWeight(.bold)
+            List(cartItems) { item in
+                Text(item.name)
+            }
+            Spacer()
+        }
+    }
+}
+
 struct ClothingItemDetailsView: View {
     var item: ClothingItemElements
+    var addToCart: (ClothingItemElements) -> Void
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
@@ -209,6 +240,8 @@ struct ClothingItemDetailsView: View {
                 .padding(.leading, 10)
                 Button(action: {
                     print("Add to Cart")
+                    addToCart(item)
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Add to Cart")
                         .foregroundColor(.black)

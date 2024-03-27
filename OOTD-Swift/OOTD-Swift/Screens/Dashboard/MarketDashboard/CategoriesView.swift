@@ -72,14 +72,14 @@ struct CategoriesView: View {
                 }
                 
                 Spacer()
-                if isLoading {
-                    ProgressView()
-                        .padding()
-                } else {
-                    ForEach(clothingItems, id: \.name) {item in
-                        ClothingTileView(item: item)
-                    }
-                }
+//                if isLoading {
+//                    ProgressView()
+//                        .padding()
+//                } else {
+//                    ForEach(clothingItems, id: \.name) {item in
+//                        ClothingTileView(item: item)
+//                    }
+//                }
             }
         }
         .onAppear {
