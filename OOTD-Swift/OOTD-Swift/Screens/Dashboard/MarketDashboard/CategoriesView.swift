@@ -87,37 +87,63 @@ struct CategoriesView: View {
     }
 }
 
-func fetchClothFromFirestore(completion: @escaping () -> Void, item: String) {
-    @StateObject var imageLoader = ImageLoader() // Image load
-    let storageRef = Storage.storage().reference()
-    storageRef.child("clothesDataset/1163.jpeg").downloadURL { url, error in
-        if let url = url {
-            // Load image using image loader
-            imageLoader.loadImage(from: url)
-        } else if let error = error {
-            print("Error downloading image: \(error.localizedDescription)")
-        }
-        completion() // Call completion handler after fetching image
-    }
-}
-
 struct ClothingTileView: View {
-    let item: ClothingItemElements
+    @StateObject private var imageLoader = ImageLoader()
+    @State private var stylesData:Data?
     
+    func fetchClothImages(completion: @escaping () -> Void) {
+        let storageRef = Storage.storage().reference()
+        storageRef.child("clothesDataset/1163.jpg").downloadURL { url, error in
+            if let url = url {
+                // Load image using image loader
+                imageLoader.loadImage(from: url)
+            } else if let error = error {
+                print("Error downloading image: \(error.localizedDescription)")
+            }
+            storageRef.child("clothesDataset/styles.csv").getData(maxSize: 1 * 1024 * 1024) { data, error in
+                            if let error = error {
+                                print("Error downloading styles.csv: \(error.localizedDescription)")
+                            } else {
+                                self.stylesData = data
+                            }
+                            completion()
+                        }
+            completion() // Call completion handler after fetching image
+        }
+    }
+    
+    let item: ClothingItemElements
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Image(item.image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+            RoundedRectangle(cornerRadius: 10)
                 .frame(width: 150, height: 200)
                 .cornerRadius(25)
-            
+                .overlay(
+                    Group {
+                        if let image = imageLoader.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 150, height: 240)
+                                .cornerRadius(25)
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 150, height: 200)
+                                .cornerRadius(25)
+                        }
+                    }
+                )
             Text(item.name)
                 .font(.headline)
             
             Text(item.price)
                 .font(.subheadline)
                 .foregroundColor(.gray)
+        }
+        .onAppear{
+            fetchClothImages{
+                print("Success Clothes Images uploaded")
+            }
         }
         .padding(8)
         .background(Color.white)
