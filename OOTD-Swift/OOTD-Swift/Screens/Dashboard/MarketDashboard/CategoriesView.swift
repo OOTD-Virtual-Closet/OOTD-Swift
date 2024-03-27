@@ -265,6 +265,7 @@ struct CategoriesView: View {
                         .cornerRadius(8)
                 }
                 .padding()
+                .padding(.bottom, 30)
             }
         }
     }
