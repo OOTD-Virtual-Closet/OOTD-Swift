@@ -90,6 +90,7 @@
 		CCA40F9F2B86F92E0032EFFF /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA40F9E2B86F92E0032EFFF /* SplashScreenView.swift */; };
 		CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE677E2B7F1E9C00599FE8 /* Login.swift */; };
 		CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE67832B8138BD00599FE8 /* Signup.swift */; };
+		CCEEB7BF2BB49B8F00B40AE2 /* styles.csv in Resources */ = {isa = PBXBuildFile; fileRef = CCEEB7BE2BB49B8F00B40AE2 /* styles.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,6 +171,7 @@
 		CCAA74822BB3916100D08997 /* TestOOTD.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; name = TestOOTD.mobileprovision; path = ../../../../Downloads/TestOOTD.mobileprovision; sourceTree = "<group>"; };
 		CCDE677E2B7F1E9C00599FE8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		CCDE67832B8138BD00599FE8 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
+		CCEEB7BE2BB49B8F00B40AE2 /* styles.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = styles.csv; path = ../../../../../../../Downloads/styles.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,6 +307,7 @@
 		34A177F42B81544400265C56 /* MarketDashboard */ = {
 			isa = PBXGroup;
 			children = (
+				CCEEB7BE2BB49B8F00B40AE2 /* styles.csv */,
 				34A178052B81558E00265C56 /* CategoriesView.swift */,
 				34A178072B81559600265C56 /* TrendingView.swift */,
 				34C8281E2B88581B007AE17F /* MarketNav.swift */,
@@ -560,6 +563,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCEEB7BF2BB49B8F00B40AE2 /* styles.csv in Resources */,
 				8985B7772B75D7A7000E8DED /* Preview Assets.xcassets in Resources */,
 				8985B7732B75D7A7000E8DED /* Assets.xcassets in Resources */,
 				CC1AAF4A2BA802B80093EAA6 /* GoogleService-Info.plist in Resources */,
