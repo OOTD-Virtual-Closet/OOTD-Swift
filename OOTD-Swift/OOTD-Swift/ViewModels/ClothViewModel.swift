@@ -25,6 +25,15 @@ class ClothViewModel: ObservableObject {
                    self.deleteClothDocument(cloth: cloth)
                }
            }
+        userRef.updateData([
+                "favorites": FieldValue.arrayRemove([clothUUID])
+            ]) { error in
+                if let error = error {
+                    print("Error removing cloth from user's favorites: \(error)")
+                } else {
+                    print("cloth removed from user's favorites successfully")
+                }
+            }
        }
     
     func deleteClothDocument(cloth: Cloth) {
@@ -97,8 +106,6 @@ class ClothViewModel: ObservableObject {
 
         if let userId = Auth.auth().currentUser?.uid {
             let userRef = db.collection("users").document(userId)
-
-            let clothRef = db.collection("clothes").document(cloth.id)
                     userRef.updateData([
                         "favorites": FieldValue.arrayUnion([cloth.id])
                     ]) { error in
