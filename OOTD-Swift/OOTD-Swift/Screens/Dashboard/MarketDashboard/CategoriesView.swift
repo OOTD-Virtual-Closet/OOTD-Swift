@@ -2,11 +2,18 @@ import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
 
+struct ClothingElements: Identifiable {
+    var id: String
+    var subCategory: String
+    var articleType: String
+    var baseColor: String
+    var displayName: String
+}
 struct CategoriesView: View {
     @State private var searchText = ""
     @State private var isEditing = false
     @State private var showPopUp = false
-    @State private var numbersIndex = 0
+    @State private var numbersIndex = 4
     @State private var selectedCategory: String?
     @State private var numbers: [Int] = [
         1163, 1164, 1165, 1525, 1526, 1528, 1529, 1530, 1531, 1532, 1533, 1534, 1535, 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544]
@@ -16,21 +23,26 @@ struct CategoriesView: View {
     
     let categories = ["Shirts", "Jackets", "Shoes", "Pants", "Hats"]
     
-    let clothingItems: [ClothingItemElements] = [
-        ClothingItemElements(name: "Shirts", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing1", price: "$49.99", description: "A cool piece of clothing.", color: "#33673B"),
-        ClothingItemElements(name: "Clothing 2", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing2", price: "$59.99", description: "Another cool piece of clothing.", color: "#3E8989"),
-        ClothingItemElements(name: "Clothing 3", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing3", price: "$39.99", description: "Yet another cool piece of clothing.", color: "#D1B490"),
-        ClothingItemElements(name: "Clothing 1", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing1", price: "$39.99", description: "Yet another cool piece of clothing.", color: "#D1B490")
+    let initialClothingItems: [ClothingElements] = [
+        ClothingElements(id: "1163", subCategory: "Topwear", articleType: "T-Shirt", baseColor: "Blue", displayName: "Nike Sahara Team India Fanwear Round Neck Jersey"),
+        ClothingElements(id: "1164", subCategory: "Topwear", articleType: "Tshirts", baseColor: "Blue", displayName: "Nike Men Blue T20 Indian Cricket Jersey"),
+        ClothingElements(id: "1165", subCategory: "Topwear", articleType: "Tshirts", baseColor: "Blue", displayName: "Nike Mean Team India Cricket Jersey"),
+        ClothingElements(id: "1525", subCategory: "Bags", articleType: "Backpacks", baseColor: "Navy", displayName: "Puma Deck Navy Blue Backpack")
     ]
+    @State private var clothingItems: [ClothingElements] = []
+    @State private var itemsToLoad = 4
     
-    var filteredItems: [ClothingItemElements] {
-        if let selectedCategory = selectedCategory {
-            return clothingItems.filter { $0.name == selectedCategory }
-        } else {
-            return clothingItems
+    private func loadMoreItems() {
+        let endIndex = min(numbers.count, numbersIndex + itemsToLoad)
+        let idsToLoad = numbers[numbersIndex..<endIndex]
+        
+        for id in idsToLoad {
+            let clothingItem = ClothingElements(id: "\(id)", subCategory: "", articleType: "", baseColor: "", displayName: "")
+            clothingItems.append(clothingItem)
         }
+        
+        numbersIndex = endIndex
     }
-    
     var body: some View {
         ScrollView (showsIndicators: false) {
             VStack (alignment: .leading) {
@@ -78,19 +90,25 @@ struct CategoriesView: View {
                 }
                 
                 Spacer()
-                
                 LazyVGrid(columns: gridItems, spacing: 20) {
-                    ForEach(filteredItems.indices, id: \.self) { index in
-                        let currentIndex = (numbersIndex + index) % numbers.count
-                        let imageName = "\(numbers[currentIndex]).jpg"
-                        ClothingTileView(item: filteredItems[index], imageName: imageName)
+                    ForEach(clothingItems, id: \.id) { item in
+                        ClothingTileView(item: item)
                     }
                 }
+                .padding()
                 .onAppear {
-                    numbersIndex = (numbersIndex + filteredItems.count) % numbers.count
+                    loadMoreItems()
                 }
-                .padding(.horizontal, 15)
-                .padding(.bottom, 20)
+                Button(action: {
+                    loadMoreItems()
+                }) {
+                    Text("Load More")
+                        .padding()
+                        .background(Color.black)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
             }
         }
     }
@@ -98,11 +116,10 @@ struct CategoriesView: View {
 
 struct ClothingTileView: View {
     @StateObject private var imageLoader = ImageLoader()
-    let item: ClothingItemElements
-    let imageName: String
+    let item: ClothingElements
     func fetchClothImages(completion: @escaping () -> Void) {
         let storageRef = Storage.storage().reference()
-        storageRef.child("clothesDataset/\(imageName)").downloadURL { url, error in
+        storageRef.child("clothesDataset/\(item.id).jpg").downloadURL { url, error in
             if let url = url {
                 // Load image using image loader
                 imageLoader.loadImage(from: url)
@@ -132,10 +149,10 @@ struct ClothingTileView: View {
                         }
                     }
                 )
-            Text(item.name)
+            Text(item.articleType)
                 .font(.headline)
             
-            Text(item.price)
+            Text(item.baseColor)
                 .font(.subheadline)
                 .foregroundColor(.gray)
         }
