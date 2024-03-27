@@ -37,6 +37,16 @@ final class ProfileViewModelChangeUser: ObservableObject {
             print("invalid username")
             throw changeUsernameErrors.invalidUsername
         }
+        
+        do {
+            let user = try GetAuthenticatedUser()
+            let db = Firestore.firestore()
+            let userId = user.uid
+            try await db.collection("users").document(userId).setData(["username" : user2], merge:true)
+            print(userId)
+        } catch {
+            
+        }
 
     }
     
@@ -138,10 +148,10 @@ struct ChangeUsernameUI: View {
                             }
                         } label: {
                             HStack {
-                                Text("DELETE")
+                                Text("Change Username")
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                                 .frame(height:50)
-                                .foregroundColor(.red)
+                                .foregroundColor(.black)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
                                 .background(Color("UIpurple"))
@@ -149,6 +159,10 @@ struct ChangeUsernameUI: View {
                             }
                         }
                         .padding(.horizontal)
+                        .background(NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
+                            .environmentObject(LogInVM())) { EmptyView() }.hidden())
+                        .navigationBarBackButtonHidden(true)
+                        .environmentObject(LogInVM())
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
