@@ -103,15 +103,14 @@ struct TrendingView: View {
                         .cornerRadius(10)
                 }
             }
-            //            .padding(.horizontal, 25)
             Spacer()
         }
         .sheet(isPresented: $isShowingDetails) {
             ClothingItemDetailsView(item: trendingItems[currentIndex], addToCart: {item in cartItems.append(item)
                 print("Item added to cart: \(item.name)")
                 if let index = trendingItems.firstIndex(where: { $0.id == item.id }) {
-                                        currentIndex = index
-                                    }
+                    currentIndex = index
+                }
             })
         }
     }

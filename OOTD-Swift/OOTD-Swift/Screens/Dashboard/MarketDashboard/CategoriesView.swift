@@ -21,6 +21,8 @@ struct ClothingElements: Identifiable {
 struct CategoriesView: View {
     @State private var searchText = ""
     @State private var isEditing = false
+    @State private var cartItems: [ClothingItemElements] = []
+    @State private var isShowingCart = false
     @State private var showPopUp = false
     @State private var numbersIndex = 0
     @State private var selectedCategory: String?
@@ -202,7 +204,7 @@ struct CategoriesView: View {
     var body: some View {
         ScrollView (showsIndicators: false) {
             VStack (alignment: .leading) {
-                Text("36 items")
+                Text("\(cartItems.count) items")
                     .foregroundColor(.gray)
                     .font(.system(size: 13))
                     .fontWeight(.heavy)
@@ -212,10 +214,18 @@ struct CategoriesView: View {
                     .padding(.top, 10)
                     .padding(.leading, 10)
                 HStack {
-                    Image(systemName: "cart.fill")
-                    Text("Shopping Cart")
+                    Button(action: {
+                        isShowingCart.toggle()
+                    }) {
+                        Image(systemName: "cart.fill")
+                            .foregroundColor(.black)
+                    }
+                    .sheet(isPresented: $isShowingCart) {
+                        ShoppingCartView(cartItems: cartItems)
+                    }
+                    Text("Wish List")
                         .foregroundColor(.black)
-                        .font(.system(size: 18))
+                        .font(.system( size: 18))
                         .fontWeight(.heavy)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 15)
