@@ -218,7 +218,6 @@ struct Signup: View {
                        //         .stroke(Color.black, lineWidth: 1)
                    //     )
                     
-                    
                     Button (action: {
                        // handle google login
                         print("Sign up with Apple")
