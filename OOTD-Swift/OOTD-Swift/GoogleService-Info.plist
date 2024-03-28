@@ -21,6 +21,8 @@
 	<string>779358043811-o6f5mdneu82vvndeo5sthuu8307ms0v2.apps.googleusercontent.com</string>
 	<key>GCM_SENDER_ID</key>
 	<string>779358043811</string>
+	<key>GIDClientID</key>
+	<string>779358043811-o6f5mdneu82vvndeo5sthuu8307ms0v2.apps.googleusercontent.com</string>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:779358043811:ios:c916d6d12f260a5d078916</string>
 	<key>IS_ADS_ENABLED</key>
