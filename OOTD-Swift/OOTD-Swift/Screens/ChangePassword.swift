@@ -7,22 +7,54 @@
 
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
 
 
-enum ChangePasswordtErrors: Error{
+enum ChangePasswordErrors: Error{
     case invalidNewPass
+    case incorrectOldPass
+    case notMatching
 }
 
 @MainActor
 final class ProfileViewModelChangePassword: ObservableObject {
-    func ChangePassword(password:String) throws {
-        try AuthManager.shared.changePassword(password: password)
+    func getAuthenticatedUser() throws -> AuthDataResultModel {
+        guard let user = Auth.auth().currentUser else {
+            throw URLError(.badServerResponse)
+        }
+        return AuthDataResultModel(user: user)
     }
     
-    func ChangePass(pass1: String, pass2: String) async throws {
-        guard isValidPassword(password: pass2) else {
-            throw ChangePasswordtErrors.invalidNewPass;
+    func ChangePass(newPassFirst: String, newPass: String) async throws {
+        guard isValidPassword(password: newPass) else {
+            throw ChangePasswordErrors.invalidNewPass;
         }
+        
+        guard passwordsMatching(pass1: newPassFirst, pass2: newPass) else {
+            throw ChangePasswordErrors.notMatching;
+        }
+        
+        /*
+        guard isCorrectOldPass(oldPass: oldPass) else {
+            print("incorrect old pass")
+            throw ChangePasswordErrors.incorrectOldPass;
+        }
+         */
+        
+        do {
+            let user = try getAuthenticatedUser()
+            let db = Firestore.firestore()
+            let userId = user.uid
+            try AuthManager.shared.changePassword(password: newPass)
+            SignUpViewModel().passwordEntered = newPass
+            try await db.collection("users").document(userId).setData(["password" : newPass], merge:true)
+        } catch {}
+    
+    }
+    
+    private func passwordsMatching (pass1: String, pass2: String) -> Bool {
+        return pass1 == pass2
     }
     
     private func isValidPassword(password: String) -> Bool {
@@ -34,12 +66,20 @@ final class ProfileViewModelChangePassword: ObservableObject {
         
         return passwordRegex.evaluate(with: password)
     }
+    
+    
+    private func isCorrectOldPass(oldPass: String) -> Bool {
+        let currPass = SignUpViewModel().passwordEntered
+        print("currPass " + currPass)
+        return currPass == oldPass
+    }
+    
 }
 
 struct ChangePasswordUI: View {
     @StateObject private var viewModel = ProfileViewModelChangePassword()
-    @State private var oldPass: String = ""
     @State private var newPass: String = ""
+    @State private var newPassConfirm: String = ""
     @State private var showingAlert = false
     @State private var alertMessage = ""
     
@@ -60,7 +100,7 @@ struct ChangePasswordUI: View {
                     
                     VStack {
                         HStack {
-                            TextField("Old Password...", text: $oldPass)
+                            TextField("New Password...", text: $newPass)
                             Image(systemName: "checkmark")
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)
@@ -74,7 +114,7 @@ struct ChangePasswordUI: View {
                         .padding()
                         
                         HStack {
-                            TextField("New Password...", text: $newPass)
+                            TextField("Confirm Password...", text: $newPassConfirm)
                             Image(systemName: "checkmark")
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)
@@ -120,17 +160,20 @@ struct ChangePasswordUI: View {
                             Task {
                                 do {
                                     //checks errors on if the password is correct or not
-                                    try await viewModel.ChangePass(pass1: oldPass, pass2: newPass)
-                                } catch LoginErrors.InvalidPassword {
+                                    try await viewModel.ChangePass(newPassFirst: newPass, newPass: newPassConfirm)
+                                    showingAlert = true
+                                    alertMessage = "Password changed!"
+                                } catch ChangePasswordErrors.invalidNewPass {
                                     print("Invalid Password")
                                     showingAlert = true
                                     alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
-                                }
-                                do {
-                                    
-                                    try viewModel.ChangePassword(password: newPass)
-                                } catch {
-                                    print("issue")
+                                } catch ChangePasswordErrors.incorrectOldPass {
+                                    print("incorrect old pass")
+                                    showingAlert = true
+                                    alertMessage = "The old password you entered is incorrect."
+                                } catch ChangePasswordErrors.notMatching {
+                                    showingAlert = true
+                                    alertMessage = "The two passwords do not match."
                                 }
                             }
                         } label: {
@@ -148,13 +191,15 @@ struct ChangePasswordUI: View {
                         }
                         .padding(.horizontal)
                         .alert(isPresented: $showingAlert) {
-                            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                            Alert(title: Text("Change Password Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
                     }
                     Spacer()
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
