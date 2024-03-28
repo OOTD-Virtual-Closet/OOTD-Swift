@@ -27,8 +27,6 @@ final class ProfileViewModelDeleteAcc: ObservableObject {
         let user = try AuthManager.shared.getAuthenticatedUser()
         return user
     }
-    
-   
 
     func deleteAcc(emailP1: String, emailP2: String) async throws {
         
@@ -40,7 +38,13 @@ final class ProfileViewModelDeleteAcc: ObservableObject {
             print("used wrong email")
             throw deleteAccountErrors.incorrectEmail
         }
-
+        
+        let user = try GetAuthenticatedUser()
+        let userId = user.uid
+        try await Auth.auth().currentUser?.delete()
+        let db = Firestore.firestore()
+        try await db.collection("users").document(userId).delete()
+        
     }
     
     private func emailsMatching (email1: String, email2: String) -> Bool {
@@ -49,13 +53,15 @@ final class ProfileViewModelDeleteAcc: ObservableObject {
     
     private func checkCorrectEmail (email: String) -> Bool {
         do {
-            let result = try GetAuthenticatedUser().email == email
+            let result = try GetAuthenticatedUser().email?.capitalized == email.capitalized
             return result
         } catch {
             print("couldnt get user")
             return false
         }
     }
+    
+    
 }
 
 struct ConfirmDelete: View {
@@ -169,8 +175,8 @@ struct DeleteAccountUI: View {
                     
                     VStack {
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
-                            .environmentObject(LogInVM())) {
+                        @State var login = true
+                        NavigationLink(destination: ProfileSummary(isAuthenticated: $login)) {
                             Text("BACK")
                             .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                             .frame(height:50)
@@ -185,8 +191,9 @@ struct DeleteAccountUI: View {
                         Button {
                             Task {
                                 do {
+                                    
                                     try await viewModel.deleteAcc(emailP1:email1, emailP2:confirmEmail)
-                                    isAuthenticated = true
+                                    isAuthenticated = false
                                     
                                 } catch deleteAccountErrors.notMatching {
                                     showingAlert = true
@@ -213,17 +220,33 @@ struct DeleteAccountUI: View {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
                         
+                        
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
+                            .environmentObject(LogInVM())) {
+                            Text("LOG IN PAGE")
+                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                            .frame(height:50)
+                            .foregroundColor(.black)
+                            .fontWeight(.bold)
+                            .padding(.horizontal)
+                            .background(Color("UIpurple"))
+                            .cornerRadius(10)
+                        }
+                        .padding(.horizontal)
+                        
                     }
                     Spacer()
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 
 struct Delete_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmDelete()
+        DeleteAccountUI()
     }
 }
