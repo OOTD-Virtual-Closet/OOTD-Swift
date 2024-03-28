@@ -33,7 +33,6 @@ final class AuthManager {
     }
     
     
-    
     func getAuthenticatedUser() throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
@@ -55,6 +54,7 @@ final class AuthManager {
     
     func signout() throws {
         try Auth.auth().signOut()
+        try GIDSignIn.sharedInstance.signOut()
     }
     func deleteAccount() async throws {
         guard let user = Auth.auth().currentUser else {
