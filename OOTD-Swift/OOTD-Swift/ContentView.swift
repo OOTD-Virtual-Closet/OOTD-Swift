@@ -37,18 +37,6 @@ struct ContentView: View {
         }
     }
 }
-//checks if quick login is enabled
-func checkQuickLogin() -> Bool {
-    // TODO: implement checkQuickLogin()
-    return false;
-}
-
-//checks if biometric login is enabled
-//returns true/false
-func checkBiometricLogin() -> Bool {
-    // TODO: implement checkBiometricLogin()
-    return false;
-}
 
 
 struct Previews_ContentView_Previews: PreviewProvider {

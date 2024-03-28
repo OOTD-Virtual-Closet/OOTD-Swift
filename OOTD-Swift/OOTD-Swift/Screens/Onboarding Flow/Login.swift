@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import GoogleSignInSwift
 import LocalAuthentication
+import GoogleSignIn
 
 enum LoginErrors: Error{
     case BlankForm
@@ -65,6 +66,39 @@ final class LoginViewModel: ObservableObject {
             }
         }
 
+    }
+    func signInWithGoogle() async -> Bool {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            fatalError("No client ID found in Firebase config")
+        }
+        let config = GIDConfiguration(clientID: clientID)
+        
+        guard let windowScene = await UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = await windowScene.windows.first,
+              let rootViewController = await window.rootViewController else {
+            print("There is no root view controller")
+            return false
+        }
+        do {
+            let userAuthentication = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
+            let user = userAuthentication.user
+            guard let idToken = user.idToken else {
+                //throw AuthenticationError.tokenError(message: "ID Token missing")
+                throw AuthenticationError.tokenError(message: "ID token missing")
+                print("Error")
+            }
+            let accessToken = user.accessToken
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+            
+            let result = try await Auth.auth().signIn(with: credential)
+            let firebase = result.user
+            print("User \(firebase.uid) has signed in ")
+            return true
+        } catch {
+            print(error.localizedDescription)
+            let errorMessage = error.localizedDescription
+            return false
+        }
     }
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
@@ -261,6 +295,35 @@ struct Login: View {
                     
 
                     // #### NEED TO ADD NAV LOCATIONS ####
+                    Button(action: {
+                        Task {
+                                let success = await viewModel.signInWithGoogle()
+                                if success {
+                                    print("Login with Google successful")
+                                    isAuthenticated = true
+                                } else {
+                                    // Handle sign-in failure
+                                    alertMessage = "Login wiht Google unsuccessful"
+                                    print("Login with Google unsuccessful")
+                                    isAuthenticated = false
+                                    showingAlert = true
+                                }
+                            }
+                    }) {
+                        Text("Login with Google")
+                            .foregroundColor(.black)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 20)
+                            .background() {
+                                Image("Google")
+                                    .padding(.leading)
+                                    .frame(width: 30)
+                            }
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                    }
+                    .buttonStyle(.bordered)
                 //    GoogleSignInButton(action: {
                      //   loginVM.signUpWithGoogle()
                     //    isAuthenticated = true;
