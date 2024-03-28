@@ -18,6 +18,7 @@ import Firebase
 enum changeUsernameErrors: Error{
     case notMatching
     case invalidUsername
+    case badWords
 }
 
 @MainActor
@@ -36,6 +37,11 @@ final class ProfileViewModelChangeUser: ObservableObject {
         guard isValidUsername(username: user1) else {
             print("invalid username")
             throw changeUsernameErrors.invalidUsername
+        }
+        
+        guard !containsBadWord(username: user1) else {
+            print("invalid username")
+            throw changeUsernameErrors.badWords
         }
         
         do {
@@ -61,6 +67,14 @@ final class ProfileViewModelChangeUser: ObservableObject {
         }
         return true;
     }
+    
+    private func containsBadWord(username: String) -> Bool {
+        print(username.contains("Fuck"))
+        print(username.contains("Hell"))
+        print(username.contains("Heck"))
+        return username.contains("Fuck") || username.contains("Hell") || username.contains("Heck")
+    }
+    
 }
 
 
@@ -137,13 +151,17 @@ struct ChangeUsernameUI: View {
                                 do {
                                     try await viewModel.changeUser(user1:username, user2:confirmUsername)
                                     isAuthenticated = true
-                                    
+                                    showingAlert = true
+                                    alertMessage = "Username changed!"
                                 } catch changeUsernameErrors.notMatching {
                                     showingAlert = true
                                     alertMessage = "The two usernames do not match"
                                 } catch changeUsernameErrors.invalidUsername {
                                     showingAlert = true
                                     alertMessage = "There should be less than 15 characters in the username"
+                                } catch changeUsernameErrors.badWords {
+                                    showingAlert = true
+                                    alertMessage = "Please make sure to not use any inappropriate words."
                                 }
                             }
                         } label: {
@@ -164,7 +182,7 @@ struct ChangeUsernameUI: View {
                         .navigationBarBackButtonHidden(true)
                         .environmentObject(LogInVM())
                         .alert(isPresented: $showingAlert) {
-                            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                            Alert(title: Text("Username Change Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
                         
                     }
@@ -172,6 +190,8 @@ struct ChangeUsernameUI: View {
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
