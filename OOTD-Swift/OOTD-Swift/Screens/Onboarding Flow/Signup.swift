@@ -7,6 +7,9 @@
 
 import SwiftUI
 import GoogleSignInSwift
+import FirebaseCore
+import GoogleSignIn
+import FirebaseAuth
 //import GoogleSignInSwift
 @MainActor
 final class SignUpViewModel: ObservableObject {
@@ -47,6 +50,40 @@ final class SignUpViewModel: ObservableObject {
         } catch {
             print("Invalid Sign Up")
             throw LoginErrors.InvalidSignup
+        }
+    }
+    
+    func signInWithGoogle() async -> Bool {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            fatalError("No client ID found in Firebase config")
+        }
+        let config = GIDConfiguration(clientID: clientID)
+        
+        guard let windowScene = await UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = await windowScene.windows.first,
+              let rootViewController = await window.rootViewController else {
+            print("There is no root view controller")
+            return false
+        }
+        do {
+            let userAuthentication = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
+            let user = userAuthentication.user
+            guard let idToken = user.idToken else {
+                //throw AuthenticationError.tokenError(message: "ID Token missing")
+                throw AuthenticationError.tokenError(message: "ID token missing")
+                print("Error")
+            }
+            let accessToken = user.accessToken
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+            
+            let result = try await Auth.auth().signIn(with: credential)
+            let firebase = result.user
+            print("User \(firebase.uid) has signed in ")
+            return true
+        } catch {
+            print(error.localizedDescription)
+            let errorMessage = error.localizedDescription
+            return false
         }
     }
     
@@ -208,25 +245,48 @@ struct Signup: View {
                         .fontWeight(.bold)
                     
                     
-                   // GoogleSignInButton(action: loginVM.signUpWithGoogle)
-                  //      .foregroundColor(.white)
-                   //     .font(.title)
-                   //     .bold()
-                   //     .frame(maxWidth: 350)
-                   //     .overlay(
-                      //      RoundedRectangle(cornerRadius: 8)
-                       //         .stroke(Color.black, lineWidth: 1)
-                   //     )
-                    
-                    Button (action: {
-                       // handle google login
-                        print("Sign up with Apple")
+                    Button(action: {
+                        Task {
+                                let success = await viewModel.signInWithGoogle()
+                                if success {
+                                    print("Login with Google successful")
+                                    isAuthenticated = true
+                                    signUpSuccess = true
+                                } else {
+                                    // Handle sign-in failure
+                                    alertMessage = "Login with Google unsuccessful"
+                                    print("Login with Google unsuccessful")
+                                    isAuthenticated = false
+                                    signUpSuccess = false
+                                    showingAlert = true
+                                }
+                            }
                     }) {
                         HStack {
-                            Text("Sign up with Apple")
+                            Image("Google")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 25, height: 30)
+                            Text("Signup with Google")
                                 .foregroundColor(.black)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
                         }
                     }
+                    .buttonStyle(.bordered)
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                    }
+                    
+//                    Button (action: {
+//                       // handle google login
+//                        print("Sign up with Apple")
+//                    }) {
+//                        HStack {
+//                            Text("Sign up with Apple")
+//                                .foregroundColor(.black)
+//                        }
+//                    }
                 }
                 
                 Spacer()

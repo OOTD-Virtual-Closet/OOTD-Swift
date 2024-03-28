@@ -21,7 +21,7 @@ struct ClothingElements: Identifiable {
 struct CategoriesView: View {
     @State private var searchText = ""
     @State private var isEditing = false
-    @State private var cartItems: [ClothingItemElements] = []
+    @State private var cartItems: [ClothingElements] = []
     @State private var isShowingCart = false
     @State private var showPopUp = false
     @State private var numbersIndex = 0
@@ -175,29 +175,29 @@ struct CategoriesView: View {
     @State private var clothingItems: [ClothingElements] = []
     @State private var itemsToLoad = 4
     var filteredClothingItems: [ClothingElements] {
-            if let selectedCategory = selectedCategory {
-                return clothingItems.filter { $0.subCategory == selectedCategory }
-            } else {
-                return clothingItems
-            }
+        if let selectedCategory = selectedCategory {
+            return clothingItems.filter { $0.subCategory == selectedCategory }
+        } else {
+            return clothingItems
         }
+    }
     private func loadMoreItems() {
         let endIndex = min(numbers.count, numbersIndex + itemsToLoad)
         let idsToLoad = numbers[numbersIndex..<endIndex]
         
         for id in idsToLoad {
-                    let subCategory = clothData[id]?["subCategory"] ?? "Unknown"
-                    let articleType = clothData[id]?["articleType"]
-                    let baseColor = clothData[id]?["baseColour"]
-                    let displayName = clothData[id]?["productDisplayName"]
-                    
-                    let clothingItem = ClothingElements(id: "\(id)", subCategory: subCategory, articleType: articleType, baseColor: baseColor, displayName: displayName)
-                    
-                    // Only append if no category is selected or matches the selected category
-                    if selectedCategory == nil || subCategory == selectedCategory {
-                        clothingItems.append(clothingItem)
-                    }
-                }
+            let subCategory = clothData[id]?["subCategory"] ?? "Unknown"
+            let articleType = clothData[id]?["articleType"]
+            let baseColor = clothData[id]?["baseColour"]
+            let displayName = clothData[id]?["productDisplayName"]
+            
+            let clothingItem = ClothingElements(id: "\(id)", subCategory: subCategory, articleType: articleType, baseColor: baseColor, displayName: displayName)
+            
+            // Only append if no category is selected or matches the selected category
+            if selectedCategory == nil || subCategory == selectedCategory {
+                clothingItems.append(clothingItem)
+            }
+        }
         
         numbersIndex = endIndex
     }
@@ -221,7 +221,7 @@ struct CategoriesView: View {
                             .foregroundColor(.black)
                     }
                     .sheet(isPresented: $isShowingCart) {
-                        ShoppingCartView(cartItems: cartItems)
+                        WishListView(cartItems: $cartItems)
                     }
                     Text("Wish List")
                         .foregroundColor(.black)
@@ -258,80 +258,110 @@ struct CategoriesView: View {
                 Spacer()
                 LazyVGrid(columns: gridItems, spacing: 20) {
                     ForEach(filteredClothingItems, id: \.id) { item in
-                        ClothingTileView(item: item)
+                        ClothingTileView(item: item, addToCart: {item in cartItems.append(item)
+                            print("Item added to cart: \(item.articleType)")
+                        })
                     }
+                    }
+                    .padding()
+                    .onAppear {
+                        loadMoreItems()
+                    }
+                    Button(action: {
+                        loadMoreItems()
+                    }) {
+                        Text("Load More")
+                            .padding()
+                            .background(Color.black)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                    .padding(.bottom, 30)
                 }
-                .padding()
-                .onAppear {
-                    loadMoreItems()
-                }
-                Button(action: {
-                    loadMoreItems()
-                }) {
-                    Text("Load More")
-                        .padding()
-                        .background(Color.black)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .padding()
-                .padding(.bottom, 30)
             }
         }
     }
-}
 
-struct ClothingTileView: View {
-    @StateObject private var imageLoader = ImageLoader()
-    let item: ClothingElements
-    func fetchClothImages(completion: @escaping () -> Void) {
-        let storageRef = Storage.storage().reference()
-        storageRef.child("clothesDataset/\(item.id).jpg").downloadURL { url, error in
-            if let url = url {
-                // Load image using image loader
-                imageLoader.loadImage(from: url)
-            } else if let error = error {
-                print("Error downloading image: \(error.localizedDescription)")
-            }
-            completion() // Call completion handler after fetching image
-        }
-    }
+struct WishListView: View {
+    @Binding var cartItems: [ClothingElements]
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 150, height: 200)
-                .cornerRadius(25)
-                .overlay(
-                    Group {
-                        if let image = imageLoader.image {
-                            Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 150, height: 200)
-                                .cornerRadius(25)
-                        } else {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 150, height: 200)
-                                .cornerRadius(25)
-                        }
-                    }
-                )
-            Text("\(item.articleType) - \(item.baseColor)")
-                .font(.headline)
-        }
-        .onAppear{
-            fetchClothImages{
-                print("Success Clothes Images uploaded")
+        VStack {
+            Text("Wish List")
+                .padding(.top, 30)
+                .font(.title)
+                .fontWeight(.bold)
+            List(cartItems) { item in
+                HStack {
+                    Text(item.displayName)
+                }
             }
+            Spacer()
         }
-        .padding(8)
-        .background(Color.white)
-        .cornerRadius(10)
     }
 }
 
-struct CategoriesView_Previews: PreviewProvider {
-    static var previews: some View {
-        CategoriesView()
+    struct ClothingTileView: View {
+        @StateObject private var imageLoader = ImageLoader()
+        let item: ClothingElements
+        var addToCart: (ClothingElements) -> Void
+        func fetchClothImages(completion: @escaping () -> Void) {
+            let storageRef = Storage.storage().reference()
+            storageRef.child("clothesDataset/\(item.id).jpg").downloadURL { url, error in
+                if let url = url {
+                    // Load image using image loader
+                    imageLoader.loadImage(from: url)
+                } else if let error = error {
+                    print("Error downloading image: \(error.localizedDescription)")
+                }
+                completion() // Call completion handler after fetching image
+            }
+        }
+        var body: some View {
+            VStack(alignment: .leading, spacing: 8) {
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: 150, height: 200)
+                    .cornerRadius(25)
+                    .overlay(
+                        Group {
+                            if let image = imageLoader.image {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 150, height: 200)
+                                    .cornerRadius(25)
+                            } else {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 150, height: 200)
+                                    .cornerRadius(25)
+                            }
+                        }
+                    )
+                HStack {
+                    Text("\(item.articleType) - \(item.baseColor)")
+                        .font(.headline)
+                    Button(action: {
+                        print("Add Item clicked")
+                        addToCart(item)
+                    }) {
+                        Image(systemName: "plus.app")
+                    }
+                }
+            }
+            .onAppear{
+                fetchClothImages{
+                    print("Success Clothes Images uploaded")
+                }
+            }
+            .padding(8)
+            .background(Color.white)
+            .cornerRadius(10)
+        }
     }
-}
+    
+    
+    struct CategoriesView_Previews: PreviewProvider {
+        static var previews: some View {
+            CategoriesView()
+        }
+    }

@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 import GoogleSignInSwift
+import LocalAuthentication
 import GoogleSignIn
 
 enum LoginErrors: Error{
@@ -119,7 +120,7 @@ final class LoginViewModel: ObservableObject {
 struct Login: View {
 //    @Binding var currentShowingView: String
     @StateObject private var viewModel = LoginViewModel()
-    @State private var loginButton: Bool = false
+    //@State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
     @State private var showSignInView: Bool = false
     @State private var showingAlert = false
@@ -147,7 +148,7 @@ struct Login: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
                         .padding(.bottom, 20)
-                        .padding(.top, 5) 
+                        .padding(.top, 5)
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
@@ -213,7 +214,7 @@ struct Login: View {
                 VStack (spacing:10){
                     
                     Button {
-                        print("Login in presed")
+                        print("Login in Pressed")
                         Task {
                             do {
                                 try await viewModel.login()
@@ -263,6 +264,15 @@ struct Login: View {
                     }
                     
                     HStack {
+                        Button("Authenticate") {
+                            biometricAuthentication()
+                        }
+                        .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("Authentication Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                        }
+                    }
+                    
+                    HStack {
                         Text("Don't have an account?")
                             .foregroundStyle(Color(hex:"898989"))
                             .fontWeight(.heavy)
@@ -279,10 +289,10 @@ struct Login: View {
                     }
                     
                     Text("OR")
-                        .padding()
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
+
                     // #### NEED TO ADD NAV LOCATIONS ####
                     Button(action: {
                         Task {
@@ -292,22 +302,23 @@ struct Login: View {
                                     isAuthenticated = true
                                 } else {
                                     // Handle sign-in failure
-                                    alertMessage = "Login wiht Google unsuccessful"
+                                    alertMessage = "Login with Google unsuccessful"
                                     print("Login with Google unsuccessful")
                                     isAuthenticated = false
                                     showingAlert = true
                                 }
                             }
                     }) {
-                        Text("Login with Google")
-                            .foregroundColor(.black)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 20)
-                            .background() {
-                                Image("Google")
-                                    .padding(.leading)
-                                    .frame(width: 30)
-                            }
+                        HStack {
+                            Image("Google")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 25, height: 30)
+                            Text("Login with Google")
+                                .foregroundColor(.black)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                        }
                     }
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -326,22 +337,47 @@ struct Login: View {
 //                                .stroke(Color.black, lineWidth: 1)
 //                        )
 //
-                    
-                    Button (action: {
-                       // handle google login
-                        print("Login with Apple")
-                    }) {
-                        HStack {
-                            Text("Log In with Apple")
-                                .foregroundColor(.black)
-                        }
-                    }
+//                    Button (action: {
+//                       // handle google login
+//                        print("Login with Apple")
+//                    }) {
+//                        HStack {
+//                            Text("Log In with Apple")
+//                                .foregroundColor(.black)
+//                        }
+//                    }
                 }
                 
                 Spacer()
             }
         }
+
     }
+    
+    func biometricAuthentication() {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+                
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "This is for quick login purposes!") { success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        // User authenticated successfully, update your state here
+                        self.isAuthenticated = true
+                    } else {
+                        // Authentication failed, show an alert or update your state accordingly
+                        self.showingAlert = true
+                        self.alertMessage = "Authentication failed: \(authenticationError?.localizedDescription ?? "Unknown error")"
+                    }
+                }
+            }
+
+        } else {
+            print("No Face ID")
+        }
+    }
+    
 }
 extension String {
     func isValidEmail() -> Bool {

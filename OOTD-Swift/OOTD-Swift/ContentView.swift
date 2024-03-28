@@ -33,7 +33,6 @@ struct ContentView: View {
                 Login(isAuthenticated:$isAuthenticated)
                     .environmentObject(LogInVM())
                     .transition(.slide)
-
             }
         }
     }
