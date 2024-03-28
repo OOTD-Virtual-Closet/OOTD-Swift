@@ -1,3 +1,4 @@
+
 //
 //  TrendingView.swift
 //  OOTD-Swift
@@ -19,14 +20,17 @@ struct ClothingItemElements: Identifiable {
 struct TrendingView: View {
     @State private var currentIndex = 0
     @State private var isShowingDetails = false
+    @State private var isShowingCart = false
     let trendingItems: [ClothingItemElements] = [
         ClothingItemElements(name: "Clothing 1", descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing1", price: "$49.99", description: "A cool piece of clothing.", color: "#33673B"),
         ClothingItemElements(name: "Clothing 2",descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing2", price: "$59.99", description: "Another cool piece of clothing.", color: "#3E8989"),
         ClothingItemElements(name: "Clothing 3",descrption: "Otton shirt. Classic sollar. Short sleeve. Cuts at the Bottoms. Button close on the front.", image: "clothing3", price: "$39.99", description: "Yet another cool piece of clothing.", color: "#D1B490")
     ]
+    @State private var cartItems: [ClothingItemElements] = []
+    
     var body: some View {
         VStack {
-            Text("36 items")
+            Text("\(cartItems.count) items")
                 .foregroundColor(.gray)
                 .font(.system( size: 13))
                 .fontWeight(.heavy)
@@ -35,8 +39,17 @@ struct TrendingView: View {
                 .padding(.leading, 10)
                 .padding(.top, 10)
             HStack {
-                Image(systemName: "cart.fill")
-                Text("Shopping Cart")
+                
+                Button(action: {
+                    isShowingCart.toggle()
+                }) {
+                    Image(systemName: "cart.fill")
+                        .foregroundColor(.black)
+                }
+                .sheet(isPresented: $isShowingCart) {
+                    ShoppingCartView(cartItems: cartItems)
+                }
+                Text("Wish List")
                     .foregroundColor(.black)
                     .font(.system( size: 18))
                     .fontWeight(.heavy)
@@ -45,7 +58,7 @@ struct TrendingView: View {
             }
             .padding(.leading, 35)
             .padding(.bottom, 20)
-//            Spacer()
+            //            Spacer()
             
             Button(action: {
                 isShowingDetails = true
@@ -94,12 +107,39 @@ struct TrendingView: View {
             Spacer()
         }
         .sheet(isPresented: $isShowingDetails) {
-            ClothingItemDetailsView(item: trendingItems[currentIndex])
+            ClothingItemDetailsView(item: trendingItems[currentIndex], addToCart: {item in cartItems.append(item)
+                print("Item added to cart: \(item.name)")
+                if let index = trendingItems.firstIndex(where: { $0.id == item.id }) {
+                                        currentIndex = index
+                                    }
+            })
         }
     }
 }
+struct ShoppingCartView: View {
+    var cartItems: [ClothingItemElements]
+    
+    var body: some View {
+        VStack {
+            Text("Wish List")
+                .font(.title)
+                .fontWeight(.bold)
+            List(cartItems) { item in
+                HStack {
+                    Image(item.image)
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                    Text(item.name)
+                }
+            }
+            Spacer()
+        }
+    }
+}
+
 struct ClothingItemDetailsView: View {
     var item: ClothingItemElements
+    var addToCart: (ClothingItemElements) -> Void
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
@@ -209,8 +249,10 @@ struct ClothingItemDetailsView: View {
                 .padding(.leading, 10)
                 Button(action: {
                     print("Add to Cart")
+                    addToCart(item)
+                    presentationMode.wrappedValue.dismiss()
                 }) {
-                    Text("Add to Cart")
+                    Text("Add to WishList")
                         .foregroundColor(.black)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 10)

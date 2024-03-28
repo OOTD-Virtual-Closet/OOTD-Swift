@@ -10,6 +10,8 @@ import FirebaseFirestore
 import FirebaseStorage
 
 struct OutfitsView: View {
+    @State var expandedOutfitsPresented = false
+    @State var expandedFitChosen : Outfit?
     @State private var outfits : [Outfit]?
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
 
@@ -135,9 +137,16 @@ struct OutfitsView: View {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: 15), GridItem(.flexible(), spacing: 15)], spacing: 15) {
                             ForEach(outfits ?? [], id: \.self) { item in
-                                
+                                Button(action: {
+                                    expandedOutfitsPresented.toggle()
+                                    expandedFitChosen = item
+                             
+                                }) {
                                     Outfits(item: item.id)
                                     .frame(width: 170, height: 280)
+                                    
+                                }
+                                    
 
                             }
                         }
@@ -165,6 +174,17 @@ struct OutfitsView: View {
                         .padding(.trailing, 20)
                 }
             }
+            .sheet(isPresented: $expandedOutfitsPresented, onDismiss: {
+                populateOutfits {
+                    print("Arrays are updated again")
+                }
+            }) {
+     
+                 if let expandedFitChosen = expandedFitChosen {
+                    ExpandedOutfitsView(mainOutfit: expandedFitChosen)
+                }
+            }
+
             .padding(.bottom, 50)
             .sheet(isPresented: $addOutfitsPresented,onDismiss: {
                 populateOutfits {
@@ -177,7 +197,6 @@ struct OutfitsView: View {
         }
         .onAppear {
             populateOutfits {
-                print("hittem")
                 print("populated outfits for outfitview")
             }
         }
@@ -330,8 +349,8 @@ struct Outfits: View {
     }
 }
 
-struct OutfitsView_Previews: PreviewProvider {
-    static var previews: some View {
-        OutfitsView()
-    }
-}
+//struct OutfitsView_Previews: PreviewProvider {
+  //  static var previews: some View {
+  //      OutfitsView()
+  //  }
+//}
