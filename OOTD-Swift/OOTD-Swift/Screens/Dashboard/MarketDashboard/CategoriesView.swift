@@ -288,7 +288,7 @@ struct WishListView: View {
     var body: some View {
         VStack {
             Text("Wish List")
-                .padding(.top, 20)
+                .padding(.top, 30)
                 .font(.title)
                 .fontWeight(.bold)
             List(cartItems) { item in
