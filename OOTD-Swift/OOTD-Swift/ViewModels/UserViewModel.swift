@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class UserViewModel: ObservableObject {
 
-    @Published var user = User(uid: "tempUID", email: "tempEmail")
+    @Published var user = User(uid: "tempUID", email: "tempEmail", password: "tempPass")
 
     private var db = Firestore.firestore()
     
@@ -31,7 +31,8 @@ class UserViewModel: ObservableObject {
                 "outfits": newUser.outfits,
                 "friendsId": newUser.friendsId,
                 "friendsRequestsId": newUser.friendsRequestId,
-                "postsId": newUser.postsId
+                "postsId": newUser.postsId,
+                "password": newUser.password
             ])
         }
         catch {
