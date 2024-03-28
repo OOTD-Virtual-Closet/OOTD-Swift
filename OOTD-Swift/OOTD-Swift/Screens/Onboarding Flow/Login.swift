@@ -289,7 +289,6 @@ struct Login: View {
                     }
                     
                     Text("OR")
-                        .padding()
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
@@ -338,15 +337,15 @@ struct Login: View {
 //                                .stroke(Color.black, lineWidth: 1)
 //                        )
 //
-                    Button (action: {
-                       // handle google login
-                        print("Login with Apple")
-                    }) {
-                        HStack {
-                            Text("Log In with Apple")
-                                .foregroundColor(.black)
-                        }
-                    }
+//                    Button (action: {
+//                       // handle google login
+//                        print("Login with Apple")
+//                    }) {
+//                        HStack {
+//                            Text("Log In with Apple")
+//                                .foregroundColor(.black)
+//                        }
+//                    }
                 }
                 
                 Spacer()

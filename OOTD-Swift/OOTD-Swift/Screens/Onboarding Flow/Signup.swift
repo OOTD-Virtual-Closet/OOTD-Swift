@@ -278,15 +278,15 @@ struct Signup: View {
                         Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
                     
-                    Button (action: {
-                       // handle google login
-                        print("Sign up with Apple")
-                    }) {
-                        HStack {
-                            Text("Sign up with Apple")
-                                .foregroundColor(.black)
-                        }
-                    }
+//                    Button (action: {
+//                       // handle google login
+//                        print("Sign up with Apple")
+//                    }) {
+//                        HStack {
+//                            Text("Sign up with Apple")
+//                                .foregroundColor(.black)
+//                        }
+//                    }
                 }
                 
                 Spacer()
