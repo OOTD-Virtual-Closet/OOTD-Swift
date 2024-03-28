@@ -48,7 +48,6 @@ struct FeedView: View {
                            // PostView()
                         }
                     }
-                   
                 }.padding (.top, 50)
     }
 }

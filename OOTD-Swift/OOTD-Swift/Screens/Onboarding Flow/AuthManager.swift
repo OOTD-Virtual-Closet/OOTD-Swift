@@ -8,6 +8,12 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import Firebase
+import GoogleSignIn
+
+enum AuthenticationError: Error {
+    case tokenError(message: String)
+}
 
 struct AuthDataResultModel {
     let uid: String
@@ -25,6 +31,7 @@ final class AuthManager {
     private init() {
         
     }
+    
     
     func getAuthenticatedUser() throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
@@ -47,6 +54,7 @@ final class AuthManager {
     
     func signout() throws {
         try Auth.auth().signOut()
+        try GIDSignIn.sharedInstance.signOut()
     }
     func deleteAccount() async throws {
         guard let user = Auth.auth().currentUser else {

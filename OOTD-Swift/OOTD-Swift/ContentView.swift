@@ -25,27 +25,17 @@ struct ContentView: View {
             DashboardNav(isAuthenticated:$isAuthenticated,userProfile: userProfile)
                 .transition(.slide)
                 .environmentObject(LogInVM())
+//            Testing()
+//                .transition(.slide)
+//                .environmentObject(LogInVM())
         } else {
             NavigationView {
                 Login(isAuthenticated:$isAuthenticated)
                     .environmentObject(LogInVM())
                     .transition(.slide)
-
             }
         }
     }
-}
-//checks if quick login is enabled
-func checkQuickLogin() -> Bool {
-    // TODO: implement checkQuickLogin()
-    return false;
-}
-
-//checks if biometric login is enabled
-//returns true/false
-func checkBiometricLogin() -> Bool {
-    // TODO: implement checkBiometricLogin()
-    return false;
 }
 
 

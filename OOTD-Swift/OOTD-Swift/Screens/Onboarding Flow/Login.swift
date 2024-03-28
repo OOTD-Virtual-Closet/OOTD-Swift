@@ -9,6 +9,8 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 import GoogleSignInSwift
+import LocalAuthentication
+import GoogleSignIn
 
 enum LoginErrors: Error{
     case BlankForm
@@ -65,6 +67,39 @@ final class LoginViewModel: ObservableObject {
         }
 
     }
+    func signInWithGoogle() async -> Bool {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            fatalError("No client ID found in Firebase config")
+        }
+        let config = GIDConfiguration(clientID: clientID)
+        
+        guard let windowScene = await UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = await windowScene.windows.first,
+              let rootViewController = await window.rootViewController else {
+            print("There is no root view controller")
+            return false
+        }
+        do {
+            let userAuthentication = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
+            let user = userAuthentication.user
+            guard let idToken = user.idToken else {
+                //throw AuthenticationError.tokenError(message: "ID Token missing")
+                throw AuthenticationError.tokenError(message: "ID token missing")
+                print("Error")
+            }
+            let accessToken = user.accessToken
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+            
+            let result = try await Auth.auth().signIn(with: credential)
+            let firebase = result.user
+            print("User \(firebase.uid) has signed in ")
+            return true
+        } catch {
+            print(error.localizedDescription)
+            let errorMessage = error.localizedDescription
+            return false
+        }
+    }
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
@@ -85,9 +120,9 @@ final class LoginViewModel: ObservableObject {
 struct Login: View {
 //    @Binding var currentShowingView: String
     @StateObject private var viewModel = LoginViewModel()
-    @State private var loginButton: Bool = false
+    //@State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
-    @State private var showSignInView: Bool = false // remove? i dont see where this is used
+    @State private var showSignInView: Bool = false
     @State private var showingAlert = false
     @State private var alertMessage = ""
     @Binding var isAuthenticated:Bool
@@ -102,8 +137,6 @@ struct Login: View {
         
         return passwordRegex.evaluate(with: password)
     }
-    
-    
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -115,7 +148,7 @@ struct Login: View {
                         .fontWeight(.heavy)
                         .foregroundStyle(Color(hex:"CBC3E3"))
                         .padding(.bottom, 20)
-                        .padding(.top, 5) 
+                        .padding(.top, 5)
                     Text("Welcome to OOTD")
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
@@ -179,8 +212,9 @@ struct Login: View {
                 }
                 
                 VStack (spacing:10){
+                    
                     Button {
-                        print("Login Pressed...")
+                        print("Login in Pressed")
                         Task {
                             do {
                                 try await viewModel.login()
@@ -230,6 +264,15 @@ struct Login: View {
                     }
                     
                     HStack {
+                        Button("Authenticate") {
+                            biometricAuthentication()
+                        }
+                        .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("Authentication Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                        }
+                    }
+                    
+                    HStack {
                         Text("Don't have an account?")
                             .foregroundStyle(Color(hex:"898989"))
                             .fontWeight(.heavy)
@@ -243,16 +286,44 @@ struct Login: View {
                         }
                         .background(NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated), isActive: $signUpActive) { EmptyView() }.hidden())
                         .navigationBarBackButtonHidden(true)
-                        .environmentObject(LogInVM())
                     }
                     
                     Text("OR")
-                        .padding()
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
 
                     // #### NEED TO ADD NAV LOCATIONS ####
+                    Button(action: {
+                        Task {
+                                let success = await viewModel.signInWithGoogle()
+                                if success {
+                                    print("Login with Google successful")
+                                    isAuthenticated = true
+                                } else {
+                                    // Handle sign-in failure
+                                    alertMessage = "Login with Google unsuccessful"
+                                    print("Login with Google unsuccessful")
+                                    isAuthenticated = false
+                                    showingAlert = true
+                                }
+                            }
+                    }) {
+                        HStack {
+                            Image("Google")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 25, height: 30)
+                            Text("Login with Google")
+                                .foregroundColor(.black)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                        }
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                    }
+                    .buttonStyle(.bordered)
                 //    GoogleSignInButton(action: {
                      //   loginVM.signUpWithGoogle()
                     //    isAuthenticated = true;
@@ -265,16 +336,16 @@ struct Login: View {
 //                            RoundedRectangle(cornerRadius: 8)
 //                                .stroke(Color.black, lineWidth: 1)
 //                        )
-//                    
-                    Button (action: {
-                       // handle google login
-                        print("Login with Apple")
-                    }) {
-                        HStack {
-                            Text("Log In with Apple")
-                                .foregroundColor(.black)
-                        }
-                    }
+//
+//                    Button (action: {
+//                       // handle google login
+//                        print("Login with Apple")
+//                    }) {
+//                        HStack {
+//                            Text("Log In with Apple")
+//                                .foregroundColor(.black)
+//                        }
+//                    }
                 }
                 
                 Spacer()
@@ -282,6 +353,31 @@ struct Login: View {
         }
 
     }
+    
+    func biometricAuthentication() {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+                
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "This is for quick login purposes!") { success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        // User authenticated successfully, update your state here
+                        self.isAuthenticated = true
+                    } else {
+                        // Authentication failed, show an alert or update your state accordingly
+                        self.showingAlert = true
+                        self.alertMessage = "Authentication failed: \(authenticationError?.localizedDescription ?? "Unknown error")"
+                    }
+                }
+            }
+
+        } else {
+            print("No Face ID")
+        }
+    }
+    
 }
 extension String {
     func isValidEmail() -> Bool {
