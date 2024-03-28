@@ -57,6 +57,7 @@
 		89CCB2882BA8FFAA004EAAA7 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CCB2872BA8FFAA004EAAA7 /* PostView.swift */; };
 		89D107C52BB53F100059F232 /* FriendRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D107C42BB53F100059F232 /* FriendRequestView.swift */; };
 		89D107C92BB53F5F0059F232 /* FriendReceivedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D107C82BB53F5F0059F232 /* FriendReceivedView.swift */; };
+		89D107CB2BB5A4510059F232 /* SendFriendRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D107CA2BB5A4510059F232 /* SendFriendRequestView.swift */; };
 		89F139852B8B2163007BF7CC /* TabUnderlineViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139842B8B2163007BF7CC /* TabUnderlineViews.swift */; };
 		89F139872B8B224F007BF7CC /* FavoriteClothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139862B8B224F007BF7CC /* FavoriteClothes.swift */; };
 		89F139892B8B225A007BF7CC /* FavoriteOutfits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */; };
@@ -170,6 +171,7 @@
 		89CCB2872BA8FFAA004EAAA7 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		89D107C42BB53F100059F232 /* FriendRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestView.swift; sourceTree = "<group>"; };
 		89D107C82BB53F5F0059F232 /* FriendReceivedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendReceivedView.swift; sourceTree = "<group>"; };
+		89D107CA2BB5A4510059F232 /* SendFriendRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFriendRequestView.swift; sourceTree = "<group>"; };
 		89F139842B8B2163007BF7CC /* TabUnderlineViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabUnderlineViews.swift; sourceTree = "<group>"; };
 		89F139862B8B224F007BF7CC /* FavoriteClothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClothes.swift; sourceTree = "<group>"; };
 		89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteOutfits.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				89CCB2872BA8FFAA004EAAA7 /* PostView.swift */,
 				89D107C42BB53F100059F232 /* FriendRequestView.swift */,
 				89D107C82BB53F5F0059F232 /* FriendReceivedView.swift */,
+				89D107CA2BB5A4510059F232 /* SendFriendRequestView.swift */,
 			);
 			path = SocialDashboard;
 			sourceTree = "<group>";
@@ -617,6 +620,7 @@
 				34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */,
 				34A178022B81557500265C56 /* FriendsView.swift in Sources */,
 				6A7220942B8BCBED00FF45FE /* ImageSegmentation.swift in Sources */,
+				89D107CB2BB5A4510059F232 /* SendFriendRequestView.swift in Sources */,
 				89F139872B8B224F007BF7CC /* FavoriteClothes.swift in Sources */,
 				8985B76A2B75D7A6000E8DED /* OOTD_SwiftApp.swift in Sources */,
 				89791E1E2B8EEA4A00E28FE9 /* AddClothes.swift in Sources */,

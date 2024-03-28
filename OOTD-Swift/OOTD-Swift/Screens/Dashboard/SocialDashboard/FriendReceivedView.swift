@@ -6,10 +6,39 @@
 //
 
 import SwiftUI
-
+import FirebaseFirestore
 struct FriendReceivedView: View {
     @State private var searchText = ""
     @State private var isEditing = false
+    @State var friendsReceived : [String]?
+    
+    
+    func populateFriendRequestsList() {
+            let db = Firestore.firestore()
+            
+            // Replace "userDocumentID" with the actual document ID of the user
+        var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+
+            let userRef = db.collection("users").document(userA)
+            userRef.getDocument { document, error in
+                if let error = error {
+                    print("Error fetching user document: \(error.localizedDescription)")
+                    return
+                }
+
+                if let document = document, document.exists {
+                    // Extract friendRequestsSent array from user document
+                    if let friendRequestsSent = document.data()?["friendRequestsReceived"] as? [String] {
+                        // Update friendRequestsList
+                        friendsReceived = friendRequestsSent
+                    } else {
+                        print("friendRequestsReceived field not found or not of type [String]")
+                    }
+                } else {
+                    print("User document not found")
+                }
+            }
+        }
     var body: some View {
         ZStack(alignment: .top) {
                 ScrollView {
@@ -44,8 +73,8 @@ struct FriendReceivedView: View {
                                     )
                                 }
                                 VStack(spacing: 20) {
-                                    ForEach(0..<10) { _ in
-                                        RequestReceivedDisplay()
+                                    ForEach(friendsReceived ?? [], id: \.self) { test in
+                                        RequestReceivedDisplay(userBID: test)
                                     }
                                 }.padding(.top, 20)
                     }
@@ -67,6 +96,9 @@ struct FriendReceivedView: View {
                     .fontWeight(.bold)
                 Spacer()
             }.padding(.top, 20)
+        }
+        .onAppear {
+            populateFriendRequestsList()
         }
        
  
