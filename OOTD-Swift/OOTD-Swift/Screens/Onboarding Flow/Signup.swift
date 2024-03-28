@@ -262,15 +262,16 @@ struct Signup: View {
                                 }
                             }
                     }) {
-                        Text("Login with Google")
-                            .foregroundColor(.black)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 20)
-                            .background() {
-                                Image("Google")
-                                    .padding(.leading)
-                                    .frame(width: 30)
-                            }
+                        HStack {
+                            Image("Google")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 25, height: 30)
+                            Text("Login with Google")
+                                .foregroundColor(.black)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                        }
                     }
                     .buttonStyle(.bordered)
                     .alert(isPresented: $showingAlert) {
