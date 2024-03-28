@@ -287,13 +287,15 @@ struct Login: View {
                     Button(action: {
                         Task {
                                 let success = await viewModel.signInWithGoogle()
-                                    isAuthenticated = true
                                 if success {
                                     print("Login with Google successful")
+                                    isAuthenticated = true
                                 } else {
                                     // Handle sign-in failure
                                     alertMessage = "Login wiht Google unsuccessful"
                                     print("Login with Google unsuccessful")
+                                    isAuthenticated = false
+                                    showingAlert = true
                                 }
                             }
                     }) {
