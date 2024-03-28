@@ -234,16 +234,12 @@ struct Outfits: View {
                                             if let url = url {
                                                 switch counter {
                                                 case 1:
-                                       
                                                     imageLoader.loadImage(from: url)
                                                 case 2:
-                                               
                                                     imageLoader2.loadImage(from: url)
                                                 case 3:
-                                                  
                                                     imageLoader3.loadImage(from: url)
                                                 case 4:
-                                                    
                                                     imageLoader4.loadImage(from: url)
                                                 default:
                                                     break
