@@ -80,16 +80,16 @@ struct EditClothesView: View {
                            .overlay(
                             Group {
                                 if let image = imageLoader.image {
-                                                        Image(uiImage: image)
-                                                            .resizable()
-                                                            .aspectRatio(contentMode: .fit)
-                                                            .offset(x: 10, y: 20)
-                                                            .frame(width: 200, height: 280)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                    } else {
-                                                        Text("Loading...")
-                                                    }
-                                                }
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .offset(x: 10, y: 20)
+                                        .frame(width: 200, height: 280)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                } else {
+                                    Text("Loading...")
+                                }
+                                }
                            )
                             
                             VStack (alignment: .leading, spacing: 10){
@@ -106,7 +106,6 @@ struct EditClothesView: View {
                                                     searchText = String(newValue.prefix(20))
                                                 }
                                             }
-
                                             .frame(width: UIScreen.main.bounds.width - 90, height: 40)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 10)
@@ -168,9 +167,6 @@ struct EditClothesView: View {
                                     .ignoresSafeArea(.all)
                             }
                             .padding(.horizontal)
-                        
-
-                        
                     }
                     Button(action: {
                         if searchText == "" || searchText2 == "" || selectedType == nil || selectedColor == nil || selectedSize == nil {
@@ -181,22 +177,20 @@ struct EditClothesView: View {
                         let clothViewModel = ClothViewModel()
                         clothViewModel.editCloth(cloth: cloth)
                         presentationMode.wrappedValue.dismiss()
-
-                        
-                            }) {
-                                HStack(spacing: 10) {
-                                    Image(systemName: "square.and.arrow.down")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 20, height: 20)
-                                        .foregroundColor(.white)
-                                    Text("Save Changes")
-                                        .foregroundColor(.white)
-                                }
-                                .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                .background(Color(hex: "9278E0"))
-                                .cornerRadius(10)
-                            }
+                    }) {
+                        HStack(spacing: 10) {
+                            Image(systemName: "square.and.arrow.down")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.white)
+                            Text("Save Changes")
+                                .foregroundColor(.white)
+                        }
+                        .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                        .background(Color(hex: "9278E0"))
+                        .cornerRadius(10)
+                    }
                 }
                 Rectangle()
                     .foregroundColor(Color(hex: "9278E0"))
@@ -215,7 +209,7 @@ struct EditClothesView: View {
             }
             .onAppear {
                 fetchClothFromFirestore {
-                    print("fetched cloth and stuff")
+                    print("Fetched Clothes: EditClothesView")
                     selectedSize = mainClothe.size ?? ""
                     selectedType = mainClothe.type ?? ""
                     selectedColor = mainClothe.color ?? ""

@@ -25,8 +25,6 @@ struct ClosetNav: View {
                             .font(.system( size: 25))
                             .fontWeight(.heavy)
                             .padding(.leading, 20)
-
-                    
                     Spacer()
                         NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
                             Image("UserIcon")
@@ -36,10 +34,8 @@ struct ClosetNav: View {
                                     .clipShape(Circle())
                                     .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                                     .padding(.trailing)
-
                         }
                     }
-                    
                 VStack {
                     ZStack (alignment: .top) {
                         TabView(selection: self.$currentTab) {
@@ -58,7 +54,6 @@ struct ClosetNav: View {
                         // Buttons to select content
                      //   Button(action: {
                       //      self.selectedContent = 1
-    //
                      //   }) {
                        //     Text("Clothes")
                         //        .foregroundColor(selectedContent == 1 ? //.black : Color(hex: "9278E0"))
@@ -99,7 +94,6 @@ struct ClosetNav: View {
                        // }
                     //}
                   //  .padding(.horizontal, 20)
-
                     Spacer()
                     // Content views
                  //   if selectedContent == 1 {
@@ -112,13 +106,8 @@ struct ClosetNav: View {
                   //  Spacer()
                 }
                .padding(.bottom, -100)
-               
                 Spacer()
-
-                
             }
-
-            
         }
     }
 }

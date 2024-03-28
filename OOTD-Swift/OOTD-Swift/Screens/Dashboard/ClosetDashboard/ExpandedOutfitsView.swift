@@ -20,9 +20,6 @@ struct ExpandedOutfitsView: View {
     @StateObject var imageLoader3 = ImageLoader()
     @StateObject var imageLoader4 = ImageLoader()
 
-
-
-    
     func fetchFitFromFirestore(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("outfits").document(mainOutfit.id)
        docRef.getDocument { document, error in
