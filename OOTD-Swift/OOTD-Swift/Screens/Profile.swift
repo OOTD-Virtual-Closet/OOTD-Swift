@@ -12,12 +12,34 @@ import UIKit
 
 @MainActor
 final class ProfileViewModel: ObservableObject {
+    @Published var userUsername = ""
+    
     func signOut() throws {
         try AuthManager.shared.signout()
     }
     
-    func deleteAccount() async throws {
-        try await AuthManager.shared.deleteAccount()
+    func GetAuthenticatedUser() throws -> AuthDataResultModel {
+        let user = try AuthManager.shared.getAuthenticatedUser()
+        return user
+    }
+    
+    func GetUsername() async {
+        var nameU = ""
+        
+        do {
+            let user = try GetAuthenticatedUser();
+            let db = Firestore.firestore()
+            let userId = user.uid
+            let docRef = db.collection("users").document(userId)
+            let document = try await docRef.getDocument()
+            let data = document.data()
+            userUsername = data?["username"] as? String ?? ""
+            //userUsername = nameU
+            print(nameU)
+            
+        } catch {
+            
+        }
     }
 }
 
@@ -25,7 +47,7 @@ struct ProfileSummary: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var isAuthenticated: Bool
     var email = UserDefaults.standard.string(forKey: "email") ?? "atharva.gu@gmail.com"
-    var name = "Atharva Gupta"
+    var name = UserDefaults.standard.string(forKey: "username") ?? "name here"
     var phoneNumber = "(510) 335-9060"
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
     var body: some View {
@@ -68,40 +90,42 @@ struct ProfileSummary: View {
                 .padding(.top, 25)
                 // Action Buttons
                 VStack(spacing: 15) {
-                    Button(action: {
-                        // Handle change password
-                        print("change password pressed")
-                    }) {
+                    NavigationLink(destination: ChangePasswordUI()) {
                         Label("Change Password", systemImage: "lock.rotation")
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        .frame(height:50)
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                        .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                        .padding(.bottom, 15)
                     }
-                    .buttonStyle(ProfileButtonStyle())
-                    .padding(.horizontal)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 0)
-                    .padding(.bottom, 15)
                     
-                    Button(action: {
-                        // Handle account deletion
-                        Task {
-                            do {
-                               try await viewModel.deleteAccount()
-                               isAuthenticated = false
-                           } catch {
-                               print("Error deleting account: \(error.localizedDescription)")
-                           }
-                        }
-//                        print("Delete Account");
-                    }) {
+                    NavigationLink(destination: DeleteAccountUI()) {
                         Label("Delete Account", systemImage: "trash")
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        .frame(height:50)
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .background(Color(hex: "CBC3E3"))
+                        .cornerRadius(10)
+                        .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                        .padding(.bottom, 15)
                     }
-                    .buttonStyle(ProfileButtonStyle())
-                    .buttonStyle(ProfileButtonStyle())
-                    .padding(.horizontal)
-                    .background(Color(hex: "CBC3E3"))
-                    .cornerRadius(10)
-                    .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
-                    .padding(.bottom, 15)
+                    
+                    NavigationLink(destination: ChangeUsernameUI()) {
+                        Label("Change Username", systemImage: "trash")
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        .frame(height:50)
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .background(Color(hex: "CBC3E3"))
+                        .cornerRadius(10)
+                        .shadow(color: .uIpurple.opacity(0.3), radius: 5, x: 0, y: 0)
+                        .padding(.bottom, 15)
+                    }
+
                     
                     Button(action: {
                         // Handle log out
