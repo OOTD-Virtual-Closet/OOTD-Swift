@@ -27,6 +27,18 @@ class OutfitViewModel: ObservableObject {
         }
         
     }
+    func editOutfit(outfit: Outfit) {
+
+        let clothRef = db.collection("outfits").document(outfit.id)
+
+        clothRef.setData(outfit.dictionary, merge: true) { error in
+            if let error = error {
+                print("Error updating cloth document: \(error)")
+            } else {
+                print("Cloth document updated successfully!")
+            }
+        }
+    }
     
     func deleteFit(outfit: Outfit) {
         let userId = Auth.auth().currentUser?.uid ?? ""
