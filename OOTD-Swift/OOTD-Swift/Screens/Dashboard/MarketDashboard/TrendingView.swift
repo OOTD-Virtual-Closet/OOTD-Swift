@@ -11,6 +11,7 @@ import FirebaseStorage
 
 struct TrendingView: View {
     @State private var currentIndex = 0
+    @State private var clothingItem: ClothingElements?
     @State private var isShowingDetails = false
     @State private var isShowingCart = false
     let clothData: [Int: [String: String]] = [
@@ -186,22 +187,22 @@ struct TrendingView: View {
             .padding(.leading, 35)
             .padding(.bottom, 20)
             //            Spacer()
-            
             Button(action: {
                 isShowingDetails = true
             }) {
-                RoundedRectangle(cornerRadius: 15)
-                    .foregroundColor(.uIpurple.opacity(0.6))
-                    .frame(width: 210, height: 310)
-                    .overlay(
-                        Image(clothData[clothData.keys.sorted()[currentIndex]]?["image"] ?? "default_image")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 180, height: 275)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
-                    )
-                    .padding(.bottom, 30)
+                if let itemData = clothData[clothData.keys.sorted()[currentIndex]] {
+                       ClothingTilesView(item: ClothingElements(
+                           id: "\(clothData.keys.sorted()[currentIndex])",
+                           subCategory: itemData["subCategory"] ?? "",
+                           articleType: itemData["articleType"] ?? "",
+                           baseColor: itemData["baseColour"] ?? "",
+                           displayName: itemData["productDisplayName"] ?? ""
+                       ))
+                       .padding(.bottom, 30)
+                   }
             }
+
+           
             
             HStack(spacing: 20) {
                 Button(action: {
@@ -230,9 +231,20 @@ struct TrendingView: View {
                         .cornerRadius(10)
                 }
             }
-            //            .padding(.horizontal, 25)
             Spacer()
         }
+        .onChange(of: currentIndex) { newIndex in
+                    if let itemData = clothData[clothData.keys.sorted()[newIndex]] {
+                        let clothingItem = ClothingElements(
+                            id: "\(clothData.keys.sorted()[newIndex])",
+                            subCategory: itemData["subCategory"] ?? "",
+                            articleType: itemData["articleType"] ?? "",
+                            baseColor: itemData["baseColour"] ?? "",
+                            displayName: itemData["productDisplayName"] ?? ""
+                        )
+                        self.clothingItem = clothingItem
+                    }
+                }
         .sheet(isPresented: $isShowingDetails) {
             if let itemData = clothData[clothData.keys.sorted()[currentIndex]] {
                 ClothingItemDetailsView(item: ClothingElements(id: "\(clothData.keys.sorted()[currentIndex])",
@@ -254,6 +266,55 @@ struct TrendingView: View {
 
     }
 }
+struct ClothingTilesView: View {
+    @StateObject private var imageLoader = ImageLoader()
+    let item: ClothingElements
+
+    func fetchClothImages(completion: @escaping () -> Void) {
+        let storageRef = Storage.storage().reference()
+        storageRef.child("clothesDataset/\(item.id).jpg").downloadURL { url, error in
+            if let url = url {
+                // Load image using image loader
+                imageLoader.loadImage(from: url)
+            } else if let error = error {
+                print("Error downloading image: \(error.localizedDescription)")
+            }
+            completion() // Call completion handler after fetching image
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 150, height: 200)
+                .cornerRadius(25)
+                .overlay(
+                    Group {
+                        if let image = imageLoader.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 150, height: 200)
+                                .cornerRadius(25)
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 150, height: 200)
+                                .cornerRadius(25)
+                        }
+                    }
+                )
+        }
+        .onAppear {
+            fetchClothImages {
+                print("Success Clothes Images uploaded")
+            }
+        }
+        .padding(8)
+        .background(Color.white)
+        .cornerRadius(10)
+    }
+}
+
 struct ShoppingCartView: View {
     var cartItems: [ClothingElements]
     
