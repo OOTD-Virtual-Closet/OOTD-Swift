@@ -11,7 +11,7 @@ struct CalendarView: View {
 
     @State var todayDate = Date()
     @State var startDate: Date = Date()
-    @State var months = [MonthModel(id: "id", month: "December", monthOfTheYear: 12, year: 2022), MonthModel(id: "id2", month: "January", monthOfTheYear: 1, year: 2023), MonthModel(id: "id3", month: "February", monthOfTheYear: 2, year: 2023)] // on appear, calculate all months in between dec 2022 - today
+    @State var months = [MonthModel(id: "id", month: "March", monthOfTheYear: 3, year: 2024), MonthModel(id: "id2", month: "April", monthOfTheYear: 4, year: 2024), MonthModel(id: "id3", month: "May", monthOfTheYear: 5, year: 2024)] // on appear, calculate all months
 
     @StateObject var viewModel = CalendarViewModel()
 
@@ -62,9 +62,7 @@ struct CalendarView: View {
                     
                     // Days in a month
                     ForEach(1..<month.amountOfDays + 1) { i in
-                        
-                        CalendarCell(beforeImageURL: "", afterImageURL: "", date: "", height: UIScreen.main.bounds.width/6.5, dayOfMonth: i)
-                        
+                        CalendarCell(beforeImageURL: "", afterImageURL: "", date: "\(month.year) \(month.month) \(i)", height: UIScreen.main.bounds.width/6.5, dayOfMonth: i, viewModel: viewModel)
                     }
                     
                 }
@@ -74,7 +72,7 @@ struct CalendarView: View {
             
         }
         .navigationBarTitle("Calendar", displayMode: .inline)
-        .overlay(
+        .overlay( // days of the week at the top
             VStack(spacing: 30) {
                 VStack() {
                     HStack(spacing: 0) {
@@ -91,17 +89,22 @@ struct CalendarView: View {
             }
             , alignment: .top
         )
-        .overlay(
+        .overlay( // gradient at the top of the screen
             VStack {
                 LinearGradient(colors: [.clear, .black.opacity(0.3), .black.opacity(0.7)], startPoint: .bottom, endPoint: .top)
                     .frame(height: UIScreen.main.bounds.height/12)
                 Spacer()
             }
             .ignoresSafeArea()
-        )
+        ) // fetch posts on appear fo
         .onAppear {
-            viewModel.fetchPosts()
+            print("getting outfits")
+            viewModel.getOutfits {
+                print("got outfits")
+            }
+            viewModel.getOutfitPlan()
         }
+
     }
 
 }
@@ -110,16 +113,17 @@ struct CalendarView_Previews: PreviewProvider {
     static var previews: some View { CalendarView() }
 }
 
-    struct CalendarCell: View {
+struct CalendarCell: View {
 
     var beforeImageURL:String
     var afterImageURL:String
     var date:String
     var height:CGFloat
     var dayOfMonth:Int
-
+    @State private var selectedOutfit : String?
     @State var showSheet:Bool = false
-
+    @ObservedObject var viewModel : CalendarViewModel
+    
     var body: some View {
         
         Button {
@@ -135,39 +139,18 @@ struct CalendarView_Previews: PreviewProvider {
                     .shadow(radius: 3)
             }
         }
-        .sheet(isPresented: $showSheet) {
-            //
+        .sheet(isPresented: $showSheet, onDismiss: {
+            print(selectedOutfit ?? "None")
+            viewModel.editOutfitPlan(date: date, outfitID: selectedOutfit ?? "None")
+        }) {
+            CustomDropDown(title: "Planned Outfit", prompt: "Select an Outfit for this day", options: viewModel.outfitOptions, selection: $selectedOutfit)
+                .onAppear {
+                    print(date)
+                    viewModel.getOutfitPlan()
+                    print("adi get the plan")
+                    print(viewModel.plans?[date] ?? "no plan for \(date)")
+                }
         }
     }
-
 }
 
-struct MonthModel:Identifiable {
-
-    var id:String = ""
-    var month:String = ""
-    var monthOfTheYear:Int = 0
-    var year:Int = 0
-    var amountOfDays:Int {
-        let dateComponents = DateComponents(year: year, month: monthOfTheYear)
-        let calendar = Calendar.current
-        let date = calendar.date(from: dateComponents)!
-
-        let range = calendar.range(of: .day, in: .month, for: date)!
-        let numDays = range.count
-        return numDays
-    }
-    var spacesBeforeFirst:Int {
-        let dateComponents = DateComponents(year: year, month: monthOfTheYear)
-        let calendar = Calendar.current
-        let date = calendar.date(from: dateComponents)!
-        
-        return date.dayNumberOfWeek()!
-    }
-}
-
-extension Date {
-    func dayNumberOfWeek() -> Int? {
-        return Calendar.current.dateComponents([.weekday], from: self).weekday
-    }
-}

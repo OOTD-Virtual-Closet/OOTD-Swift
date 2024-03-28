@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		342658552BB48964007CE3FE /* UpdatePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342658542BB48964007CE3FE /* UpdatePlan.swift */; };
 		343F077D2B86B35E007DBE14 /* ApplicationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F077C2B86B35E007DBE14 /* ApplicationUtility.swift */; };
 		343F077F2B86B3A0007DBE14 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F077E2B86B3A0007DBE14 /* LoginViewModel.swift */; };
 		343F07842B86C94F007DBE14 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F07832B86C94F007DBE14 /* User.swift */; };
@@ -110,6 +111,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		342658542BB48964007CE3FE /* UpdatePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePlan.swift; sourceTree = "<group>"; };
 		343F077C2B86B35E007DBE14 /* ApplicationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUtility.swift; sourceTree = "<group>"; };
 		343F077E2B86B3A0007DBE14 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		343F07832B86C94F007DBE14 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				34CD5D452BB0E9CB00B13350 /* CalendarView.swift */,
+				342658542BB48964007CE3FE /* UpdatePlan.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				52358BAD2B7FFC5E00619E85 /* Profile.swift in Sources */,
 				890AC72C2BA776FC00BBF24F /* Post.swift in Sources */,
 				8985B76C2B75D7A6000E8DED /* Persistence.swift in Sources */,
+				342658552BB48964007CE3FE /* UpdatePlan.swift in Sources */,
 				34C8281F2B88581B007AE17F /* MarketNav.swift in Sources */,
 				34A178002B81556900265C56 /* FeedView.swift in Sources */,
 				343F077D2B86B35E007DBE14 /* ApplicationUtility.swift in Sources */,

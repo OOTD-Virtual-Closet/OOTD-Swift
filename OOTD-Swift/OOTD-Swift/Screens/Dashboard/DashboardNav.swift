@@ -12,7 +12,8 @@ struct DashboardNav: View {
     @Binding var isAuthenticated:Bool
     @State private var selectedTab = 1
     @State private var stayLoggedInAlert = false
-    
+    @StateObject var calendarViewModel = CalendarViewModel()
+
     let userProfile: String
     var body: some View {
         NavigationView {
@@ -70,20 +71,19 @@ struct DashboardNav: View {
                     if (UserDefaults.standard.bool(forKey: "staySignedIn") == false) {
                         stayLoggedInAlert = true
                     }
-
-            }
-            .alert(isPresented: $stayLoggedInAlert) {
-                Alert(
-                    title: Text("Confirmation"),
-                    message: Text("Do you want to stay signed in?"),
-                    primaryButton: .default(Text("Yes")) {
-                        UserDefaults.standard.set(true, forKey: "staySignedIn")
-                    },
-                    secondaryButton: .cancel(Text("No")) {
-                        UserDefaults.standard.set(false, forKey: "staySignedIn")
-                    }
-                )
-            }
+                }
+                .alert(isPresented: $stayLoggedInAlert) {
+                    Alert(
+                        title: Text("Confirmation"),
+                        message: Text("Do you want to stay signed in?"),
+                        primaryButton: .default(Text("Yes")) {
+                            UserDefaults.standard.set(true, forKey: "staySignedIn")
+                        },
+                        secondaryButton: .cancel(Text("No")) {
+                            UserDefaults.standard.set(false, forKey: "staySignedIn")
+                        }
+                    )
+                }
     }
 
     func confirmDocOnFirebase() {
