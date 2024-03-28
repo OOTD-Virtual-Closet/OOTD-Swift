@@ -147,6 +147,9 @@ struct CalendarCell: View {
                 .onAppear {
                     print(date)
                     viewModel.getOutfitPlan()
+                    if let plans = viewModel.plans {
+                        selectedOutfit = plans[date]
+                    }
                     print("adi get the plan")
                     print(viewModel.plans?[date] ?? "no plan for \(date)")
                 }

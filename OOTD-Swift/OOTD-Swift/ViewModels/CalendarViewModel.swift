@@ -16,7 +16,7 @@ class CalendarViewModel: ObservableObject {
     @Published var isPresented = false
     @Published var outfits : [Outfit]?
     @Published var outfitOptions =  ["None"]
-    @Published var plans : [String: Any]?
+    @Published var plans : [String: String]?
 
     func addPostToCurrentUser() {
         
