@@ -2,7 +2,7 @@
 //  Login.swift
 //  OOTD-Swift
 //
-//  Created by Atharva Gupta on 2/17/24.
+//  Created by Sanjhee Gupta on 2/17/24.
 //
 
 import SwiftUI
@@ -15,35 +15,44 @@ import FirebaseAuth
 final class SignUpViewModel: ObservableObject {
     @Published var email = ""
     @Published var uid = ""
-    @Published var password = ""
+    @Published var passwordEntered = ""
+    @Published var usernameEntered = ""
+
     
     func signIn() async throws {
-        guard !email.isEmpty, !password.isEmpty else {
+        guard !email.isEmpty, !passwordEntered.isEmpty else {
             print("No user email or password found")
             throw LoginErrors.BlankForm
         }
-        guard isValidEmail(email) || isValidPassword(password) else {
+        guard isValidEmail(email) || isValidPassword(passwordEntered) else {
             throw LoginErrors.InvalidPasswordUsername
         }
-        guard isValidPassword(password) else {
+        guard isValidPassword(passwordEntered) else {
             throw LoginErrors.InvalidPassword
         }
         guard isValidEmail(email) else {
+            throw LoginErrors.EmailNotExist
+        }
+        guard isValidUsername(usernameEntered) else {
             throw LoginErrors.InvalidUsername
         }
+        
         do {
-            let user = try await AuthManager.shared.createUser(email: email, password: password)
+            let user = try await AuthManager.shared.createUser(email: email, password: passwordEntered)
             print("Sign in completed")
-            print(user.email)
+            //print(user.email)
             print(user.uid)
             UserDefaults.standard.set(user.email, forKey: "email")
             UserDefaults.standard.set(user.uid, forKey: "uid")
+            UserDefaults.standard.set(user.displayName, forKey: "username")
             var userViewModel = UserViewModel()
             userViewModel.setInitData(newUser: User(
                 uid: user.uid,
                 email: user.email ?? "emailUnknown",
-                creationDate: Date()
-            ))
+                password: passwordEntered,
+                creationDate: Date(),
+                username: usernameEntered
+           ))
             print("Success")
             email = user.email ?? ""
             uid = user.uid
@@ -93,6 +102,7 @@ final class SignUpViewModel: ObservableObject {
         return emailTest.evaluate(with: email)
 
     }
+    
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
         // minimum 6 characters long
@@ -101,6 +111,14 @@ final class SignUpViewModel: ObservableObject {
         let passwordRegex = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         
         return passwordRegex.evaluate(with: password)
+    }
+    
+    private func isValidUsername (_ username: String) -> Bool {
+        let strlen = username.utf8.count;
+        if (strlen >= 15) {
+            return false;
+        }
+        return true;
     }
 }
 
@@ -114,7 +132,6 @@ struct Signup: View {
     @State private var alertMessage = ""
     @EnvironmentObject var loginVM: LogInVM
     @Binding var isAuthenticated:Bool
-    @State private var signUpSuccess = false
 
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
@@ -170,20 +187,32 @@ struct Signup: View {
                             .foregroundColor(Color(hex:"898989"))
                     )
                     .padding()
+                    
                     HStack {
-                        SecureField("Enter password...", text: $viewModel.password)
+                        SecureField("Enter password...", text: $viewModel.passwordEntered)
 
-                        if (viewModel.password == "") {
+                        if (viewModel.passwordEntered == "") {
                             Image(systemName: "lock.fill")
                                 .fontWeight(.bold)
                         } else {
-                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                            Image(systemName: isValidPassword(viewModel.passwordEntered) ? "checkmark" : "xmark")
                                 .fontWeight(.bold)
-                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                                .foregroundColor(isValidPassword(viewModel.passwordEntered) ? .green : .red)
                         }
                     }
                     .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(lineWidth: 2.0)
+                            .foregroundColor(Color(hex:"898989"))
+                    )
+                    .padding()
+                    
+                    HStack {
+                        TextField("Enter username...", text: $viewModel.usernameEntered)
 
+                    }
+                    .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 2.0)
@@ -195,12 +224,11 @@ struct Signup: View {
                 VStack (spacing:20){
 
                     Button {
-                        print("Sign Up presed")
+                        print("Signup Pressed...")
                         Task {
                             do {
                                 try await viewModel.signIn()
                                 isAuthenticated = true
-                                signUpSuccess = true
                             } catch LoginErrors.BlankForm {
                                 print("Invalid Password or Username")
                                 showingAlert = true
@@ -215,7 +243,7 @@ struct Signup: View {
                                 print("Invalid Password")
                                 showingAlert = true
                                 alertMessage = "Invalid Password. Password must be minimum 6 characters long and must contain a capital letter and a special character"
-                            } catch LoginErrors.InvalidUsername {
+                            } catch LoginErrors.EmailNotExist {
                                 print("Invalid Username")
                                 showingAlert = true
                                 alertMessage = "The username you have entered seems to be invalid"
@@ -243,7 +271,7 @@ struct Signup: View {
                         .padding()
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
-                    
+                     
                     
                     Button(action: {
                         Task {
