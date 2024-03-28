@@ -12,18 +12,19 @@ import GoogleSignInSwift
 final class SignUpViewModel: ObservableObject {
     @Published var email = ""
     @Published var uid = ""
-    @Published var password = ""
+    @Published var passwordEntered = ""
     @Published var usernameEntered = ""
+
     
     func signIn() async throws {
-        guard !email.isEmpty, !password.isEmpty else {
+        guard !email.isEmpty, !passwordEntered.isEmpty else {
             print("No user email or password found")
             throw LoginErrors.BlankForm
         }
-        guard isValidEmail(email) || isValidPassword(password) else {
+        guard isValidEmail(email) || isValidPassword(passwordEntered) else {
             throw LoginErrors.InvalidPasswordUsername
         }
-        guard isValidPassword(password) else {
+        guard isValidPassword(passwordEntered) else {
             throw LoginErrors.InvalidPassword
         }
         guard isValidEmail(email) else {
@@ -34,23 +35,24 @@ final class SignUpViewModel: ObservableObject {
         }
         
         do {
-            let user = try await AuthManager.shared.createUser(email: email, password: password)
+            let user = try await AuthManager.shared.createUser(email: email, password: passwordEntered)
             print("Sign in completed")
             //print(user.email)
             print(user.uid)
             UserDefaults.standard.set(user.email, forKey: "email")
             UserDefaults.standard.set(user.uid, forKey: "uid")
+            UserDefaults.standard.set(user.displayName, forKey: "username")
             var userViewModel = UserViewModel()
             userViewModel.setInitData(newUser: User(
                 uid: user.uid,
                 email: user.email ?? "emailUnknown",
+                password: passwordEntered,
                 creationDate: Date(),
                 username: usernameEntered
             ))
             print("Success")
             email = user.email ?? ""
             uid = user.uid
-            
         } catch {
             print("Invalid Sign Up")
             throw LoginErrors.InvalidSignup
@@ -148,16 +150,17 @@ struct Signup: View {
                             .foregroundColor(Color(hex:"898989"))
                     )
                     .padding()
+                    
                     HStack {
-                        SecureField("Enter password...", text: $viewModel.password)
+                        SecureField("Enter password...", text: $viewModel.passwordEntered)
 
-                        if (viewModel.password == "") {
+                        if (viewModel.passwordEntered == "") {
                             Image(systemName: "lock.fill")
                                 .fontWeight(.bold)
                         } else {
-                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                            Image(systemName: isValidPassword(viewModel.passwordEntered) ? "checkmark" : "xmark")
                                 .fontWeight(.bold)
-                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                                .foregroundColor(isValidPassword(viewModel.passwordEntered) ? .green : .red)
                         }
                     }
                     .padding()
@@ -169,7 +172,7 @@ struct Signup: View {
                     .padding()
                     
                     HStack {
-                        SecureField("Enter username...", text: $viewModel.usernameEntered)
+                        TextField("Enter username...", text: $viewModel.usernameEntered)
 
                     }
                     .padding()
@@ -267,6 +270,7 @@ struct Signup_Previews: PreviewProvider {
         NavigationStack {
             Signup(isAuthenticated: $isAuthenticated)
                 .environmentObject(LogInVM())
+           
         }
     }
 }
