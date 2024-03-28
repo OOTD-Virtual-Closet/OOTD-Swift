@@ -34,7 +34,8 @@ class UserViewModel: ObservableObject {
                 "friendRequestsSent": newUser.friendRequestsSent,
                 "friendRequestsReceived": newUser.friendRequestsReceived,
                 "postsId": newUser.postsId,
-                "favorites": newUser.favorites
+                "favorites": newUser.favorites, 
+                "password": newUser.password
             ])
         }
         catch {
