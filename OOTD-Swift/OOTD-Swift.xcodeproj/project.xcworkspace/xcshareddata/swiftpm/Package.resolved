@@ -1,4 +1,5 @@
 {
+  "originHash" : "e14265a4a9dfc99309a953550b9ab07763bfae4ee5970dc1f283c2260b4e2e67",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -143,7 +144,16 @@
         "revision" : "65e8f29b2d63c4e38e736b25c27b83e012159be8",
         "version" : "1.25.2"
       }
+    },
+    {
+      "identity" : "swiftcsv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/naoty/SwiftCSV.git",
+      "state" : {
+        "revision" : "b61dcd1b2b1120e751cee4cd64a16ff10364885d",
+        "version" : "0.9.1"
+      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

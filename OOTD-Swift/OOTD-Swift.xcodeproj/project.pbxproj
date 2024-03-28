@@ -95,7 +95,6 @@
 		CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE677E2B7F1E9C00599FE8 /* Login.swift */; };
 		CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE67832B8138BD00599FE8 /* Signup.swift */; };
 		CCEEB7C22BB4BDC100B40AE2 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = CCEEB7C12BB4BDC100B40AE2 /* SwiftCSV */; };
-		CCEEB7C82BB4C11E00B40AE2 /* styles.csv in Resources */ = {isa = PBXBuildFile; fileRef = CCEEB7C72BB4C11E00B40AE2 /* styles.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,7 +179,6 @@
 		CCAA74822BB3916100D08997 /* TestOOTD.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; name = TestOOTD.mobileprovision; path = ../../../../Downloads/TestOOTD.mobileprovision; sourceTree = "<group>"; };
 		CCDE677E2B7F1E9C00599FE8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		CCDE67832B8138BD00599FE8 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
-		CCEEB7C72BB4C11E00B40AE2 /* styles.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = styles.csv; path = ../../../styles.csv; sourceTree = "<group>"; };
 		CCEEB7CA2BB4C12C00B40AE2 /* styles.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = styles.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -391,7 +389,6 @@
 			isa = PBXGroup;
 			children = (
 				6A7220902B8BCA7400FF45FE /* ImageSegmentation */,
-				CCEEB7C72BB4C11E00B40AE2 /* styles.csv */,
 				CCEEB7C92BB4C12300B40AE2 /* Resources */,
 				CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */,
 				CCAA74822BB3916100D08997 /* TestOOTD.mobileprovision */,
@@ -597,7 +594,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCEEB7C82BB4C11E00B40AE2 /* styles.csv in Resources */,
 				8985B7772B75D7A7000E8DED /* Preview Assets.xcassets in Resources */,
 				8985B7732B75D7A7000E8DED /* Assets.xcassets in Resources */,
 				CC1AAF4A2BA802B80093EAA6 /* GoogleService-Info.plist in Resources */,
