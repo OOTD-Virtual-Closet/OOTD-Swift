@@ -21,19 +21,19 @@ struct Clothes: View {
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: 112, height: 130)
                 .overlay(
-                        Group {
-                                                if let image = imageLoader.image {
-                                                    Image(uiImage: image)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 100, height: 100)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                } else {
-                                                    RoundedRectangle(cornerRadius: 10)
-                                                        .foregroundColor(Color(hex: "E1DDED"))
-                                                        .frame(width: 112, height: 130)
-                                                }
-                                            }
+                    Group {
+                        if let image = imageLoader.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 100, height: 100)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(Color(hex: "E1DDED"))
+                                .frame(width: 112, height: 130)
+                        }
+                    }
                 )
             Text(cloth?.name ?? "Name")
                 .foregroundColor(.black)
@@ -50,7 +50,7 @@ struct Clothes: View {
         }
         .onAppear {
             fetchClothFromFirestore {
-                print("fetched cloth and stuff")
+                print("Fetched Clothes")
             }
         }
     }

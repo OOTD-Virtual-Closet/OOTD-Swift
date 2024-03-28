@@ -374,7 +374,8 @@ struct Login: View {
             }
 
         } else {
-            print("No Face ID")
+            self.showingAlert = true
+            self.alertMessage = "Face ID is not available on this device! Update your iOS version or application privileges."
         }
     }
     

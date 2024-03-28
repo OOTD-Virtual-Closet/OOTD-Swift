@@ -9,18 +9,21 @@
 import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
-
+import PhotosUI
 import UIKit
 
 extension UIImage {
-    func resize(to size: CGSize) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
-        defer { UIGraphicsEndImageContext() }
-        
-        self.draw(in: CGRect(origin: .zero, size: size))
-        guard let resizedImage = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
-        
-        return resizedImage
+    func resizedImageWithinRect(rectSize: CGSize) -> UIImage {
+        let widthRatio = rectSize.width / size.width
+        let heightRatio = rectSize.height / size.height
+        let scaleFactor = min(widthRatio, heightRatio)
+        let scaledImageSize = CGSize(
+            width: size.width * scaleFactor,
+            height: size.height * scaleFactor
+        )
+        return UIGraphicsImageRenderer(size: scaledImageSize).image { _ in
+            self.draw(in: CGRect(origin: .zero, size: scaledImageSize))
+        }
     }
 }
 
@@ -32,10 +35,11 @@ struct AddClothes: View {
     private var colorOptions = ["Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Indigo", "Violet", "Tomato Red", "Greenish Cob"]
     @State private var isEditing = false
     @State private var isEditing2 = false
-
+    
+    @State private var isImagePickerPresented = false
+    @State var selectedImage: UIImage?
 
     @State private var name : String?
-    @State var selectedImage: UIImage?
     @State private var selectedType : String?
     @State private var selectedSize : String?
     @State private var selectedColor : String?
@@ -46,69 +50,69 @@ struct AddClothes: View {
     @State var showAlert = false
     @State var alertMessage = "Please fill out all fields"
     
-    func getImageForSelectedType() -> UIImage? {
-            guard let selectedType = selectedType else {
-                return nil
-            }
-            
-            switch selectedType {
-            case "Tops":
-                let randomVal = Int.random(in: 1...3)
-                if randomVal == 1 {
-                    let uiImage = UIImage(named: "shirt")
-                    return uiImage
-                }
-                if randomVal == 2 {
-                    let uiImage = UIImage(named: "shirt2")
-                    return uiImage
-                }
-                let uiImage = UIImage(named: "shirt3")
-                return uiImage
-            case "Bottoms":
-                let uiImage = UIImage(named: "jeans")
-                return uiImage
-            case "Jackets/Hoodies":
-                let randomVal = Int.random(in: 1...3)
-                if randomVal == 1 {
-                    let uiImage = UIImage(named: "jacket")
-                    return uiImage
-                }
-                if randomVal == 2 {
-                    let uiImage = UIImage(named: "hoodie")
-                    return uiImage
-                }
-                let uiImage = UIImage(named: "jacket")
-                return uiImage
-            case "Shoes":
-                let uiImage = UIImage(named: "shoes")
-                return uiImage
-            default:
-                let uiImage = UIImage(named: "shirt2")
-                return uiImage
-            }
-        }
-    func convertImageToUIImage(_ image: Image) -> UIImage {
-        // Create a hosting controller
-        let viewController = UIHostingController(rootView: image)
-
-        // Get the image from the hosting controller's view
-        let view = viewController.view
-
-        // Render view to an image
-        let renderer = UIGraphicsImageRenderer(size: view!.bounds.size)
-        let uiImage = renderer.image { ctx in
-            view!.drawHierarchy(in: view!.bounds, afterScreenUpdates: true)
-        }
-
-        return uiImage
-    }
+//    func getImageForSelectedType() -> UIImage? {
+//            guard let selectedType = selectedType else {
+//                return nil
+//            }
+//            
+//            switch selectedType {
+//            case "Tops":
+//                let randomVal = Int.random(in: 1...3)
+//                if randomVal == 1 {
+//                    let uiImage = UIImage(named: "shirt")
+//                    return uiImage
+//                }
+//                if randomVal == 2 {
+//                    let uiImage = UIImage(named: "shirt2")
+//                    return uiImage
+//                }
+//                let uiImage = UIImage(named: "shirt3")
+//                return uiImage
+//            case "Bottoms":
+//                let uiImage = UIImage(named: "jeans")
+//                return uiImage
+//            case "Jackets/Hoodies":
+//                let randomVal = Int.random(in: 1...3)
+//                if randomVal == 1 {
+//                    let uiImage = UIImage(named: "jacket")
+//                    return uiImage
+//                }
+//                if randomVal == 2 {
+//                    let uiImage = UIImage(named: "hoodie")
+//                    return uiImage
+//                }
+//                let uiImage = UIImage(named: "jacket")
+//                return uiImage
+//            case "Shoes":
+//                let uiImage = UIImage(named: "shoes")
+//                return uiImage
+//            default:
+//                let uiImage = UIImage(named: "shirt2")
+//                return uiImage
+//            }
+//        }
+    
+//    func convertImageToUIImage(_ image: Image) -> UIImage {
+//        // Create a hosting controller
+//        let viewController = UIHostingController(rootView: image)
+//
+//        // Get the image from the hosting controller's view
+//        let view = viewController.view
+//
+//        // Render view to an image
+//        let renderer = UIGraphicsImageRenderer(size: view!.bounds.size)
+//        let uiImage = renderer.image { ctx in
+//            view!.drawHierarchy(in: view!.bounds, afterScreenUpdates: true)
+//        }
+//
+//        return uiImage
+//    }
 
     func uploadClothImage() -> String {
         guard selectedImage != nil else {
-            print("failed 1")
+            print("Image not selected in AddClothes!")
             return ""
         }
-       // selectedImage = selectedImage?.resize(to: CGSize(width: 200, height: 200)) ?? selectedImage
         
         //create storage reference
         let storageRef = Storage.storage().reference()
@@ -125,15 +129,19 @@ struct AddClothes: View {
         let fileRef = storageRef.child(path)
         
         // Upload dis data
-        
-        let uploadTask = fileRef.putData(imageData!, metadata: nil) {
-            metadata, error in
-            
-            if error == nil && metadata != nil {
-                print("Successfully stored image")
-            }
-            else {
-                print("failed storing image")
+        if let selectedImage = selectedImage {
+            let resizedImage = selectedImage.resizedImageWithinRect(rectSize: CGSize(width: 200, height: 200)) //check size stuff after
+            if let imageData = resizedImage.jpegData(compressionQuality: 0.75) {
+                let uploadTask = fileRef.putData(imageData, metadata: nil) {
+                    metadata, error in
+                    
+                    if error == nil && metadata != nil {
+                        print("Successfully stored image")
+                    }
+                    else {
+                        print("failed storing image")
+                    }
+                }
             }
         }
         return path
@@ -149,21 +157,41 @@ struct AddClothes: View {
                             .foregroundColor(.white)
                             .frame(height: UIScreen.main.bounds.height / 7)
                             .ignoresSafeArea(.all)
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color(hex: "E1DDED"))
-                            .frame(width: 220, height: 220)
-                            .padding(.bottom, 20)
-                           .overlay(
+                        
+                        if let selectedImage = selectedImage {
+                            Image(uiImage: selectedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 220, height: 220)
+                                .padding(.bottom, 20)
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(Color(hex: "E1DDED"))
+                                .frame(width: 220, height: 220)
+                                .padding(.bottom, 20)
+                                .overlay(
                             Text("Upload Image Below")
                                 .foregroundColor(.black)
                                 .font(.system( size: 20))
-                           )
-                        Image(systemName: "square.and.arrow.up.circle.fill")
-                            .resizable()
-                            .foregroundColor(Color(hex: "9278E0"))
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 35, height: 35)
-                            .padding(.bottom, 20)
+                                )
+                        }
+                        
+                        Button(action: {
+                            self.isImagePickerPresented = true
+                        }) {
+                            Image(systemName: "square.and.arrow.up.circle.fill")
+                                .resizable()
+                                .foregroundColor(Color(hex: "9278E0"))
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 35, height: 35)
+                                .padding(.bottom, 20)
+                        }
+                        .sheet(isPresented: $isImagePickerPresented) {
+                            PhotoPicker(image: $selectedImage) {
+                                // Handle dismiss action if needed
+                            }
+                        }
+                        
                         VStack (alignment: .leading, spacing: 10){
                             Text("Item Name")
                                 .foregroundColor(.black)
@@ -248,7 +276,7 @@ struct AddClothes: View {
                     .ignoresSafeArea(.all)
                 HStack {
                     Button(action: {
-                        selectedImage = getImageForSelectedType()
+                        //selectedImage = getImageForSelectedType()
                         let path = uploadClothImage()
                         
                         if searchText == "" || searchText2 == "" || selectedType == nil || selectedColor == nil || selectedSize == nil {
