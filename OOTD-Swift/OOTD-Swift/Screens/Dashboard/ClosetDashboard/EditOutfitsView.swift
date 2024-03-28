@@ -1,25 +1,28 @@
 //
-//  ExpandedOutfitsView.swift
+//  EditOutfitsView.swift
 //  OOTD-Swift
 //
-//  Created by Aaryan Srivastava on 3/26/24.
+//  Created by Aaryan Srivastava on 3/28/24.
 //
-
 import SwiftUI
-import FirebaseFirestore
 import FirebaseStorage
+import FirebaseFirestore
 
+import UIKit
 
-
-struct ExpandedOutfitsView: View {
+struct EditOutfitsView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State var mainOutfit : Outfit
+       @State var mainOutfit : Outfit
     @StateObject var imageLoader = ImageLoader()
     @StateObject var imageLoader2 = ImageLoader()
     @StateObject var imageLoader3 = ImageLoader()
     @StateObject var imageLoader4 = ImageLoader()
-
+    @State  var searchText = ""
+    @State  var selectedGenre : String?
+    @State  var isEditing = false
+     var genreOptions = ["Streetwear", "Formalwear", "Casual", "Business Casual", "Pajamas"]
+    @State var showAlert = false
 
 
     
@@ -86,9 +89,7 @@ struct ExpandedOutfitsView: View {
            }
        }
    }
-    @State var showAlert =  false
-    @State var showSheet = false
-    
+     
     var body: some View {
             ZStack(alignment: .top) {
                 ScrollView(showsIndicators: false){
@@ -149,87 +150,69 @@ struct ExpandedOutfitsView: View {
                         VStack {
                             
                             VStack (alignment: .leading, spacing: 10){
-                                Text("Item Name")
-                                    .foregroundColor(.black)
-                                    .fontWeight(.bold)
-                                    .font(.system( size: 18))
-                                    .padding(.leading, 5)
-                                Text(mainOutfit.name ?? "name")
-                                    .foregroundColor(.black)
-                                    .fontWeight(.semibold)
-                                    .font(.system( size: 15))
-                                    .padding(.leading, 5)
-                                Text("Genre")
-                                    .foregroundColor(.black)
-                                    .fontWeight(.bold)
-                                    .font(.system( size: 18))
-                                    .padding(.leading, 5)
-                                Text(mainOutfit.genre ?? "genre")
-                                    .foregroundColor(.black)
-                                    .fontWeight(.semibold)
-                                    .font(.system( size: 15))
-                                    .padding(.leading, 5)
+                                ZStack {
+                                            TextField("", text: $searchText, onEditingChanged: { editing in
+                                                isEditing = editing
+                                            }).onChange(of: searchText) { newValue in
+                                                if newValue.count > 20 {
+                                                    searchText = String(newValue.prefix(20))
+                                                }
+                                            }
+
+                                            .frame(width: UIScreen.main.bounds.width - 90, height: 40)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .foregroundColor(Color(hex: "E1DDED"))
+                                                    .frame(width: UIScreen.main.bounds.width - 40, height: 50)
+                                                    .shadow(radius: 4)
+                                            )
+                                            .overlay(
+                                                HStack {
+                                                    Text("Name...")
+                                                        .foregroundColor(.black)
+                                                    Spacer()
+                                                }
+                                                .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
+                                            )
+                                }
+                                .padding(.horizontal,25)
+                                    .padding(.vertical, 10)
+                                CustomDropDown(title: "Genre", prompt: "Select a Genre", options: genreOptions, selection: $selectedGenre)
                             }
                             .padding(.horizontal)
                         }
 
                         
                     }
-                    //buttons
-                    HStack {
+
                         Button(action: {
-                            showAlert.toggle()
-                                }) {
+                            if searchText == "" || selectedGenre == nil {
+                                showAlert = true
+                            } else {
+                                showAlert = false
+                                let outfit = Outfit(id: mainOutfit.id, name: searchText ?? "", genre: selectedGenre ?? "", cloth1: mainOutfit.cloth1 , cloth2: mainOutfit.cloth2, cloth3: mainOutfit.cloth3 , cloth4: mainOutfit.cloth4)
+                                
+                                let outfitViewModel = OutfitViewModel()
+                                outfitViewModel.editOutfit(outfit: outfit)
+                                presentationMode.wrappedValue.dismiss()
+                                
+                            }
+
+                        }) {
                                     HStack(spacing: 10) {
-                                        Image(systemName: "trash.fill")
+                                        Image(systemName: "square.and.arrow.down")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
                                             .frame(width: 20, height: 20)
                                             .foregroundColor(.white)
-                                        Text("Delete")
-                                            .foregroundColor(.white)
-                                    }
-                                    .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                    .background(Color.red)
-                                    .cornerRadius(10)
-                                }
-                        Button(action: {
-                            showSheet.toggle()
-                                }) {
-                                    HStack(spacing: 10) {
-                                        Image(systemName: "applepencil.gen1")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 20, height: 20)
-                                            .foregroundColor(.white)
-                                        Text("Edit")
-                                            .foregroundColor(.white)
-                                    }
-                                    .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                    .background(Color.blue)
-                                    .cornerRadius(10)
-                                }
-                        Button(action: {
-                            let outfitViewModel = OutfitViewModel()
-                            outfitViewModel.addFitToFavorites(outfit: mainOutfit)
-                            presentationMode.wrappedValue.dismiss()
-                                }) {
-                                    HStack(spacing: 10) {
-                                        Image(systemName: "star.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 20, height: 20)
-                                            .foregroundColor(.white)
-                                        Text("Favorite")
+                                        Text("Save Changes")
                                             .foregroundColor(.white)
                                     }
                                     .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                                     .background(Color(hex: "9278E0"))
                                     .cornerRadius(10)
                                 }
-
-                        
-                    }
+                    
                     
                     
                 }
@@ -241,7 +224,7 @@ struct ExpandedOutfitsView: View {
                 HStack {
                    
                     Spacer()
-                    Text("New Item")
+                    Text("Edit Outfit")
                         .foregroundColor(.white)
                         .font(.system( size: 20))
                         .fontWeight(.bold)
@@ -251,20 +234,15 @@ struct ExpandedOutfitsView: View {
             }
             .onAppear {
                 fetchFitFromFirestore {
-                    print("fetched outfit and stuff")
+                    print("fetched fit and stuff")
+                    searchText = mainOutfit.name
+                    selectedGenre = mainOutfit.genre
+                    
                 }
-            }
-            .sheet(isPresented: $showSheet) {
-                EditOutfitsView(mainOutfit: mainOutfit)
+                
             }
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Error"), message: Text("If any outfits contain this cloth, they will be deleted as well. Are you sure you want to proceed?"), primaryButton: .destructive(Text("Delete")) {
-                    let outfitViewModel = OutfitViewModel()
-                    outfitViewModel.deleteFit(outfit: mainOutfit)
-                    presentationMode.wrappedValue.dismiss()
-                }, secondaryButton: .cancel(Text("Cancel")))
+                Alert(title: Text("Error"), message: Text("Please fill out all fields"), dismissButton: .default(Text("OK")))
             }
         }
 }
-
-

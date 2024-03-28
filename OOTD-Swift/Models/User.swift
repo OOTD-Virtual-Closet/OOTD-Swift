@@ -22,4 +22,5 @@ struct User: Codable, Identifiable {
     var friendRequestsReceived: [String]?
     var postsId: [String]?
     var favorites: [String]?
+    var favoriteFits: [String]?
 }

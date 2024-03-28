@@ -54,6 +54,7 @@
 		8985B7822B75D7A7000E8DED /* OOTD_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B7812B75D7A7000E8DED /* OOTD_SwiftTests.swift */; };
 		8985B78C2B75D7A7000E8DED /* OOTD_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B78B2B75D7A7000E8DED /* OOTD_SwiftUITests.swift */; };
 		8985B78E2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985B78D2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift */; };
+		89CB20862BB5FC800044E5A0 /* EditOutfitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CB20852BB5FC800044E5A0 /* EditOutfitsView.swift */; };
 		89CCB2882BA8FFAA004EAAA7 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CCB2872BA8FFAA004EAAA7 /* PostView.swift */; };
 		89D107C52BB53F100059F232 /* FriendRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D107C42BB53F100059F232 /* FriendRequestView.swift */; };
 		89D107C92BB53F5F0059F232 /* FriendReceivedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D107C82BB53F5F0059F232 /* FriendReceivedView.swift */; };
@@ -168,6 +169,7 @@
 		8985B7872B75D7A7000E8DED /* OOTD-SwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "OOTD-SwiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8985B78B2B75D7A7000E8DED /* OOTD_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftUITests.swift; sourceTree = "<group>"; };
 		8985B78D2B75D7A7000E8DED /* OOTD_SwiftUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOTD_SwiftUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		89CB20852BB5FC800044E5A0 /* EditOutfitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOutfitsView.swift; sourceTree = "<group>"; };
 		89CCB2872BA8FFAA004EAAA7 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		89D107C42BB53F100059F232 /* FriendRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestView.swift; sourceTree = "<group>"; };
 		89D107C82BB53F5F0059F232 /* FriendReceivedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendReceivedView.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				89396F182B922E770041F5F0 /* ExpandedClothesView.swift */,
 				890DCE342BB282E800292B8E /* EditClothesView.swift */,
 				890DCE362BB3873000292B8E /* ExpandedOutfitsView.swift */,
+				89CB20852BB5FC800044E5A0 /* EditOutfitsView.swift */,
 			);
 			path = ClosetDashboard;
 			sourceTree = "<group>";
@@ -617,6 +620,7 @@
 				34C8281D2B885812007AE17F /* SocialNav.swift in Sources */,
 				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
 				89396F192B922E770041F5F0 /* ExpandedClothesView.swift in Sources */,
+				89CB20862BB5FC800044E5A0 /* EditOutfitsView.swift in Sources */,
 				34C8281B2B885804007AE17F /* ClosetNav.swift in Sources */,
 				34A178022B81557500265C56 /* FriendsView.swift in Sources */,
 				6A7220942B8BCBED00FF45FE /* ImageSegmentation.swift in Sources */,
