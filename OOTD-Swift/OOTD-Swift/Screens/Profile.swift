@@ -8,20 +8,51 @@
 import Foundation
 import SwiftUI
 import UIKit
+import SwiftUI
+import FirebaseAuth
+import Firebase
 
 
 @MainActor
 final class ProfileViewModel: ObservableObject {
+    @Published var userUsername = ""
+    
     func signOut() throws {
         try AuthManager.shared.signout()
     }
+    
+    func GetAuthenticatedUser() throws -> AuthDataResultModel {
+        let user = try AuthManager.shared.getAuthenticatedUser()
+        return user
+    }
+    
+    func GetUsername() async {
+        var nameU = ""
+        
+        do {
+            let user = try GetAuthenticatedUser();
+            let db = Firestore.firestore()
+            let userId = user.uid
+            let docRef = db.collection("users").document(userId)
+            let document = try await docRef.getDocument()
+            let data = document.data()
+            userUsername = data?["username"] as? String ?? ""
+            //userUsername = nameU
+            print(nameU)
+            
+        } catch {
+            
+        }
+    }
 }
+
+
 
 struct ProfileSummary: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var isAuthenticated: Bool
     var email = UserDefaults.standard.string(forKey: "email") ?? "atharva.gu@gmail.com"
-    var name = "Atharva Gupta"
+    var name = UserDefaults.standard.string(forKey: "username") ?? "name here"
     var phoneNumber = "(510) 335-9060"
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
     var body: some View {
@@ -35,11 +66,14 @@ struct ProfileSummary: View {
                     .shadow(radius: 10)
                     .overlay(Circle().stroke(Color.white, lineWidth: 4))
                     .padding(.top, 30)
-                Text(name)
+                
+                                    
+                Text(viewModel.userUsername)
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.black)
                     .padding(.top, 5)
+                    
                 VStack {
                     HStack {
                         Text("Email: ") // Display the user's email
@@ -64,23 +98,6 @@ struct ProfileSummary: View {
                 .padding(.top, 25)
                 // Action Buttons
                 VStack(spacing: 15) {
-                    /*
-                    Button(action: {
-                        // Handle change password
-                        //TODO: ADD FIREBASE METHOD HERE
-                        
-                        
-                        print("change password pressed")
-                    }) {
-                        Label("Change Password", systemImage: "lock.rotation")
-                    }
-                    .buttonStyle(ProfileButtonStyle())
-                    .padding(.horizontal)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 0)
-                    .padding(.bottom, 15)
-*/
                     
                     NavigationLink(destination: ChangePasswordUI()) {
                         Label("Change Password", systemImage: "lock.rotation")
@@ -107,7 +124,7 @@ struct ProfileSummary: View {
                         .padding(.bottom, 15)
                     }
                     
-                    NavigationLink(destination: DeleteAccountUI()) {
+                    NavigationLink(destination: ChangeUsernameUI()) {
                         Label("Change Username", systemImage: "trash")
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                         .frame(height:50)
@@ -144,9 +161,12 @@ struct ProfileSummary: View {
             }
             .padding()
             .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
             .background(Color("Background").edgesIgnoringSafeArea(.all)) // Assuming you have a color set named "Background"
+            
         }
     }
+        
 }
 
 // Custom button style for profile view
@@ -168,5 +188,6 @@ struct ProfileSummary_Previews: PreviewProvider {
     static var previews: some View {
         @State var isAuthenticated = false
         ProfileSummary(isAuthenticated:$isAuthenticated)
+        
     }
 }
