@@ -303,7 +303,7 @@ struct Login: View {
                                     isAuthenticated = true
                                 } else {
                                     // Handle sign-in failure
-                                    alertMessage = "Login wiht Google unsuccessful"
+                                    alertMessage = "Login with Google unsuccessful"
                                     print("Login with Google unsuccessful")
                                     isAuthenticated = false
                                     showingAlert = true
