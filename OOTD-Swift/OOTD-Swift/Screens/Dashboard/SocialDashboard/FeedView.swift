@@ -14,11 +14,73 @@ struct FeedView: View {
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
     @State private var isEditing = false
     @State private var feed : [Post]?
-
+    
     private func fetchPostsFromFriends(completion: @escaping ([Post]) -> Void) {
         let db = Firestore.firestore()
+        var fetchedPosts: [Post] = []
+        let dispatchGroup = DispatchGroup()
         
-        // Fetch the current user's document
+        // Fetch posts from friends
+        fetchPostsFromFriendsList(db: db, dispatchGroup: dispatchGroup) { postsFromFriends in
+            fetchedPosts.append(contentsOf: postsFromFriends)
+        }
+        
+        // Fetch posts from the initial user document (the one with uid variable)
+        dispatchGroup.enter()
+        let currentUserUID = uid
+        let currentUserRef = db.collection("users").document(currentUserUID)
+        currentUserRef.getDocument { document, error in
+            defer {
+                dispatchGroup.leave()
+            }
+            
+            if let error = error {
+                print("Error fetching current user document: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let document = document, document.exists else {
+                print("Current user document not found")
+                return
+            }
+            
+            if let posts = document.data()?["postsId"] as? [String] {
+                for postID in posts {
+                    let postRef = db.collection("posts").document(postID)
+                    dispatchGroup.enter()
+                    postRef.getDocument { postDocument, error in
+                        defer {
+                            dispatchGroup.leave()
+                        }
+                        
+                        if let error = error {
+                            print("Error fetching post document for \(postID): \(error.localizedDescription)")
+                            return
+                        }
+                        
+                        guard let postDocument = postDocument, postDocument.exists else {
+                            print("Post document not found for \(postID)")
+                            return
+                        }
+                        
+                        if let post = try? postDocument.data(as: Post.self) {
+                            fetchedPosts.append(post)
+                        } else {
+                            print("Failed to decode post document for \(postID)")
+                        }
+                    }
+                }
+            } else {
+                print("Posts not found in current user document")
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion(fetchedPosts)
+        }
+    }
+
+    private func fetchPostsFromFriendsList(db: Firestore, dispatchGroup: DispatchGroup, completion: @escaping ([Post]) -> Void) {
         let currentUserUID = uid
         let currentUserRef = db.collection("users").document(currentUserUID)
         currentUserRef.getDocument { document, error in
@@ -36,13 +98,9 @@ struct FeedView: View {
             
             // Extract the "friends" array from the current user's document
             if let friends = document.data()?["friends"] as? [String] {
-                var fetchedPosts: [Post] = []
-                let dispatchGroup = DispatchGroup()
-                
-                // For each friend, fetch their document and extract posts
                 for friendUID in friends {
-                    dispatchGroup.enter()
                     let friendRef = db.collection("users").document(friendUID)
+                    dispatchGroup.enter()
                     friendRef.getDocument { friendDocument, error in
                         defer {
                             dispatchGroup.leave()
@@ -58,26 +116,29 @@ struct FeedView: View {
                             return
                         }
                         
-                        if let posts = friendDocument.data()?["posts"] as? [String] {
-                            do {
-                                for postID in posts {
-                                    let postRef = db.collection("postsId").document(postID)
-                                    postRef.getDocument { postDocument, error in
-                                        if let error = error {
-                                            print("Error fetching post document for \(postID): \(error.localizedDescription)")
-                                            return
-                                        }
-                                        
-                                        guard let postDocument = postDocument, postDocument.exists else {
-                                            print("Post document not found for \(postID)")
-                                            return
-                                        }
-                                        
-                                        if let post = try? postDocument.data(as: Post.self) {
-                                            fetchedPosts.append(post)
-                                        } else {
-                                            print("Failed to decode post document for \(postID)")
-                                        }
+                        if let posts = friendDocument.data()?["postsId"] as? [String] {
+                            for postID in posts {
+                                let postRef = db.collection("posts").document(postID)
+                                dispatchGroup.enter()
+                                postRef.getDocument { postDocument, error in
+                                    defer {
+                                        dispatchGroup.leave()
+                                    }
+                                    
+                                    if let error = error {
+                                        print("Error fetching post document for \(postID): \(error.localizedDescription)")
+                                        return
+                                    }
+                                    
+                                    guard let postDocument = postDocument, postDocument.exists else {
+                                        print("Post document not found for \(postID)")
+                                        return
+                                    }
+                                    
+                                    if let post = try? postDocument.data(as: Post.self) {
+                                        completion([post])
+                                    } else {
+                                        print("Failed to decode post document for \(postID)")
                                     }
                                 }
                             }
@@ -86,58 +147,14 @@ struct FeedView: View {
                         }
                     }
                 }
-                
-                dispatchGroup.notify(queue: .main) {
-                    completion(fetchedPosts)
-                }
             } else {
                 print("Friends not found in current user document")
-                completion([])
             }
         }
     }
+
+
     
-    private func populateArrays(completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        let userRef = db.collection("users").document(uid)
-        userRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let posts = document.data()?["postsId"] as? [String] {
-                    var loadedPosts = [Post]()
-                    let dispatchGroup = DispatchGroup()
-                    
-                    for item in posts {
-                        dispatchGroup.enter()
-                        
-                        let docRef = db.collection("posts").document(item)
-                        docRef.getDocument { document, error in
-                            defer {
-                                dispatchGroup.leave()
-                            }
-                            if let document = document, document.exists {
-                                do {
-                                    let testPost =  try document.data(as: Post.self)
-                                        loadedPosts.append(testPost)
-                                    
-                                } catch {
-                                    print("Error decoding post document: \(error.localizedDescription)")
-                                }
-                            } else {
-                                print("post document does not exist")
-                            }
-                        }
-                    }
-                    
-                    dispatchGroup.notify(queue: .main) {
-                        feed = loadedPosts
-                        completion()
-                    }
-                }
-            } else {
-                print("User document does not exist")
-            }
-        }
-    }
 
     var body: some View {
         ScrollView {
@@ -171,19 +188,18 @@ struct FeedView: View {
                         )
                     }
                     VStack(spacing: 20) {
-                        ForEach(0..<10) { _ in
-                           // PostView()
+                        ForEach(feed ?? [], id: \.self) { test in
+                            PostView(item: test.id, UserID: test.owner )
                         }
                     }
                 }
         .onAppear {
-                  fetchPostsFromFriends { posts in
-                      self.feed = posts
-                  }
-            populateArrays{
-                print("tess")
-            }
-              }
+                    fetchPostsFromFriends { fetchedPosts in
+                        // Update the posts array with fetched posts
+                        self.feed = fetchedPosts
+                    }
+                }
+
         .padding (.top, 50)
     }
 }
