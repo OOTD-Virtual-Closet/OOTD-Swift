@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @Binding var addPadding: Bool
 
-    @State var todayDate = Date()
-    @State var startDate: Date = Date()
-    @State var months = [MonthModel(id: "id", month: "March", monthOfTheYear: 3, year: 2024), MonthModel(id: "id2", month: "April", monthOfTheYear: 4, year: 2024), MonthModel(id: "id3", month: "May", monthOfTheYear: 5, year: 2024)] // on appear, calculate all months
+    @State private var todayDate = Date()
+    @State private var startDate: Date = Date()
+    @State private var months = [MonthModel(id: "id", month: "March", monthOfTheYear: 3, year: 2024), MonthModel(id: "id2", month: "April", monthOfTheYear: 4, year: 2024), MonthModel(id: "id3", month: "May", monthOfTheYear: 5, year: 2024)] // on appear, calculate all months
 
-    @StateObject var viewModel = CalendarViewModel()
+    @StateObject private var viewModel = CalendarViewModel()
+    
 
-    private var daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"]
-    private var columns = [
+    var daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"]
+    var columns = [
         GridItem.init(.flexible(), alignment: .center),
         GridItem.init(.flexible(), alignment: .center),
         GridItem.init(.flexible(), alignment: .center),
@@ -25,7 +27,7 @@ struct CalendarView: View {
         GridItem.init(.flexible(), alignment: .center),
         GridItem.init(.flexible(), alignment: .center)
     ]
-    private func get30DaysAgo() -> Date {
+    func get30DaysAgo() -> Date {
         // Get the current calendar
         var calendar = Calendar.current
         
@@ -62,7 +64,7 @@ struct CalendarView: View {
                     
                     // Days in a month
                     ForEach(1..<month.amountOfDays + 1) { i in
-                        CalendarCell(beforeImageURL: "", afterImageURL: "", date: "\(month.year) \(month.month) \(i)", height: UIScreen.main.bounds.width/6.5, dayOfMonth: i, viewModel: viewModel)
+                        CalendarCell(addPadding:$addPadding, beforeImageURL: "", afterImageURL: "", date: "\(month.year) \(month.month) \(i)", height: UIScreen.main.bounds.width/6.5, dayOfMonth: i, viewModel: viewModel)
                     }
                     
                 }
@@ -104,22 +106,22 @@ struct CalendarView: View {
             }
             viewModel.getOutfitPlan()
         }
-
     }
-
 }
 
 struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View { CalendarView() }
+    static var previews: some View { Text("hey") }
 }
 
 struct CalendarCell: View {
+    @Binding var addPadding: Bool
 
     var beforeImageURL:String
     var afterImageURL:String
     var date:String
     var height:CGFloat
     var dayOfMonth:Int
+    
     @State private var selectedOutfit : String?
     @State var showSheet:Bool = false
     @ObservedObject var viewModel : CalendarViewModel
@@ -145,6 +147,7 @@ struct CalendarCell: View {
         }) {
             CustomDropDown(title: "Planned Outfit", prompt: "Select an Outfit for this day", options: viewModel.outfitOptions, selection: $selectedOutfit)
                 .onAppear {
+                    addPadding = false
                     print(date)
                     viewModel.getOutfitPlan()
                     if let plans = viewModel.plans {

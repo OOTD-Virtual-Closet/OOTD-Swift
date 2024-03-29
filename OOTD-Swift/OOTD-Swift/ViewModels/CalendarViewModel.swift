@@ -39,9 +39,10 @@ class CalendarViewModel: ObservableObject {
               if document.exists {
                   let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
                   DispatchQueue.main.async {
-                      print()
-                      let plans: [String: String] = document.data()?["plans"] as! [String : String]
-                      self.plans = plans
+                      if (dataDescription.contains("plans")) {
+                          let plans: [String: String] = document.data()?["plans"] as! [String : String]
+                          self.plans = plans
+                      }
                   }
               } else {
                 print("Document does not exist")

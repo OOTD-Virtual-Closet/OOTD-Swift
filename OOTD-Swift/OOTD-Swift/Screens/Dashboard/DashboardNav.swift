@@ -13,13 +13,16 @@ struct DashboardNav: View {
     @State private var selectedTab = 1
     @State private var stayLoggedInAlert = false
     @StateObject var calendarViewModel = CalendarViewModel()
+    
+    //ghetto code
+    @State private var addPadding = true
 
     let userProfile: String
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 HStack{
-                    NavigationLink(destination: CalendarView()) {
+                    NavigationLink(destination: CalendarView(addPadding: $addPadding)) {
                         Image("calendar")
                             .resizable()
                                 .scaledToFit()
@@ -65,7 +68,9 @@ struct DashboardNav: View {
                    .navigationBarHidden(true)
                }
                 .ignoresSafeArea(.all)
-                .padding(.top, -125)
+                .if(addPadding) { view in
+                    view.padding(.top, -125)
+                }
                 .onAppear {
                     self.confirmDocOnFirebase()
                     if (UserDefaults.standard.bool(forKey: "staySignedIn") == false) {
@@ -112,5 +117,15 @@ struct DashboardNav_Previews: PreviewProvider {
         @State var selectedTab = 1
         DashboardNav(isAuthenticated: $isAuthenticated, userProfile: "im not adi")
             .environmentObject(LogInVM())
+    }
+}
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, content: (Self) -> Content) -> some View {
+        if condition {
+            content(self)
+        } else {
+            self
+        }
     }
 }
