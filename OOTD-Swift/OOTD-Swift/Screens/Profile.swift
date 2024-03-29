@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import UIKit
-
+import Firebase
 
 @MainActor
 final class ProfileViewModel: ObservableObject {
