@@ -852,6 +852,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OOTD-Swift/GoogleService-Info.plist";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"yes\"";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "User should be able to upload images of their clothes!";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -894,6 +895,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "OOTD-Swift/GoogleService-Info.plist";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"yes\"";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "User should be able to upload images of their clothes!";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
