@@ -12,8 +12,28 @@ import FirebaseFirestore
 
 struct PostView: View {
     let item: String // UUID of the cloth document
-    @State var  uid : String?
     @State var UserID: String?
+    @State var Owner : User?
+    func loadUser(completion: @escaping () -> Void) {
+        
+        let docRef = Firestore.firestore().collection("users").document(UserID ?? "")
+        docRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    Owner = try document.data(as: User.self)
+                    print("User successfully fetched")
+                    
+                    
+                } catch {
+                    print("Error decoding user document: \(error.localizedDescription)")
+                    completion()
+                }
+            } else {
+                print("User document does not exist")
+                completion()
+            }
+        }
+    }
 
     
     @State var post: Post? // Cloth object fetched from Fire
@@ -28,7 +48,7 @@ struct PostView: View {
                         .frame(width: 30, height: 30)
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                Text(uid ?? "user")
+                Text(Owner?.email ?? "user")
                     .foregroundColor(.black)
                     .font(.system( size: 15))
                     .fontWeight(.bold)
@@ -67,6 +87,9 @@ struct PostView: View {
         .onAppear {
             fetchPostFromFirestore {
                 print("fetched post and stuff")
+            }
+            loadUser {
+                print(".")
             }
         }
     }
