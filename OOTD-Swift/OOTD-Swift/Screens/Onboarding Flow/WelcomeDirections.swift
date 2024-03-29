@@ -1,3 +1,4 @@
+
 //
 //  WelcomeDirections.swift
 //  OOTD-Swift
@@ -11,6 +12,7 @@
 //
 //  Created by Sanjhee Gupta on 2/19/24.
 //
+// DONE
 
 import SwiftUI
 import UIKit
@@ -56,7 +58,7 @@ struct WelcomePage1: View {
                         .padding(.horizontal)
                         
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("SKIP>")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
@@ -133,7 +135,7 @@ struct WelcomePage2: View {
                         .padding(.horizontal)
                         
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("SKIP>")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
@@ -209,7 +211,7 @@ struct WelcomePage3: View {
                         .padding(.horizontal)
                         
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("SKIP>")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
@@ -272,7 +274,7 @@ struct WelcomePage4: View {
                     
                     VStack {
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("NEXT")
                             .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
@@ -286,7 +288,7 @@ struct WelcomePage4: View {
                         .padding(.horizontal)
                     }
                     @State var isAuthenticated = false
-                    NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                    NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                         .environmentObject(LogInVM())) {
                         Text("SKIP>")
                             .foregroundStyle(Color(hex: "CBC3E3"))
