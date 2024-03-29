@@ -12,7 +12,9 @@ import FirebaseFirestore
 
 struct PostView: View {
     let item: String // UUID of the cloth document
-    var uid = UserDefaults.standard.string(forKey: "email") ?? "user"
+    @State var  uid : String?
+    @State var UserID: String?
+
     
     @State var post: Post? // Cloth object fetched from Fire
     
@@ -26,7 +28,7 @@ struct PostView: View {
                         .frame(width: 30, height: 30)
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                Text(uid)
+                Text(uid ?? "user")
                     .foregroundColor(.black)
                     .font(.system( size: 15))
                     .fontWeight(.bold)
