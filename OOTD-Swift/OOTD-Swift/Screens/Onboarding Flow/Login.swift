@@ -21,6 +21,7 @@ enum LoginErrors: Error{
     case UserDoesNotExist
     case WrongPassword
     case InvalidSignup
+    case EmailNotExist
 }
 
 final class LoginViewModel: ObservableObject {
