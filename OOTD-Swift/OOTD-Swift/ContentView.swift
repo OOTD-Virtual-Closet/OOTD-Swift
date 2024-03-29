@@ -30,9 +30,7 @@ struct ContentView: View {
 //                .environmentObject(LogInVM())
         } else {
             NavigationView {
-                Login(isAuthenticated:$isAuthenticated)
-                    .environmentObject(LogInVM())
-                    .transition(.slide)
+                WelcomePage1()
             }
         }
     }

@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class UserViewModel: ObservableObject {
 
-    @Published var user = User(uid: "tempUID", email: "tempEmail")
+    @Published var user = User(uid: "tempUID", email: "tempEmail", password: "temppassword")
 
     private var db = Firestore.firestore()
     
