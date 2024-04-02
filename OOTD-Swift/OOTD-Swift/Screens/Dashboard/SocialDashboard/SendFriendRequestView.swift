@@ -1,5 +1,5 @@
 //
-//  FriendRequestView.swift
+//  SendFriendRequestView.swift
 //  OOTD-Swift
 //
 //  Created by Aaryan Srivastava on 3/28/24.
@@ -7,40 +7,57 @@
 
 import SwiftUI
 import FirebaseFirestore
+import Combine
 
-struct FriendRequestView: View {
+struct SendFriendRequestView: View {
     @State private var searchText = ""
     @State private var isEditing = false
+    @State private var allUsers : [String]?
     
-    @State var friendRequestsList : [String]?
-    
-    
-    func populateFriendRequestsList() {
-            let db = Firestore.firestore()
-            
-            // Replace "userDocumentID" with the actual document ID of the user
+    func populateArrays(with searchText: String) {
+         let db = Firestore.firestore()
+         
+         db.collection("users")
+            .whereField("email", isEqualTo: searchText.lowercased())
+             .getDocuments { querySnapshot, error in
+                 if let error = error {
+                     print("Error fetching user documents: \(error.localizedDescription)")
+                     return
+                 }
+
+                 if let querySnapshot = querySnapshot {
+                     allUsers = querySnapshot.documents.map { $0.documentID }
+                 }
+             }
+     }
+    func sendFriendRequest(userB: String) {
+        let db = Firestore.firestore()
         var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
-
-            let userRef = db.collection("users").document(userA)
-            userRef.getDocument { document, error in
-                if let error = error {
-                    print("Error fetching user document: \(error.localizedDescription)")
-                    return
-                }
-
-                if let document = document, document.exists {
-                    // Extract friendRequestsSent array from user document
-                    if let friendRequestsSent = document.data()?["friendRequestsSent"] as? [String] {
-                        // Update friendRequestsList
-                        friendRequestsList = friendRequestsSent
-                    } else {
-                        print("friendRequestsSent field not found or not of type [String]")
-                    }
-                } else {
-                    print("User document not found")
-                }
+        
+        // Update recipient user's document (add current user's UUID to friendRequestsReceived)
+        let recipientUserRef = db.collection("users").document(userB)
+        recipientUserRef.updateData([
+            "friendRequestsReceived": FieldValue.arrayUnion([userA])
+        ]) { error in
+            if let error = error {
+                print("Error sending friend request to \(userB): \(error.localizedDescription)")
+                return
             }
-        }  
+            print("Friend request sent to user \(userB)")
+        }
+        
+        // Update current user's document (add recipient user's UUID to friendRequestsSent)
+        let currentUserRef = db.collection("users").document(userA)
+        currentUserRef.updateData([
+            "friendRequestsSent": FieldValue.arrayUnion([userB])
+        ]) { error in
+            if let error = error {
+                print("Error updating friend requests sent by \(userA): \(error.localizedDescription)")
+                return
+            }
+            print("Friend request sent by user \(userA)")
+        }
+    }
     
     var body: some View {
         ZStack (alignment: .top) {
@@ -76,20 +93,25 @@ struct FriendRequestView: View {
                                     )
                                 }
                                 VStack(spacing: 20) {
-                                    ForEach(friendRequestsList ?? [], id: \.self) { test in
-                                        RequestSentDisplay(userBID: test)
+                                    ForEach(allUsers ?? [], id: \.self) { use in
+                                        Button(action: {
+                                            sendFriendRequest(userB: use)
+                                        }) {
+                                            FriendDisplay(userBID: use)
+                                        }
                                     }
                                 }.padding(.top, 20)
                     }
-                    Rectangle()
-                        .foregroundColor(Color.white)
-                        .frame(height: 100)
-                        .ignoresSafeArea(.all)
-                }.padding (.top, 50)
+
+                }
+                .onReceive(Just(searchText)) { searchText in
+                            populateArrays(with: searchText)
+                        }
+                .padding (.top, 50)
 
             Rectangle()
                 .foregroundColor(Color(hex: "9278E0"))
-                .frame(height: UIScreen.main.bounds.height / 10)
+                .frame(height: UIScreen.main.bounds.height / 15)
                 .ignoresSafeArea(.all)
             HStack {
                
@@ -101,9 +123,7 @@ struct FriendRequestView: View {
                 Spacer()
             }.padding(.top, 20)
         }
-        .onAppear {
-            populateFriendRequestsList()
-        }
  
     }
 }
+

@@ -50,47 +50,47 @@ struct AddClothes: View {
     @State var showAlert = false
     @State var alertMessage = "Please fill out all fields"
     
-//    func getImageForSelectedType() -> UIImage? {
-//            guard let selectedType = selectedType else {
-//                return nil
-//            }
-//            
-//            switch selectedType {
-//            case "Tops":
-//                let randomVal = Int.random(in: 1...3)
-//                if randomVal == 1 {
-//                    let uiImage = UIImage(named: "shirt")
-//                    return uiImage
-//                }
-//                if randomVal == 2 {
-//                    let uiImage = UIImage(named: "shirt2")
-//                    return uiImage
-//                }
-//                let uiImage = UIImage(named: "shirt3")
-//                return uiImage
-//            case "Bottoms":
-//                let uiImage = UIImage(named: "jeans")
-//                return uiImage
-//            case "Jackets/Hoodies":
-//                let randomVal = Int.random(in: 1...3)
-//                if randomVal == 1 {
-//                    let uiImage = UIImage(named: "jacket")
-//                    return uiImage
-//                }
-//                if randomVal == 2 {
-//                    let uiImage = UIImage(named: "hoodie")
-//                    return uiImage
-//                }
-//                let uiImage = UIImage(named: "jacket")
-//                return uiImage
-//            case "Shoes":
-//                let uiImage = UIImage(named: "shoes")
-//                return uiImage
-//            default:
-//                let uiImage = UIImage(named: "shirt2")
-//                return uiImage
-//            }
-//        }
+    func getImageForSelectedType() -> UIImage? {
+            guard let selectedType = selectedType else {
+                return nil
+            }
+           
+            switch selectedType {
+            case "Tops":
+                let randomVal = Int.random(in: 1...3)
+                if randomVal == 1 {
+                    let uiImage = UIImage(named: "shirt")
+                    return uiImage
+                }
+                if randomVal == 2 {
+                    let uiImage = UIImage(named: "shirt2")
+                    return uiImage
+                }
+                let uiImage = UIImage(named: "shirt3")
+                return uiImage
+            case "Bottoms":
+                let uiImage = UIImage(named: "jeans")
+                return uiImage
+            case "Jackets/Hoodies":
+                let randomVal = Int.random(in: 1...3)
+                if randomVal == 1 {
+                    let uiImage = UIImage(named: "jacket")
+                    return uiImage
+                }
+                if randomVal == 2 {
+                    let uiImage = UIImage(named: "hoodie")
+                    return uiImage
+                }
+                let uiImage = UIImage(named: "jacket")
+                return uiImage
+            case "Shoes":
+                let uiImage = UIImage(named: "shoes")
+             return uiImage
+           default:
+                let uiImage = UIImage(named: "shirt2")
+                return uiImage
+            }
+        }
     
 //    func convertImageToUIImage(_ image: Image) -> UIImage {
 //        // Create a hosting controller
@@ -276,7 +276,7 @@ struct AddClothes: View {
                     .ignoresSafeArea(.all)
                 HStack {
                     Button(action: {
-                        //selectedImage = getImageForSelectedType()
+                        selectedImage = getImageForSelectedType()
                         let path = uploadClothImage()
                         
                         if searchText == "" || searchText2 == "" || selectedType == nil || selectedColor == nil || selectedSize == nil {

@@ -71,4 +71,42 @@ final class AuthManager {
         
         try await userRef.delete()
     }
+
+    func changePassword(password: String) throws {
+        Auth.auth().currentUser?.updatePassword(to: password) { error in
+        }
+    }
+    
+    func changeUsername(username: String) throws {
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        changeRequest?.displayName = username
+        changeRequest?.commitChanges { error in
+        }
+    }
+    
+    func verifyDelete() throws {
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if let user = Auth.auth().currentUser {
+                user.sendEmailVerification();
+                if user.isEmailVerified {
+                    user.delete { error in
+                    }
+                    print("email is verified and account deleted")
+                    
+                } else {
+                    print("not verified")
+                }
+            }
+        }
+    }
+    
+    func reAuthenticateUser() throws {
+        
+    }
+    
+    
+    func forgotPassword(email: String) throws {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in }
+    }
+    
 }

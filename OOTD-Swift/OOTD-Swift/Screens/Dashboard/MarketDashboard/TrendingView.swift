@@ -10,7 +10,7 @@ import SwiftUI
 import FirebaseStorage
 
 struct TrendingView: View {
-    @State private var currentIndex = 0
+    @ObservedObject private var currentIndex = CurrentIndex()
     @State private var clothingItem: ClothingElements?
     @State private var isShowingDetails = false
     @State private var isShowingCart = false
@@ -190,24 +190,24 @@ struct TrendingView: View {
             Button(action: {
                 isShowingDetails = true
             }) {
-                if let itemData = clothData[clothData.keys.sorted()[currentIndex]] {
-                       ClothingTilesView(item: ClothingElements(
-                           id: "\(clothData.keys.sorted()[currentIndex])",
-                           subCategory: itemData["subCategory"] ?? "",
-                           articleType: itemData["articleType"] ?? "",
-                           baseColor: itemData["baseColour"] ?? "",
-                           displayName: itemData["productDisplayName"] ?? ""
-                       ))
-                       .padding(.bottom, 30)
-                   }
+                if let itemData = clothData[clothData.keys.sorted()[currentIndex.value]] {
+                    ClothingTilesView(item: ClothingElements(
+                        id: "\(clothData.keys.sorted()[currentIndex.value])",
+                        subCategory: itemData["subCategory"] ?? "",
+                        articleType: itemData["articleType"] ?? "",
+                        baseColor: itemData["baseColour"] ?? "",
+                        displayName: itemData["productDisplayName"] ?? ""
+                    ), currentIndex: currentIndex)
+                    .padding(.bottom, 30)
+                }
             }
-
-           
+            
+            
             
             HStack(spacing: 20) {
                 Button(action: {
                     withAnimation {
-                        currentIndex = max(currentIndex - 1, 0)
+                        currentIndex.value = max(currentIndex.value - 1, 0)
                     }
                 }) {
                     Text("Back")
@@ -220,7 +220,7 @@ struct TrendingView: View {
                 
                 Button(action: {
                     withAnimation {
-                        currentIndex = min(currentIndex + 1, clothData.count - 1)
+                        currentIndex.value = min(currentIndex.value + 1, clothData.count - 1)
                     }
                 }) {
                     Text("Next")
@@ -233,43 +233,36 @@ struct TrendingView: View {
             }
             Spacer()
         }
-        .onChange(of: currentIndex) { newIndex in
-                    if let itemData = clothData[clothData.keys.sorted()[newIndex]] {
-                        let clothingItem = ClothingElements(
-                            id: "\(clothData.keys.sorted()[newIndex])",
-                            subCategory: itemData["subCategory"] ?? "",
-                            articleType: itemData["articleType"] ?? "",
-                            baseColor: itemData["baseColour"] ?? "",
-                            displayName: itemData["productDisplayName"] ?? ""
-                        )
-                        self.clothingItem = clothingItem
-                    }
-                }
         .sheet(isPresented: $isShowingDetails) {
-            if let itemData = clothData[clothData.keys.sorted()[currentIndex]] {
-                ClothingItemDetailsView(item: ClothingElements(id: "\(clothData.keys.sorted()[currentIndex])",
-                                                    subCategory: itemData["subCategory"] ?? "Unknown",
-                                                    articleType: itemData["articleType"] ?? "Unknown",
-                                                    baseColor: itemData["baseColour"] ?? "Unknown",
-                                                    displayName: itemData["productDisplayName"] ?? "Unknown"),
+            if let itemData = clothData[clothData.keys.sorted()[currentIndex.value]] {
+                ClothingItemDetailsView(item: ClothingElements(id: "\(clothData.keys.sorted()[currentIndex.value])",
+                                        subCategory: itemData["subCategory"] ?? "Unknown",
+                                        articleType: itemData["articleType"] ?? "Unknown",
+                                        baseColor: itemData["baseColour"] ?? "Unknown",
+                                        displayName: itemData["productDisplayName"] ?? "Unknown"),
                                         addToCart: { item in
                     cartItems.append(item)
                     print("Item added to cart: \(item.displayName)")
                     print(itemData.values)
                     if let index = clothData.keys.sorted().firstIndex(of: Int(item.id) ?? 0) {
-                        currentIndex = index
+                        currentIndex.value = index
                     }
                 })
             }
         }
-
-
+        
     }
 }
+
+class CurrentIndex: ObservableObject {
+    @Published var value = 0
+}
+
 struct ClothingTilesView: View {
     @StateObject private var imageLoader = ImageLoader()
     let item: ClothingElements
-
+    @ObservedObject var currentIndex: CurrentIndex
+    
     func fetchClothImages(completion: @escaping () -> Void) {
         let storageRef = Storage.storage().reference()
         storageRef.child("clothesDataset/\(item.id).jpg").downloadURL { url, error in
@@ -282,7 +275,7 @@ struct ClothingTilesView: View {
             completion() // Call completion handler after fetching image
         }
     }
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             RoundedRectangle(cornerRadius: 10)
@@ -353,8 +346,8 @@ struct ClothingItemDetailsView: View {
             }
             
             HStack {
-                Text(item.subCategory)
-                    .font(.title2)
+                Text(item.displayName)
+                    .font(.subheadline)
                     .fontWeight(.heavy)
                     .padding()
                 Text(item.subCategory)
@@ -380,7 +373,7 @@ struct ClothingItemDetailsView: View {
             .padding(.leading, 20)
             HStack {
                 Circle()
-                    .fill(Color(item.baseColor))
+                    .foregroundColor(Color(hex2: item.baseColor))
                     .frame(width: 24, height: 24)
                 Spacer()
             }
@@ -491,5 +484,19 @@ struct ClothingItemDetailsView: View {
 struct TrendingView_Previews: PreviewProvider {
     static var previews: some View {
         TrendingView()
+    }
+}
+extension Color {
+    init(hex2: String) {
+        let scanner = Scanner(string: hex2)
+        var rgbValue: UInt64 = 0
+
+        scanner.scanHexInt64(&rgbValue)
+
+        let red = Double((rgbValue & 0xFF0000) >> 16) / 255.0
+        let green = Double((rgbValue & 0x00FF00) >> 8) / 255.0
+        let blue = Double(rgbValue & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue)
     }
 }

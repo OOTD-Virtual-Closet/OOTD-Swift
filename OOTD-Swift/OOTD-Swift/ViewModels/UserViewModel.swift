@@ -22,6 +22,7 @@ class UserViewModel: ObservableObject {
         }
         do {
             var set = try db.collection("users").document(newUser.uid).setData([
+                "id": newUser.id,
                 "uid": newUser.uid,
                 "email": newUser.email,
                 "name": newUser.name ?? "",
@@ -32,7 +33,8 @@ class UserViewModel: ObservableObject {
                 "friends": newUser.friends,
                 "friendRequestsSent": newUser.friendRequestsSent,
                 "friendRequestsReceived": newUser.friendRequestsReceived,
-                "postsId": newUser.postsId
+                "postsId": newUser.postsId,
+                "favorites": newUser.favorites
             ])
         }
         catch {

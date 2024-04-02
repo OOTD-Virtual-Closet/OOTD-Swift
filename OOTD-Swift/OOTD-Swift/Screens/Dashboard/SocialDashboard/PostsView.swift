@@ -18,7 +18,7 @@ struct PostsView: View {
             ScrollView {
                         VStack(spacing: 20) {
                             ForEach(userposts ?? [], id: \.self) { onepost in
-                                PostView(item: onepost.id)
+                                PostView(item: onepost.id, UserID: uid)
                             }
                         }
                        

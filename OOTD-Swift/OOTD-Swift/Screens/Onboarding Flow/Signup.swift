@@ -267,7 +267,7 @@ struct Signup: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 25, height: 30)
-                            Text("Login with Google")
+                            Text("Signup with Google")
                                 .foregroundColor(.black)
                                 .padding(.vertical, 10)
                                 .padding(.horizontal, 20)
