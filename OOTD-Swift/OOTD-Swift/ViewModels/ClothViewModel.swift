@@ -104,7 +104,7 @@ class ClothViewModel: ObservableObject {
     
     func addClothToFavorites(cloth: Cloth) {
 
-        if let userId = Auth.auth().currentUser?.uid {
+        if let userId = UserDefaults.standard.string(forKey: "uid") {
             let userRef = db.collection("users").document(userId)
                     userRef.updateData([
                         "favorites": FieldValue.arrayUnion([cloth.id])
@@ -124,7 +124,7 @@ class ClothViewModel: ObservableObject {
 
     
     func addClothToCurrentUser(cloth: Cloth) {
-        if let userId = Auth.auth().currentUser?.uid {
+        if let userId = UserDefaults.standard.string(forKey: "uid") {
             let userRef = db.collection("users").document(userId)
 
             let clothRef = db.collection("clothes").document(cloth.id)
