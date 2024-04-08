@@ -1,3 +1,4 @@
+
 //
 //  WelcomeDirections.swift
 //  OOTD-Swift
@@ -11,6 +12,7 @@
 //
 //  Created by Sanjhee Gupta on 2/19/24.
 //
+// DONE
 
 import SwiftUI
 import UIKit
@@ -56,7 +58,7 @@ struct WelcomePage1: View {
                         .padding(.horizontal)
                         
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("SKIP>")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
@@ -68,6 +70,7 @@ struct WelcomePage1: View {
                     }
                 }
             }
+            .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
         }
     }
@@ -95,7 +98,7 @@ struct WelcomePage2: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(width:175, height:350)
                             .clipped()
-                        Text("You can view all the clothing items you've uploaded in your Closet! 🧥 You can create outfits and favorites them too 💛")
+                        Text("Create outfits and view clothes")
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.horizontal)
                             .padding(.vertical)
@@ -133,7 +136,7 @@ struct WelcomePage2: View {
                         .padding(.horizontal)
                         
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("SKIP>")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
@@ -172,7 +175,7 @@ struct WelcomePage3: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(width:175, height:350)
                             .clipped()
-                        Text("You also have access to our marketplace where you can view and buy trending clothes, and get recommendations based on your style! 😍")
+                        Text("View trending clothes & get recommendations! 😍")
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.horizontal)
                             .padding(.vertical)
@@ -209,7 +212,7 @@ struct WelcomePage3: View {
                         .padding(.horizontal)
                         
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("SKIP>")
                                 .foregroundStyle(Color(hex: "CBC3E3"))
@@ -221,6 +224,7 @@ struct WelcomePage3: View {
                     }
                 }
             }
+            .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
         //}
     }
@@ -247,7 +251,7 @@ struct WelcomePage4: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(width:175, height:350)
                             .clipped()
-                        Text("Add friends and share your OOTD 👕 Keep in mind that you can only view your friends' posts if you post 📸")
+                        Text("Add friends and share your OOTD 👕 ")
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.horizontal)
                             .padding(.vertical)
@@ -272,7 +276,7 @@ struct WelcomePage4: View {
                     
                     VStack {
                         @State var isAuthenticated = false
-                        NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                        NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                             .environmentObject(LogInVM())) {
                             Text("NEXT")
                             .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
@@ -286,7 +290,7 @@ struct WelcomePage4: View {
                         .padding(.horizontal)
                     }
                     @State var isAuthenticated = false
-                    NavigationLink(destination: Signup(isAuthenticated: $isAuthenticated)
+                    NavigationLink(destination: Login(isAuthenticated: $isAuthenticated)
                         .environmentObject(LogInVM())) {
                         Text("SKIP>")
                             .foregroundStyle(Color(hex: "CBC3E3"))
@@ -297,6 +301,7 @@ struct WelcomePage4: View {
                     }
                 }
             }
+            .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
         //}
     }
@@ -305,6 +310,5 @@ struct WelcomePage4: View {
 struct Welcome_Previews: PreviewProvider {
     static var previews: some View {
         WelcomePage1()
-            .navigationBarBackButtonHidden(true)
     }
 }
