@@ -158,6 +158,7 @@ struct FriendDisplay: View {
     @State var userBID : String?
     @State var showRemoveButton = false
     @State var userB: User?
+    @State var friendsList: [String]?
     
     func loadUser(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("users").document(userBID ?? "")
@@ -178,6 +179,27 @@ struct FriendDisplay: View {
             }
         }
     }
+    func removeFriend() {
+            guard let friendToRemoveID = userBID else { return }
+            // Remove friend from Firestore
+            let db = Firestore.firestore()
+            var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+
+            let userRef = db.collection("users").document(userA)
+            userRef.updateData([
+                "friends": FieldValue.arrayRemove([friendToRemoveID])
+            ]) { error in
+                if let error = error {
+                    print("Error removing friend: \(error.localizedDescription)")
+                } else {
+                    print("Friend removed successfully!")
+                    // Update local friends list after removal
+                    if let index = friendsList?.firstIndex(of: friendToRemoveID) {
+                        friendsList?.remove(at: index)
+                    }
+                }
+            }
+        }
 
     var body: some View {
         ZStack {
@@ -202,6 +224,7 @@ struct FriendDisplay: View {
                 if showRemoveButton {
                                     Button(action: {
                                         print("friend removed pressed")
+                                        removeFriend()
                                     }) {
                                         Image(systemName: "trash")
                                             .resizable()
