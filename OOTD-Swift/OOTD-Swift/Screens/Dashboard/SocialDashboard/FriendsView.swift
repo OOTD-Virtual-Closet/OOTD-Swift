@@ -88,6 +88,7 @@ struct FriendsView: View {
                                     .padding(.trailing, 20)
                             }
                         }
+                        
                             }
                             VStack(spacing: 20) {
                                 ForEach(friendsList ?? [], id: \.self) { test in
