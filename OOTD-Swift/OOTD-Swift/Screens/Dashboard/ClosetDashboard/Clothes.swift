@@ -18,7 +18,7 @@ struct Clothes: View {
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color(hex: "E1DDED"))
+                .foregroundColor(Color(hex: cloth?.color ?? "9278E0"))
                 .frame(width: 112, height: 130)
                 .overlay(
                     Group {

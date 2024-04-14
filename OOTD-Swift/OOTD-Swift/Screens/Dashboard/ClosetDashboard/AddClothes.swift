@@ -47,6 +47,7 @@ struct AddClothes: View {
     
     @State private var searchText2 = ""
     
+    @State var color = Color(hex: "9278E0")
     @State var showAlert = false
     @State var alertMessage = "Please fill out all fields"
     
@@ -57,7 +58,7 @@ struct AddClothes: View {
            
             switch selectedType {
             case "Tops":
-                let randomVal = Int.random(in: 1...3)
+                let randomVal = Int.random(in: 1...8)
                 if randomVal == 1 {
                     let uiImage = UIImage(named: "shirt")
                     return uiImage
@@ -66,13 +67,46 @@ struct AddClothes: View {
                     let uiImage = UIImage(named: "shirt2")
                     return uiImage
                 }
-                let uiImage = UIImage(named: "shirt3")
+                if randomVal == 3 {
+                    let uiImage = UIImage(named: "shirt3")
+                    return uiImage
+                }
+                if randomVal == 4 {
+                    let uiImage = UIImage(named: "shirt4")
+                    return uiImage
+                }
+                if randomVal == 5 {
+                    let uiImage = UIImage(named: "shirt5")
+                    return uiImage
+                }
+                if randomVal == 6 {
+                    let uiImage = UIImage(named: "shirt6")
+                    return uiImage
+                }
+                if randomVal == 7 {
+                    let uiImage = UIImage(named: "shirt7")
+                    return uiImage
+                }
+                let uiImage = UIImage(named: "shirt8")
                 return uiImage
             case "Bottoms":
-                let uiImage = UIImage(named: "jeans")
+                let randomVal = Int.random(in: 1...4)
+                if randomVal == 1 {
+                    let uiImage = UIImage(named: "jeans")
+                    return uiImage
+                }
+                if randomVal == 2 {
+                    let uiImage = UIImage(named: "jeans2")
+                    return uiImage
+                }
+                if randomVal == 3 {
+                    let uiImage = UIImage(named: "jeans3")
+                    return uiImage
+                }
+                let uiImage = UIImage(named: "jeans4")
                 return uiImage
             case "Jackets/Hoodies":
-                let randomVal = Int.random(in: 1...3)
+                let randomVal = Int.random(in: 1...5)
                 if randomVal == 1 {
                     let uiImage = UIImage(named: "jacket")
                     return uiImage
@@ -81,10 +115,47 @@ struct AddClothes: View {
                     let uiImage = UIImage(named: "hoodie")
                     return uiImage
                 }
-                let uiImage = UIImage(named: "jacket")
+                if randomVal == 3 {
+                    let uiImage = UIImage(named: "hoodie2")
+                    return uiImage
+                }
+                if randomVal == 4 {
+                    let uiImage = UIImage(named: "hoodie3")
+                    return uiImage
+                }
+                let uiImage = UIImage(named: "jacket2")
                 return uiImage
             case "Shoes":
-                let uiImage = UIImage(named: "shoes")
+                let randomVal = Int.random(in: 1...8)
+                if randomVal == 1 {
+                    let uiImage = UIImage(named: "shoes")
+                    return uiImage
+                }
+                if randomVal == 2 {
+                    let uiImage = UIImage(named: "shoes2")
+                    return uiImage
+                }
+                if randomVal == 3 {
+                    let uiImage = UIImage(named: "shoes3")
+                    return uiImage
+                }
+                if randomVal == 4 {
+                    let uiImage = UIImage(named: "shoes4")
+                    return uiImage
+                }
+                if randomVal == 5 {
+                    let uiImage = UIImage(named: "shoes5")
+                    return uiImage
+                }
+                if randomVal == 6 {
+                    let uiImage = UIImage(named: "shoes6")
+                    return uiImage
+                }
+                if randomVal == 7 {
+                    let uiImage = UIImage(named: "shoes7")
+                    return uiImage
+                }
+                let uiImage = UIImage(named: "shoes8")
              return uiImage
            default:
                 let uiImage = UIImage(named: "shirt2")
@@ -260,8 +331,6 @@ struct AddClothes: View {
                                 .padding(.vertical, 10)
                             
                             CustomDropDown(title: "Type", prompt: "Choose your type", options: typeOptions, selection: $selectedType)
-                            CustomDropDown(title: "Color", prompt: "Color of Clothing", options: colorOptions, selection: $selectedColor)
-                            
                             Rectangle()
                                 .foregroundColor(Color.white)
                                 .frame(height: 200)
@@ -271,14 +340,20 @@ struct AddClothes: View {
                     }
                 }
                 Rectangle()
-                    .foregroundColor(Color(hex: "9278E0"))
+                    .foregroundColor(color)
                     .frame(height: UIScreen.main.bounds.height / 8)
                     .ignoresSafeArea(.all)
                 HStack {
                     Button(action: {
                         selectedImage = getImageForSelectedType()
                         let path = uploadClothImage()
-                        
+                        let colors = selectedImage?.getColors()
+                        color = Color((colors?.background)!) ?? Color(hex: "9278E0")
+                        if let backgroundColor = colors?.background {
+                            let hexString = backgroundColor.toHex()
+                            selectedColor = hexString ?? "9278E0"
+                            //print(hexString)
+                        }
                         if searchText == "" || searchText2 == "" || selectedType == nil || selectedColor == nil || selectedSize == nil {
                             showAlert = true
                         }
