@@ -88,6 +88,7 @@ struct FriendsView: View {
                                     .padding(.trailing, 20)
                             }
                         }
+                        
                             }
                             VStack(spacing: 20) {
                                 ForEach(friendsList ?? [], id: \.self) { test in
@@ -130,6 +131,7 @@ struct FriendsView: View {
                                 .foregroundColor(.white)
                         )
                 }
+                
 
             }.padding(.trailing, 20)
                 .padding(.bottom, 70)
@@ -155,10 +157,11 @@ struct FriendsView: View {
 
 struct FriendDisplay: View {
     @State var userBID : String?
+    @State var showRemoveButton = false
     @State var userB: User?
+    @State var friendsList: [String]?
     
     func loadUser(completion: @escaping () -> Void) {
-        
         let docRef = Firestore.firestore().collection("users").document(userBID ?? "")
         docRef.getDocument { document, error in
             if let document = document, document.exists {
@@ -177,12 +180,36 @@ struct FriendDisplay: View {
             }
         }
     }
+    func removeFriend() {
+            guard let friendToRemoveID = userBID else { return }
+            // Remove friend from Firestore
+            let db = Firestore.firestore()
+            var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+
+            let userRef = db.collection("users").document(userA)
+            userRef.updateData([
+                "friends": FieldValue.arrayRemove([friendToRemoveID])
+            ]) { error in
+                if let error = error {
+                    print("Error removing friend: \(error.localizedDescription)")
+                } else {
+                    print("Friend removed successfully!")
+                    // Update local friends list after removal
+                    if let index = friendsList?.firstIndex(of: friendToRemoveID) {
+                        friendsList?.remove(at: index)
+                    }
+                }
+            }
+        }
 
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: UIScreen.main.bounds.width - 40, height: 60)
+                .onTapGesture {
+                                    showRemoveButton.toggle()
+                                }
             HStack {
                 Image("UserIcon")
                     .resizable()
@@ -194,7 +221,24 @@ struct FriendDisplay: View {
                     .foregroundColor(.black)
                     .font(.system( size: 15))
                     .fontWeight(.bold)
+                
+              //  if showRemoveButton {
+                         //           Button(action: {
+                                 //       print("friend removed pressed")
+                                   //     removeFriend()
+                               //     }) {
+                                     //   Image(systemName: "trash")
+                                        //    .resizable()
+                                        //    .scaledToFit()
+                                         //   .frame(width: 20, height: 40)
+                                 //   }
+                              //  }
                 Spacer()
+                
+//                Image(systemName: "pin")
+//                    .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 30, height: 30)
             }.padding(.leading, 40)
 
         }

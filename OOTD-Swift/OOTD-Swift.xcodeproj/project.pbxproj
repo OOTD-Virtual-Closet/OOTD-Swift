@@ -43,6 +43,7 @@
 		89396F092B91A8F30041F5F0 /* AddOutfit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89396F082B91A8F30041F5F0 /* AddOutfit.swift */; };
 		89396F0B2B91AC070041F5F0 /* Clothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89396F0A2B91AC070041F5F0 /* Clothes.swift */; };
 		89396F192B922E770041F5F0 /* ExpandedClothesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89396F182B922E770041F5F0 /* ExpandedClothesView.swift */; };
+		8948EE462BCB0C6100232925 /* UIImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8948EE452BCB0C6100232925 /* UIImageColors.swift */; };
 		89791E1E2B8EEA4A00E28FE9 /* AddClothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E1D2B8EEA4A00E28FE9 /* AddClothes.swift */; };
 		89791E202B8EFDB400E28FE9 /* CustomDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E1F2B8EFDB400E28FE9 /* CustomDropDown.swift */; };
 		89791E242B8FCF5800E28FE9 /* ClothViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */; };
@@ -156,6 +157,7 @@
 		89396F082B91A8F30041F5F0 /* AddOutfit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOutfit.swift; sourceTree = "<group>"; };
 		89396F0A2B91AC070041F5F0 /* Clothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clothes.swift; sourceTree = "<group>"; };
 		89396F182B922E770041F5F0 /* ExpandedClothesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedClothesView.swift; sourceTree = "<group>"; };
+		8948EE452BCB0C6100232925 /* UIImageColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageColors.swift; sourceTree = "<group>"; };
 		89791E1D2B8EEA4A00E28FE9 /* AddClothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothes.swift; sourceTree = "<group>"; };
 		89791E1F2B8EFDB400E28FE9 /* CustomDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDropDown.swift; sourceTree = "<group>"; };
 		89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothViewModel.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				89F139842B8B2163007BF7CC /* TabUnderlineViews.swift */,
 				89791E1F2B8EFDB400E28FE9 /* CustomDropDown.swift */,
 				89396F022B9167AC0041F5F0 /* ImageLoader.swift */,
+				8948EE452BCB0C6100232925 /* UIImageColors.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -664,6 +667,7 @@
 				34A178002B81556900265C56 /* FeedView.swift in Sources */,
 				343F077D2B86B35E007DBE14 /* ApplicationUtility.swift in Sources */,
 				890DCE352BB282E800292B8E /* EditClothesView.swift in Sources */,
+				8948EE462BCB0C6100232925 /* UIImageColors.swift in Sources */,
 				CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */,
 				89791E242B8FCF5800E28FE9 /* ClothViewModel.swift in Sources */,
 				89396F032B9167AC0041F5F0 /* ImageLoader.swift in Sources */,

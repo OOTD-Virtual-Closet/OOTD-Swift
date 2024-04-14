@@ -277,20 +277,21 @@ struct ClothesView: View {
                                 .padding(.top, 20)
                             Spacer()
                         }
-//                        ScrollView(.horizontal) {
-                        LazyHStack(spacing: 10) {
-                            ForEach(shoes ?? [], id: \.self) { view in
-                                Button(action: {
-                                    expandedClothesPresented.toggle()
-                                    expandedClothesChosen = view
-                             
-                                }) {
-                                    
-                                    Clothes(item: view.id)
-                                        .frame(width: 112, height: 140)
+                        ScrollView(.horizontal) {
+                            LazyHStack(spacing: 10) {
+                                ForEach(shoes ?? [], id: \.self) { view in
+                                    Button(action: {
+                                        expandedClothesPresented.toggle()
+                                        expandedClothesChosen = view
+                                        
+                                    }) {
+                                        
+                                        Clothes(item: view.id)
+                                            .frame(width: 112, height: 140)
+                                    }
                                 }
-                            }
-                        }.padding(10)
+                            }.padding(10)
+                        }
                     }
                     .padding(.trailing, 15)
                     .sheet(isPresented: $showColorPicker) {

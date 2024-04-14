@@ -137,16 +137,6 @@ struct ExpandedClothesView: View {
                                     .fontWeight(.semibold)
                                     .font(.system( size: 15))
                                     .padding(.leading, 5)
-                                Text("Color")
-                                    .foregroundColor(.black)
-                                    .fontWeight(.bold)
-                                    .font(.system( size: 18))
-                                    .padding(.leading, 5)
-                                Text(mainClothe.color ?? "color")
-                                    .foregroundColor(.black)
-                                    .fontWeight(.semibold)
-                                    .font(.system( size: 15))
-                                    .padding(.leading, 5)
       
                             }
                             .padding(.horizontal)
@@ -203,17 +193,18 @@ struct ExpandedClothesView: View {
                                             .foregroundColor(.white)
                                     }
                                     .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                    .background(Color(hex: "9278E0"))
+                                    .background(Color(hex: mainClothe.color ?? "9278E0"))
                                     .cornerRadius(10)
                                 }
 
                         
                     }
+                    .padding(.top,  75)
                     
                     
                 }
                 Rectangle()
-                    .foregroundColor(Color(hex: "9278E0"))
+                    .foregroundColor(Color(hex: mainClothe.color ?? "9278E0"))
                     .frame(height: UIScreen.main.bounds.height / 8)
                     .ignoresSafeArea(.all)
                 HStack {
