@@ -15,12 +15,12 @@ struct User: Codable, Identifiable {
     var email: String
     var creationDate: Date?
     var username: String?
-    var clothes: [String]?
-    var outfits: [String]?
-    var friends: [String]?
-    var friendRequestsSent: [String]?
-    var friendRequestsReceived: [String]?
-    var postsId: [String]?
-    var favorites: [String]?
-    var favoriteFits: [String]?
+    var clothes: [String?]?
+    var outfits: [String?]?
+    var friends: [String?]?
+    var friendRequestsSent: [String?]?
+    var friendRequestsReceived: [String?]?
+    var postsId: [String?]?
+    var favorites: [String?]?
+    var favoriteFits: [String?]?
 }

@@ -222,17 +222,17 @@ struct FriendDisplay: View {
                     .font(.system( size: 15))
                     .fontWeight(.bold)
                 
-                if showRemoveButton {
-                                    Button(action: {
-                                        print("friend removed pressed")
-                                        removeFriend()
-                                    }) {
-                                        Image(systemName: "trash")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 20, height: 40)
-                                    }
-                                }
+              //  if showRemoveButton {
+                         //           Button(action: {
+                                 //       print("friend removed pressed")
+                                   //     removeFriend()
+                               //     }) {
+                                     //   Image(systemName: "trash")
+                                        //    .resizable()
+                                        //    .scaledToFit()
+                                         //   .frame(width: 20, height: 40)
+                                 //   }
+                              //  }
                 Spacer()
                 
 //                Image(systemName: "pin")
