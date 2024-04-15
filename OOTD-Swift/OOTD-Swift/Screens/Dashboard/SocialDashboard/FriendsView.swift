@@ -157,9 +157,9 @@ struct FriendsView: View {
 
 struct FriendDisplay: View {
     @State var userBID : String?
-    @State var showRemoveButton = false
     @State var userB: User?
     @State var friendsList: [String]?
+    @State var showAlert = false
     
     func loadUser(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("users").document(userBID ?? "")
@@ -168,8 +168,6 @@ struct FriendDisplay: View {
                 do {
                     userB = try document.data(as: User.self)
                     print("User successfully fetched")
-                    
-                    
                 } catch {
                     print("Error decoding user document: \(error.localizedDescription)")
                     completion()
@@ -180,67 +178,68 @@ struct FriendDisplay: View {
             }
         }
     }
+    
     func removeFriend() {
-            guard let friendToRemoveID = userBID else { return }
-            // Remove friend from Firestore
-            let db = Firestore.firestore()
-            var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+        guard let friendToRemoveID = userBID else { return }
+        // Remove friend from Firestore
+        let db = Firestore.firestore()
+        var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
 
-            let userRef = db.collection("users").document(userA)
-            userRef.updateData([
-                "friends": FieldValue.arrayRemove([friendToRemoveID])
-            ]) { error in
-                if let error = error {
-                    print("Error removing friend: \(error.localizedDescription)")
-                } else {
-                    print("Friend removed successfully!")
-                    // Update local friends list after removal
-                    if let index = friendsList?.firstIndex(of: friendToRemoveID) {
-                        friendsList?.remove(at: index)
-                    }
+        let userRef = db.collection("users").document(userA)
+        userRef.updateData([
+            "friends": FieldValue.arrayRemove([friendToRemoveID])
+        ]) { error in
+            if let error = error {
+                print("Error removing friend: \(error.localizedDescription)")
+            } else {
+                print("Friend removed successfully!")
+                // Update local friends list after removal
+                if let index = friendsList?.firstIndex(of: friendToRemoveID) {
+                    friendsList?.remove(at: index)
                 }
             }
         }
+    }
 
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: UIScreen.main.bounds.width - 40, height: 60)
-                .onTapGesture {
-                                    showRemoveButton.toggle()
-                                }
             HStack {
                 Image("UserIcon")
                     .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 Text(userB?.email ?? "friend")
                     .foregroundColor(.black)
-                    .font(.system( size: 15))
+                    .font(.system(size: 15))
                     .fontWeight(.bold)
                 
-              //  if showRemoveButton {
-                         //           Button(action: {
-                                 //       print("friend removed pressed")
-                                   //     removeFriend()
-                               //     }) {
-                                     //   Image(systemName: "trash")
-                                        //    .resizable()
-                                        //    .scaledToFit()
-                                         //   .frame(width: 20, height: 40)
-                                 //   }
-                              //  }
-                Spacer()
-                
-//                Image(systemName: "pin")
-//                    .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 30, height: 30)
-            }.padding(.leading, 40)
+                Button(action: {
+                    showAlert = true
+                }) {
+                    Image(systemName: "trash")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 40)
+                }
 
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Remove Friend"),
+                        message: Text("Are you sure you want to remove this friend?"),
+                        primaryButton: .destructive(Text("Remove")) {
+                            removeFriend()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+                Spacer()
+            }
+            .padding(.leading, 40)
         }
         .onAppear {
             loadUser {
@@ -249,6 +248,7 @@ struct FriendDisplay: View {
         }
     }
 }
+
 
 struct RequestSentDisplay: View {
     @State var userB : User?
