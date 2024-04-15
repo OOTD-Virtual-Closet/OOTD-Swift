@@ -28,6 +28,7 @@ final class LoginViewModel: ObservableObject {
     @Published var uid = ""
     @Published var password = ""
     
+    
     func login() async throws {
         print("Email: \(email)")
         print("Password: \(password)")

@@ -44,6 +44,10 @@ struct FriendsView: View {
         }
     }
     
+    func reloadFriendList() {
+            populateFriendsList()
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
@@ -153,10 +157,12 @@ struct FriendsView: View {
         {
             FriendRequestView()
         }
-        .sheet(isPresented: $showAddFriends)
-        {
-            SendFriendRequestView()
-        }
+        .sheet(isPresented: $showAddFriends, onDismiss: {
+                    reloadFriendList()
+                })
+                {
+                    SendFriendRequestView()
+                }
     }
 }
 

@@ -115,6 +115,7 @@ struct Signup: View {
     @EnvironmentObject var loginVM: LogInVM
     @Binding var isAuthenticated:Bool
     @State private var signUpSuccess = false
+    
 
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
