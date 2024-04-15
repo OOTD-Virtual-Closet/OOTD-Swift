@@ -17,84 +17,75 @@ struct FriendsView: View {
     @State var friendsList : [String]?
     
     func populateFriendsList() {
-            let db = Firestore.firestore()
+        let db = Firestore.firestore()
+        
+        // Replace "userDocumentID" with the actual document ID of the user
+        var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+        
+        
+        let userRef = db.collection("users").document(userA)
+        userRef.getDocument { document, error in
+            if let error = error {
+                print("Error fetching user document: \(error.localizedDescription)")
+                return
+            }
             
-            // Replace "userDocumentID" with the actual document ID of the user
-         var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
-
-            
-            let userRef = db.collection("users").document(userA)
-            userRef.getDocument { document, error in
-                if let error = error {
-                    print("Error fetching user document: \(error.localizedDescription)")
-                    return
-                }
-
-                if let document = document, document.exists {
-                    // Extract friendRequestsSent array from user document
-                    if let friendRequestsSent = document.data()?["friends"] as? [String] {
-                        // Update friendRequestsList
-                        friendsList = friendRequestsSent
-                    } else {
-                        print("friendRequestsSent field not found or not of type [String]")
-                    }
+            if let document = document, document.exists {
+                // Extract friendRequestsSent array from user document
+                if let friendRequestsSent = document.data()?["friends"] as? [String] {
+                    // Update friendRequestsList
+                    friendsList = friendRequestsSent
                 } else {
-                    print("User document not found")
+                    print("friendRequestsSent field not found or not of type [String]")
                 }
+            } else {
+                print("User document not found")
             }
         }
-
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack {
-                    ZStack {
-                        HStack {
-                            TextField("", text: $searchText, onEditingChanged: { editing in
-                                isEditing = editing
-                            })
-                            .padding(.horizontal, 30)
-                            .frame(width: UIScreen.main.bounds.width - 90, height: 40)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(Color(hex: "F4F4F4"))
-                                    .padding(.leading, 15)
-                            )
-                            .overlay(
-                                HStack {
-                                    Image(systemName: "magnifyingglass")
-                                        .resizable()
-                                        .foregroundColor(.black)
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 20, height: 20)
-                                        .padding(.leading, 27)
-                                    Text("Search...")
-                                        .foregroundColor(.black)
-                                        .font(.system(size: 17))
-                                        .fontWeight(.heavy)
-                                        .padding(.leading, 5)
-                                    Spacer()
-                                }
-                                .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
-                            )
-                            Button(action: {
-                                showAddFriends.toggle()
-                            }) {
-                                Image(systemName: "person.fill.badge.plus")
-                                    .resizable()
-                                    .foregroundColor(.black)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 30)
-                                    .padding(.trailing, 20)
-                            }
+                    HStack {
+                        Text("\(friendsList?.count ?? 0) \(friendsList?.count == 1 ? "Friend" : "Friends")")
+                                .padding()
+                                .font(.headline)
+                                .foregroundColor(.black)
+                                .background(Color.gray.opacity(0.3))
+                                .cornerRadius(10)
+                        Image(systemName: "person.2.fill")
+                            .padding(.leading, 10)
+                            .padding(.trailing, 10)
+                        Button(action: {
+                            showAddFriends.toggle()
+                        }) {
+                            Text("Add Friend")
+                                .padding()
+                                .background(Color.uIpurple)
+                                .foregroundColor(.black)
+                                .cornerRadius(8)
                         }
-                        
-                            }
-                            VStack(spacing: 20) {
-                                ForEach(friendsList ?? [], id: \.self) { test in
-                                    FriendDisplay(userBID: test)
-                                }
-                            }.padding(.top, 20)
+                    }
+                    HStack {
+                        Text("Friend List:")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                        Spacer()
+                    }
+                    .padding(.leading, 10)
+                    .padding(.top, 20)
+                    Rectangle()
+                        .foregroundColor(Color.gray)
+                        .frame(height: 0.5)
+                    .padding(.horizontal, 20)
+                    VStack(spacing: 20) {
+                        ForEach(friendsList ?? [], id: \.self) { friendID in
+                            FriendDisplay(userBID: friendID)
+                        }
+                    }
+                    .padding(.top, 20)
                 }
                 Rectangle()
                     .foregroundColor(Color.white)
@@ -118,6 +109,20 @@ struct FriendsView: View {
                         )
                 }
                 Button(action: {
+                    print("Blocked user list")
+                }) {
+                    RoundedRectangle(cornerRadius: 15)
+                        .foregroundColor(Color.purple)
+                        .frame(width:50, height: 50)
+                        .overlay(
+                            Image(systemName: "person.2.slash")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.white)
+                        )
+                }
+                Button(action: {
                     showRequestsSent.toggle()
                 }) {
                     RoundedRectangle(cornerRadius: 15)
@@ -132,11 +137,11 @@ struct FriendsView: View {
                         )
                 }
                 
-
+                
             }.padding(.trailing, 20)
                 .padding(.bottom, 70)
-
-        } 
+            
+        }
         .onAppear {
             populateFriendsList()
         }
@@ -184,7 +189,7 @@ struct FriendDisplay: View {
         // Remove friend from Firestore
         let db = Firestore.firestore()
         var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
-
+        
         let userRef = db.collection("users").document(userA)
         userRef.updateData([
             "friends": FieldValue.arrayRemove([friendToRemoveID])
@@ -200,7 +205,7 @@ struct FriendDisplay: View {
             }
         }
     }
-
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -226,7 +231,7 @@ struct FriendDisplay: View {
                         .scaledToFit()
                         .frame(width: 20, height: 40)
                 }
-
+                
                 .alert(isPresented: $showAlert) {
                     Alert(
                         title: Text("Remove Friend"),
@@ -278,34 +283,34 @@ struct RequestSentDisplay: View {
     func retractRequest(completion: @escaping () -> Void) {
         var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
         var userB = userB?.uid ?? "uid"
-       
-        let db = Firestore.firestore()
-
-           let senderRef = db.collection("users").document(userA)
-           senderRef.updateData([
-               "friendRequestsSent": FieldValue.arrayRemove([userB])
-           ]) { error in
-               if let error = error {
-                   print("Error removing friend request sent by \(userA): \(error.localizedDescription)")
-                   return
-               }
-               print("Friend request removed from sender's document")
-           }
-           let receiverRef = db.collection("users").document(userB)
-           receiverRef.updateData([
-               "friendRequestsReceived": FieldValue.arrayRemove([userA])
-           ]) { error in
-               if let error = error {
-                   print("Error removing friend request sent by \(userB): \(error.localizedDescription)")
-                   return
-               }
-               print("Friend request removed from receiver's document")
-           }
         
-
+        let db = Firestore.firestore()
+        
+        let senderRef = db.collection("users").document(userA)
+        senderRef.updateData([
+            "friendRequestsSent": FieldValue.arrayRemove([userB])
+        ]) { error in
+            if let error = error {
+                print("Error removing friend request sent by \(userA): \(error.localizedDescription)")
+                return
+            }
+            print("Friend request removed from sender's document")
+        }
+        let receiverRef = db.collection("users").document(userB)
+        receiverRef.updateData([
+            "friendRequestsReceived": FieldValue.arrayRemove([userA])
+        ]) { error in
+            if let error = error {
+                print("Error removing friend request sent by \(userB): \(error.localizedDescription)")
+                return
+            }
+            print("Friend request removed from receiver's document")
+        }
+        
+        
         
     }
-
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -314,10 +319,10 @@ struct RequestSentDisplay: View {
             HStack {
                 Image("UserIcon")
                     .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 Text(userB?.email ?? "Friend")
                     .foregroundColor(.black)
                     .font(.system( size: 15))
@@ -332,9 +337,9 @@ struct RequestSentDisplay: View {
                         .foregroundColor(Color.gray)
                         .frame(width: 30, height: 30)
                 }
-
+                
             }.padding(.horizontal, 40)
-
+            
         }
         .onAppear {
             loadUser {
@@ -371,19 +376,19 @@ struct RequestReceivedDisplay: View {
     func acceptRequest(completion: @escaping () -> Void) {
         var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
         var userB = userB?.uid ?? "uid"
-       
+        
         let db = Firestore.firestore()
-
-           let senderRef = db.collection("users").document(userA)
-           senderRef.updateData([
-               "friendRequestsReceived": FieldValue.arrayRemove([userB])
-           ]) { error in
-               if let error = error {
-                   print("Error removing friend request sent by \(userA): \(error.localizedDescription)")
-                   return
-               }
-               print("Friend request removed from sender's document")
-           }
+        
+        let senderRef = db.collection("users").document(userA)
+        senderRef.updateData([
+            "friendRequestsReceived": FieldValue.arrayRemove([userB])
+        ]) { error in
+            if let error = error {
+                print("Error removing friend request sent by \(userA): \(error.localizedDescription)")
+                return
+            }
+            print("Friend request removed from sender's document")
+        }
         senderRef.updateData([
             "friends": FieldValue.arrayUnion([userB])
         ]) { error in
@@ -393,16 +398,16 @@ struct RequestReceivedDisplay: View {
                 print("User document updated with friend successfully!")
             }
         }
-           let receiverRef = db.collection("users").document(userB)
-           receiverRef.updateData([
-               "friendRequestsSent": FieldValue.arrayRemove([userA])
-           ]) { error in
-               if let error = error {
-                   print("Error removing friend request received by \(userB): \(error.localizedDescription)")
-                   return
-               }
-               print("Friend request removed from receiver's document")
-           }
+        let receiverRef = db.collection("users").document(userB)
+        receiverRef.updateData([
+            "friendRequestsSent": FieldValue.arrayRemove([userA])
+        ]) { error in
+            if let error = error {
+                print("Error removing friend request received by \(userB): \(error.localizedDescription)")
+                return
+            }
+            print("Friend request removed from receiver's document")
+        }
         receiverRef.updateData([
             "friends": FieldValue.arrayUnion([userA])
         ]) { error in
@@ -417,22 +422,22 @@ struct RequestReceivedDisplay: View {
     func rejectRequest(completion: @escaping () -> Void) {
         var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
         var userB = userB?.uid ?? "uid"
-       
+        
         let db = Firestore.firestore()
-
-           let senderRef = db.collection("users").document(userA)
-           senderRef.updateData([
-               "friendRequestsReceived": FieldValue.arrayRemove([userB])
-           ]) { error in
-               if let error = error {
-                   print("Error removing friend request sent by \(userA): \(error.localizedDescription)")
-                   return
-               }
-               print("Friend request removed from sender's document")
-           }
+        
+        let senderRef = db.collection("users").document(userA)
+        senderRef.updateData([
+            "friendRequestsReceived": FieldValue.arrayRemove([userB])
+        ]) { error in
+            if let error = error {
+                print("Error removing friend request sent by \(userA): \(error.localizedDescription)")
+                return
+            }
+            print("Friend request removed from sender's document")
+        }
     }
-
-
+    
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -441,10 +446,10 @@ struct RequestReceivedDisplay: View {
             HStack {
                 Image("UserIcon")
                     .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 Text(userB?.email ?? "")
                     .foregroundColor(.black)
                     .font(.system( size: 15))
@@ -468,10 +473,10 @@ struct RequestReceivedDisplay: View {
                         .foregroundColor(Color.gray)
                         .frame(width: 30, height: 30)
                 }
-
-
+                
+                
             }.padding(.horizontal, 40)
-
+            
         }
         .onAppear {
             loadUser {
