@@ -65,13 +65,21 @@ struct ProfileSummary: View {
                         Spacer()
                         Text(phoneNumber)
                     }
+                    HStack {
+                        Text("Quick Login: ")
+                            .font(.title2)
+                            .fontWeight(.medium)
+                            .foregroundColor(.gray)
+                            .padding(.top, 5)
+                        Spacer()
+                        Toggle("", isOn: $staySignedIn)
+                    }
                 }
                 .padding(.bottom, 45)
                 .padding(.top, 25)
                 // Action Buttons
                 VStack(spacing: 15) {
-                    Toggle("Quick Login", isOn: $staySignedIn)
-                                    .padding()
+                    
                     Button(action: {
                         // Handle change password
                         print("change password pressed")
