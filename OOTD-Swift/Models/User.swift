@@ -12,9 +12,9 @@ struct User: Codable, Identifiable {
     var id: String = UUID().uuidString
     var uid: String
     var name: String?
+    var username: String?
     var email: String
     var creationDate: Date?
-    var username: String?
     var clothes: [String?]?
     var outfits: [String?]?
     var friends: [String?]?
@@ -23,4 +23,5 @@ struct User: Codable, Identifiable {
     var postsId: [String?]?
     var favorites: [String?]?
     var favoriteFits: [String?]?
+    var pinnedFits: [String?]?
 }

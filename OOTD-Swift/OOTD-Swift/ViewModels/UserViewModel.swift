@@ -26,6 +26,7 @@ class UserViewModel: ObservableObject {
                 "uid": newUser.uid,
                 "email": newUser.email,
                 "name": newUser.name ?? "",
+                "username": newUser.username ?? "",
                 "creation_date": newUser.creationDate?.description ?? "",
                 "username": newUser.username ?? "",
                 "clothes": newUser.clothes,
@@ -34,7 +35,8 @@ class UserViewModel: ObservableObject {
                 "friendRequestsSent": newUser.friendRequestsSent,
                 "friendRequestsReceived": newUser.friendRequestsReceived,
                 "postsId": newUser.postsId,
-                "favorites": newUser.favorites
+                "favorites": newUser.favorites,
+                "pinnedFits": newUser.pinnedFits
             ])
         }
         catch {

@@ -29,6 +29,10 @@ struct ProfileSummary: View {
     var email = UserDefaults.standard.string(forKey: "email") ?? "atharva.gu@gmail.com"
     var name = "Atharva Gupta"
     var phoneNumber = "(510) 335-9060"
+    @State var pinnedOne : String?
+    @State var pinnedTwo : String?
+    @State var pinnedThree : String?
+    @State var showAddPin = false
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
     var body: some View {
         NavigationView {
@@ -48,6 +52,39 @@ struct ProfileSummary: View {
                     .padding(.top, 5)
                 VStack {
                     HStack {
+                        Button(action: {
+                            
+                            
+                        }) {
+                            Circle()
+                                .foregroundColor(Color(hex: "9278E0"))
+                                .frame(width: 30, height: 30)
+                                .overlay(
+                                    Image(systemName: "plus")
+                                        .foregroundColor(.white)
+                                )
+                        }
+                                    
+                                    
+                                    Circle()
+                                        .foregroundColor(Color(hex: "9278E0"))
+                                        .frame(width: 30, height: 30)
+                                        .overlay(
+                                            Image(systemName: "plus")
+                                                .foregroundColor(.white)
+                                        )
+                                    
+                                    Circle()
+                                        .foregroundColor(Color(hex: "9278E0"))
+                                        .frame(width: 30, height: 30)
+                                        .overlay(
+                                            Image(systemName: "plus")
+                                                .foregroundColor(.white)
+                                        )
+
+                    }
+
+                    HStack {
                         Text("Email: ") // Display the user's email
                             .font(.title2)
                             .fontWeight(.medium)
@@ -55,15 +92,6 @@ struct ProfileSummary: View {
                             .padding(.top, 5)
                         Spacer()
                         Text(email)
-                    }
-                    HStack {
-                        Text("Phone number: ") // Display the user's email
-                            .font(.title2)
-                            .fontWeight(.medium)
-                            .foregroundColor(.gray)
-                            .padding(.top, 5)
-                        Spacer()
-                        Text(phoneNumber)
                     }
                     HStack {
                         Text("Quick Login: ")
