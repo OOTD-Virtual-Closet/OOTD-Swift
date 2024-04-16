@@ -78,52 +78,114 @@ struct ProfilePinnedOutfits: View {
         }
     }
     @State var expandedFitChosen : Outfit?
+    @Environment(\.presentationMode) var presentationMode
 
+
+    @State var index : Int
     
     @State private var test = false;
+    
+    func populatePinnedOutfitAtIndex(index: Int, value: String, completion: @escaping (Error?) -> Void) {
+        let userRef = Firestore.firestore().collection("users").document(uid)
+        userRef.getDocument { document, error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            guard let document = document else {
+                let error = NSError(domain: "Firebase", code: -1, userInfo: [NSLocalizedDescriptionKey: "User document not found"])
+                completion(error)
+                return
+            }
+            
+            var pinnedOutfits = document.data()?["pinnedFits"] as? [String] ?? []
+            
+            // Make sure the pinnedOutfits array is large enough to accommodate the specified index
+            while pinnedOutfits.count <= index {
+                pinnedOutfits.append("") // Add empty strings to fill up the array if needed
+            }
+            
+            // Update the value at the specified index
+            pinnedOutfits[index] = value
+            
+            // Update the user document with the modified pinnedOutfits array
+            userRef.updateData(["pinnedFits": pinnedOutfits]) { error in
+                completion(error)
+            }
+        }
+    }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            
-            ScrollView(showsIndicators: false) {
-                VStack {
-                    Text("0 Items")
-                        .foregroundColor(.gray)
-                        .font(.system( size: 13))
-                        .fontWeight(.heavy)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 15)
-                        .padding(.top, 5)
-                    Text("Your Outfits")
-                        .foregroundColor(.black)
-                        .font(.system( size: 25))
-                        .fontWeight(.heavy)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 15)
+        NavigationView {
+            ZStack(alignment: .top) {
+               
+                ScrollView(showsIndicators: false) {
+                    VStack {
+                        Text("0 Items")
+                            .foregroundColor(.gray)
+                            .font(.system( size: 13))
+                            .fontWeight(.heavy)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 15)
+                            .padding(.top, 5)
+                        Text("Your Outfits")
+                            .foregroundColor(.black)
+                            .font(.system( size: 25))
+                            .fontWeight(.heavy)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 15)
 
-                    ScrollView {
-                        LazyVGrid(columns: [GridItem(.flexible(), spacing: 15), GridItem(.flexible(), spacing: 15)], spacing: 15) {
-                            ForEach(outfits ?? [], id: \.self) { item in
-                                Button(action: {
-                                    expandedFitChosen = item
-                                }) {
-                                    Outfits(item: item.id)
-                                    .frame(width: 170, height: 280)
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.flexible(), spacing: 15), GridItem(.flexible(), spacing: 15)], spacing: 15) {
+                                ForEach(outfits ?? [], id: \.self) { item in
+                                    Button(action: {
+                                        expandedFitChosen = item
+                                        populatePinnedOutfitAtIndex(index: index, value: item.id) { error in
+                                            if let error = error {
+                                                print("Error populating pinned outfit at index: \(error.localizedDescription)")
+                                            } else {
+                                                print("Successfully populated pinned outfit at index 2")
+                                            }
+                                        }
+                                        presentationMode.wrappedValue.dismiss()
+                                    }) {
+                                        Outfits(item: item.id)
+                                        .frame(width: 170, height: 280)
+                                    }
                                 }
                             }
+                            .padding(15)
+                            .padding(.vertical, 20)
                         }
-                        .padding(15)
-                        .padding(.vertical, 20)
+                        
                     }
+                }
+                Rectangle()
+                    .foregroundColor(Color(hex: "9278E0"))
+                    .frame(height: UIScreen.main.bounds.height / 7)
+                    .ignoresSafeArea(.all)
+                HStack {
+                    Spacer()
+                        Text("Add Pinned Outfit")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .padding(.leading, 15)
+                            .font(.system(size: 12))
                     
+                    Spacer()
+                    
+                }
+               
+            }
+            .onAppear {
+                populateOutfits {
+                    print("populated outfits for profilepinnedoutfits")
                 }
             }
         }
-        .onAppear {
-            populateOutfits {
-                print("populated outfits for outfitview")
-            }
-        }
+        .navigationBarBackButtonHidden(true)
+        
     }
 }
 

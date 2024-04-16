@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import UIKit
+import FirebaseFirestore
 
 
 @MainActor
@@ -32,8 +33,34 @@ struct ProfileSummary: View {
     @State var pinnedOne : String?
     @State var pinnedTwo : String?
     @State var pinnedThree : String?
-    @State var showAddPin = false
+    @State var index = 0
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+    
+    func populatePinnedOutfits(completion: @escaping (Error?) -> Void) {
+        let userRef = Firestore.firestore().collection("users").document(uid)
+        
+        userRef.getDocument { document, error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            guard let document = document else {
+                let error = NSError(domain: "Firebase", code: -1, userInfo: [NSLocalizedDescriptionKey: "User document not found"])
+                completion(error)
+                return
+            }
+            
+            let pinnedFits = document.data()?["pinnedFits"] as? [String] ?? []
+            
+            // Populate state variables pinnedone, pinnedtwo, and pinnedthree
+            pinnedOne = pinnedFits.indices.contains(0) ? pinnedFits[0] : nil
+            pinnedTwo = pinnedFits.indices.contains(1) ? pinnedFits[1] : nil
+            pinnedThree = pinnedFits.indices.contains(2) ? pinnedFits[2] : nil
+            
+            completion(nil)
+        }
+    }
     var body: some View {
         NavigationView {
             VStack {
@@ -52,36 +79,63 @@ struct ProfileSummary: View {
                     .padding(.top, 5)
                 VStack {
                     HStack {
-                        Button(action: {
-                            
-                            
-                        }) {
-                            Circle()
-                                .foregroundColor(Color(hex: "9278E0"))
-                                .frame(width: 30, height: 30)
-                                .overlay(
-                                    Image(systemName: "plus")
-                                        .foregroundColor(.white)
-                                )
+                       
+                            NavigationLink(destination: ProfilePinnedOutfits(index: 0)) {
+                                
+                                    if pinnedOne != nil && pinnedOne != "" {
+                                        OutfitsPinned(item: pinnedOne!)
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 70, height: 70)
+                                            .clipShape(Circle())
+                                    } else {
+                                        Circle()
+                                            .foregroundColor(Color(hex: "9278E0"))
+                                            .frame(width: 70, height: 70)
+                                            .overlay(
+                                                Image(systemName: "plus")
+                                                    .foregroundColor(.white)
+                                            )
+                                    }
+                            }
+                        
+                        
+                        
+                            NavigationLink(destination: ProfilePinnedOutfits(index: 1)) {
+                                
+                                    if pinnedTwo != nil && pinnedTwo != "" {
+                                        OutfitsPinned(item: pinnedTwo!)
+                                            .scaledToFit()
+                                            .frame(width: 70, height: 70)
+                                            .clipShape(Circle())
+                                    } else {
+                                        Circle()
+                                            .foregroundColor(Color(hex: "9278E0"))
+                                            .frame(width: 70, height: 70)
+                                            .overlay(
+                                                Image(systemName: "plus")
+                                                    .foregroundColor(.white)
+                                            )
+                                    }
+   
+                            }
+                        
+                        
+                            NavigationLink(destination: ProfilePinnedOutfits(index: 2)) {
+                               
+                                    if pinnedThree != nil  && pinnedThree != "" {
+                                        OutfitsPinned(item: pinnedThree!)
+                                            .frame(width: 70, height: 70)
+                                            .clipShape(Circle())
+                                    } else {
+                                        Circle()
+                                            .foregroundColor(Color(hex: "9278E0"))
+                                            .frame(width: 70, height: 70)
+                                            .overlay(
+                                                Image(systemName: "plus")
+                                                    .foregroundColor(.white)
+                                            )
+                                    }
                         }
-                                    
-                                    
-                                    Circle()
-                                        .foregroundColor(Color(hex: "9278E0"))
-                                        .frame(width: 30, height: 30)
-                                        .overlay(
-                                            Image(systemName: "plus")
-                                                .foregroundColor(.white)
-                                        )
-                                    
-                                    Circle()
-                                        .foregroundColor(Color(hex: "9278E0"))
-                                        .frame(width: 30, height: 30)
-                                        .overlay(
-                                            Image(systemName: "plus")
-                                                .foregroundColor(.white)
-                                        )
-
                     }
 
                     HStack {
@@ -167,9 +221,19 @@ struct ProfileSummary: View {
                 Spacer() // Pushes everything to the top
             }
             .padding()
-            .navigationBarHidden(true)
             .background(Color("Background").edgesIgnoringSafeArea(.all)) // Assuming you have a color set named "Background"
+        
+            .onAppear {
+                populatePinnedOutfits { error in
+                                   if let error = error {
+                                       print("Error populating pinned outfits: \(error.localizedDescription)")
+                                   } else {
+                                       print("Pinned outfits populated successfully")
+                                   }
+                               }
+            }
         }
+
     }
 }
 
