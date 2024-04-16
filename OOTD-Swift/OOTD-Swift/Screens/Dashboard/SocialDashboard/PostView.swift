@@ -9,6 +9,23 @@ import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
 
+struct PostReactions: Identifiable, Codable {
+    var id: String
+    var owner: String
+    var content: String
+    var reactions: [Reaction]
+}
+
+struct Reaction: Identifiable, Codable {
+    var id: String
+    var type: ReactionType
+}
+
+enum ReactionType: String, Codable {
+    case like
+    case love
+    case laugh
+}
 
 struct PostView: View {
     let item: String // UUID of the cloth document
