@@ -13,18 +13,27 @@ import UIKit
 struct EditOutfitsView: View {
     @Environment(\.presentationMode) var presentationMode
     
-       @State var mainOutfit : Outfit
+    @State var mainOutfit : Outfit
     @StateObject var imageLoader = ImageLoader()
     @StateObject var imageLoader2 = ImageLoader()
     @StateObject var imageLoader3 = ImageLoader()
     @StateObject var imageLoader4 = ImageLoader()
+    @StateObject var mannequinImageLoader = ImageLoader() //here
+    let imageName = "mannequin_template"
     @State  var searchText = ""
     @State  var selectedGenre : String?
     @State  var isEditing = false
      var genreOptions = ["Streetwear", "Formalwear", "Casual", "Business Casual", "Pajamas"]
     @State var showAlert = false
 
-
+    func loadMannequinTemplate() {
+        if let imageUrl = Bundle.main.url(forResource: imageName, withExtension: "jpeg") {
+            mannequinImageLoader.loadImage(from: imageUrl)
+            print("Mannequin fetched!")
+        } else {
+            print("Image not found in bundle.")
+        }
+    }
     
     func fetchFitFromFirestore(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("outfits").document(mainOutfit.id)
@@ -48,7 +57,6 @@ struct EditOutfitsView: View {
                                            if let url = url {
                                                switch counter {
                                                case 1:
-                                      
                                                    imageLoader.loadImage(from: url)
                                                case 2:
                                               
@@ -75,17 +83,13 @@ struct EditOutfitsView: View {
                            }
                        }
                    }
-                  
-                  
-                  
-                  
                } catch {
                    print("Error decoding outfit document: \(error.localizedDescription)")
-                   completion() // Call completion handler if error occurs during decoding
+                   completion()
                }
            } else {
                print("outfit document does not exist")
-               completion() // Call completion handler if document does not exist
+               completion()
            }
        }
    }
@@ -96,125 +100,109 @@ struct EditOutfitsView: View {
                     Rectangle()
                         .foregroundColor(Color.white)
                         .frame(height: 100)
-                    HStack  {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color(hex: "E1DDED"))
-                            .frame(width: 220, height: 300)
-                            .overlay(
-                                    Group {
-                                           if let image = imageLoader.image {
-                                              Image(uiImage: image)
-                                                     .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .foregroundColor(Color(hex: "E1DDED"))
-                                                    .frame(width:80, height: 80)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                    .offset(x: -60, y: -60)
-
-                                               if let image2 = imageLoader2.image {
-                                                           Image(uiImage: image2)
-                                                               .resizable()
-                                                               .aspectRatio(contentMode: .fill)
-                                                               .frame(width:80, height: 80)
-                                                               .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                               .offset(x: -20, y: -20)
-                                                       }
-                                               if let image3 = imageLoader3.image {
-                                                           Image(uiImage: image3)
-                                                               .resizable()
-                                                               .aspectRatio(contentMode: .fill)
-                                                               .frame(width:80, height: 80)
-                                                               .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                               .offset(x: 20, y: 20)
-                                                       }
-                                               if let image4 = imageLoader4.image {
-                                                           Image(uiImage: image4)
-                                                               .resizable()
-                                                               .aspectRatio(contentMode: .fill)
-                                                               .frame(width:80, height: 80)
-                                                               .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                               .offset(x: 60, y: 60)
-                                                       }
-                                        } else {
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .foregroundColor(Color(hex: "E1DDED"))
-                                                .frame(width: 170, height: 250)
-                                                .overlay(
-                                                    Text("loading...")
-                                                        .foregroundColor(.white)
-                                                        .font(.headline)
-                                            )
-                                        }
-                                      }
-                            )
-                        VStack {
-                            
-                            VStack (alignment: .leading, spacing: 10){
-                                ZStack {
-                                            TextField("", text: $searchText, onEditingChanged: { editing in
-                                                isEditing = editing
-                                            }).onChange(of: searchText) { newValue in
-                                                if newValue.count > 20 {
-                                                    searchText = String(newValue.prefix(20))
-                                                }
-                                            }
-
-                                            .frame(width: UIScreen.main.bounds.width - 90, height: 40)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .foregroundColor(Color(hex: "E1DDED"))
-                                                    .frame(width: UIScreen.main.bounds.width - 40, height: 50)
-                                                    .shadow(radius: 4)
-                                            )
-                                            .overlay(
-                                                HStack {
-                                                    Text("Name...")
-                                                        .foregroundColor(.black)
-                                                    Spacer()
-                                                }
-                                                .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
-                                            )
+                VStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color(hex: "E1DDED"))
+                        .frame(width: 220, height: 300)
+                        .overlay(
+                            ZStack {
+                                if let shirt = imageLoader.image {
+                                    Image(uiImage: shirt)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .foregroundColor(Color(hex: "E1DDED"))
+                                        .frame(width:120, height: 120)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .offset(y: -50)
                                 }
-                                .padding(.horizontal,25)
-                                    .padding(.vertical, 10)
-                                CustomDropDown(title: "Genre", prompt: "Select a Genre", options: genreOptions, selection: $selectedGenre)
+                                Image("UserIcon")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fill)
+                                                .foregroundColor(Color(hex: "E1DDED"))
+                                                .frame(width:50, height: 50)
+                                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                                                .offset(y: -115)
+                                if let shoe = imageLoader4.image {
+                                    Image(uiImage: shoe)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width:55, height: 55)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .offset(y: 120)
+                                }
+                                if let pant = imageLoader3.image {
+                                    Image(uiImage: pant)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width:120, height: 120)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .offset(y: 50)
+                                }
                             }
-                            .padding(.horizontal)
-                        }
+                        )
+                }
+                VStack {
+                    VStack (alignment: .leading, spacing: 10){
+                        ZStack {
+                                    TextField("", text: $searchText, onEditingChanged: { editing in
+                                        isEditing = editing
+                                    }).onChange(of: searchText) { newValue in
+                                        if newValue.count > 20 {
+                                            searchText = String(newValue.prefix(20))
+                                        }
+                                    }
 
+                                    .frame(width: UIScreen.main.bounds.width - 90, height: 40)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .foregroundColor(Color(hex: "E1DDED"))
+                                            .frame(width: UIScreen.main.bounds.width - 40, height: 50)
+                                            .shadow(radius: 4)
+                                    )
+                                    .overlay(
+                                        HStack {
+                                            Text("Name...")
+                                                .foregroundColor(.black)
+                                            Spacer()
+                                        }
+                                        .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
+                                    )
+                        }
+                        .padding(.horizontal,25)
+                            .padding(.vertical, 10)
+                        CustomDropDown(title: "Genre", prompt: "Select a Genre", options: genreOptions, selection: $selectedGenre)
+                    }
+                    .padding(.horizontal)
+                }
+
+
+                Button(action: {
+                    if searchText == "" || selectedGenre == nil {
+                        showAlert = true
+                    } else {
+                        showAlert = false
+                        let outfit = Outfit(id: mainOutfit.id, name: searchText ?? "", genre: selectedGenre ?? "", cloth1: mainOutfit.cloth1 , cloth2: mainOutfit.cloth2, cloth3: mainOutfit.cloth3 , cloth4: mainOutfit.cloth4, date: Date())
+                        
+                        let outfitViewModel = OutfitViewModel()
+                        outfitViewModel.editOutfit(outfit: outfit)
+                        presentationMode.wrappedValue.dismiss()
                         
                     }
 
-                        Button(action: {
-                            if searchText == "" || selectedGenre == nil {
-                                showAlert = true
-                            } else {
-                                showAlert = false
-                                let outfit = Outfit(id: mainOutfit.id, name: searchText ?? "", genre: selectedGenre ?? "", cloth1: mainOutfit.cloth1 , cloth2: mainOutfit.cloth2, cloth3: mainOutfit.cloth3 , cloth4: mainOutfit.cloth4)
-                                
-                                let outfitViewModel = OutfitViewModel()
-                                outfitViewModel.editOutfit(outfit: outfit)
-                                presentationMode.wrappedValue.dismiss()
-                                
+                }) {
+                            HStack(spacing: 10) {
+                                Image(systemName: "square.and.arrow.down")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.white)
+                                Text("Save Changes")
+                                    .foregroundColor(.white)
                             }
-
-                        }) {
-                                    HStack(spacing: 10) {
-                                        Image(systemName: "square.and.arrow.down")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 20, height: 20)
-                                            .foregroundColor(.white)
-                                        Text("Save Changes")
-                                            .foregroundColor(.white)
-                                    }
-                                    .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                    .background(Color(hex: "9278E0"))
-                                    .cornerRadius(10)
-                                }
-                    
-                    
-                    
+                            .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                            .background(Color(hex: "9278E0"))
+                            .cornerRadius(10)
+                        }
                 }
                 .padding(.top, 20)
                 Rectangle()
@@ -233,9 +221,10 @@ struct EditOutfitsView: View {
                 
             }
             .onAppear {
+                loadMannequinTemplate()
                 fetchFitFromFirestore {
                     print("fetched fit and stuff")
-                    searchText = mainOutfit.name
+                    searchText = mainOutfit.name ?? ""
                     selectedGenre = mainOutfit.genre
                     
                 }

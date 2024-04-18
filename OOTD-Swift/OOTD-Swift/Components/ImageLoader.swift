@@ -41,25 +41,53 @@ class ImageLoader: ObservableObject {
     @Published var image: UIImage?
     private let cache = ImageCache()
     
-    func loadImage(from url: URL) {
-        let nsURL = url as NSURL
-        
-        if let cachedWrapper = cache.object(forKey: nsURL) {
-            self.image = cachedWrapper.image
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let self = self, let data = data, error == nil, let downloadedImage = UIImage(data: data) else { return }
+    //    func loadImage(from url: URL) {
+    //        let nsURL = url as NSURL
+    //
+    //        if let cachedWrapper = cache.object(forKey: nsURL) {
+    //            self.image = cachedWrapper.image
+    //            return
+    //        }
+    //
+    //        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+    //            guard let self = self, let data = data, error == nil, let downloadedImage = UIImage(data: data) else { return }
+    //
+    //            let wrapper = ImageCacheWrapper(image: downloadedImage)
+    //            self.cache.setObject(wrapper, forKey: nsURL)
+    //
+    //            DispatchQueue.main.async {
+    //                self.image = downloadedImage
+    //            }
+    //        }.resume()
+    //    }
+    func loadImage(from url: URL?) {
+            guard let url = url else { return }
             
-            let wrapper = ImageCacheWrapper(image: downloadedImage)
-            self.cache.setObject(wrapper, forKey: nsURL)
-            
-            DispatchQueue.main.async {
-                self.image = downloadedImage
+            if let cachedWrapper = cache.object(forKey: url as NSURL) {
+                self.image = cachedWrapper.image
+                return
             }
-        }.resume()
-    }
+            
+            if let localImage = UIImage(named: url.path) { // Attempt to load a local image
+                let wrapper = ImageCacheWrapper(image: localImage)
+                self.cache.setObject(wrapper, forKey: url as NSURL)
+                
+                DispatchQueue.main.async {
+                    self.image = localImage
+                }
+            } else { // Load image from remote URL
+                URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+                    guard let self = self, let data = data, error == nil, let downloadedImage = UIImage(data: data) else { return }
+                    
+                    let wrapper = ImageCacheWrapper(image: downloadedImage)
+                    self.cache.setObject(wrapper, forKey: url as NSURL)
+                    
+                    DispatchQueue.main.async {
+                        self.image = downloadedImage
+                    }
+                }.resume()
+            }
+        }
 }
 
 //import SwiftUI

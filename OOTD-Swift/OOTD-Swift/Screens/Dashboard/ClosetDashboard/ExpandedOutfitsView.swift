@@ -87,6 +87,7 @@ struct ExpandedOutfitsView: View {
     @State var showSheet = false
     
     var body: some View {
+        
             ZStack(alignment: .top) {
                 ScrollView(showsIndicators: false){
                     Rectangle()
@@ -265,3 +266,8 @@ struct ExpandedOutfitsView: View {
 }
 
 
+//struct ExpandedOutfitsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ExpandedOutfitsView(mainOutfit: <#T##Outfit#>)
+//    }
+//}

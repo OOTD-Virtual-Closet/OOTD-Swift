@@ -32,7 +32,6 @@ struct ClothesView: View {
     @State private var jackets : [Cloth]?
     @State private var shoes : [Cloth]?
     
-//    let items = (1...10).map { "Item \($0)" }
     @State private var searchText = ""
     @State private var isEditing = false
     @State private var showPopUp = false
@@ -101,9 +100,15 @@ struct ClothesView: View {
     var body: some View {
         ZStack (alignment: .bottom) {
             ScrollView(showsIndicators: false) {
-                
+                var totalItemCount: Int {
+                    let topsCount = tops?.count ?? 0
+                    let bottomsCount = bottoms?.count ?? 0
+                    let jacketsCount = jackets?.count ?? 0
+                    let shoesCount = shoes?.count ?? 0
+                    return topsCount + bottomsCount + jacketsCount + shoesCount
+                }
                     VStack (alignment: .leading) {
-                        Text("0 Items")
+                        Text("\(totalItemCount) Items")
                             .foregroundColor(.gray)
                             .font(.system( size: 13))
                             .fontWeight(.heavy)

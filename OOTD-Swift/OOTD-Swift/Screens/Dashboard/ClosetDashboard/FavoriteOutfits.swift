@@ -48,8 +48,9 @@ struct FavoriteOutfits: View {
                                     let cloth2 = outfitData["cloth2"] as? String ?? ""
                                     let cloth3 = outfitData["cloth3"] as? String ?? ""
                                     let cloth4 = outfitData["cloth4"] as? String ?? ""
+                                    let date = outfitData["date"] as? Date ?? Date()
                                     
-                                    let outfit = Outfit(id: outfitID, name: name, genre: genre, cloth1: cloth1, cloth2: cloth2, cloth3: cloth3, cloth4: cloth4)
+                                    let outfit = Outfit(id: outfitID, name: name, genre: genre, cloth1: cloth1, cloth2: cloth2, cloth3: cloth3, cloth4: cloth4, date: date)
                                     loadedOutfits.append(outfit)
                                     print("Loaded outfit successfully")
                                 } else {
@@ -66,7 +67,7 @@ struct FavoriteOutfits: View {
                 
                 dispatchGroup.notify(queue: .main) {
                     self.outfits = loadedOutfits
-                    print("Outfits loaded)")
+                    print("Outfits loaded")
                     completion()
                 }
             } else {
