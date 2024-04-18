@@ -106,6 +106,7 @@ struct BlockedUserDisplay: View {
     var blockedUserID: String
     
     @State private var friendName: String?
+    @State private var isUnblockAlertPresented = false
     
     func loadFriendName() {
         let db = Firestore.firestore()
@@ -125,6 +126,35 @@ struct BlockedUserDisplay: View {
         }
     }
     
+    func unblockUser() {
+        let db = Firestore.firestore()
+        var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+        
+        // Update userA's document to remove the blocked user from blockedUsers list
+        let userRef = db.collection("users").document(userA)
+        userRef.updateData([
+            "blockedUsers": FieldValue.arrayRemove([blockedUserID])
+        ]) { error in
+            if let error = error {
+                print("Error removing user from blocked list: \(error.localizedDescription)")
+            } else {
+                print("User unblocked successfully!")
+                
+                // After unblocking, add the unblocked user to userA's friends list
+                let friendRef = db.collection("users").document(userA)
+                friendRef.updateData([
+                    "friends": FieldValue.arrayUnion([blockedUserID])
+                ]) { error in
+                    if let error = error {
+                        print("Error adding unblocked user to friends list: \(error.localizedDescription)")
+                    } else {
+                        print("Unblocked user added to friends list successfully!")
+                    }
+                }
+            }
+        }
+    }
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -132,7 +162,7 @@ struct BlockedUserDisplay: View {
                 .frame(width: UIScreen.main.bounds.width - 40, height: 60)
             HStack {
                 if let name = friendName {
-                    Text("Blocked User Name: \(name)")
+                    Text("\(name)")
                         .foregroundColor(.black)
                         .font(.system(size: 15))
                         .fontWeight(.bold)
@@ -145,7 +175,30 @@ struct BlockedUserDisplay: View {
                             loadFriendName()
                         }
                 }
+                
+                Button(action: {
+                    isUnblockAlertPresented = true
+                }) {
+                    Text("Unblock")
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
+                
                 Spacer()
+                .alert(isPresented: $isUnblockAlertPresented) {
+                    Alert(
+                        title: Text("Unblock User"),
+                        message: Text("Are you sure you want to unblock this user?"),
+                        primaryButton: .default(Text("Yes")) {
+                            unblockUser()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+                
             }
             .padding(.leading, 40)
         }
