@@ -9,28 +9,12 @@ import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
 
-struct PostReactions: Identifiable, Codable {
-    var id: String
-    var owner: String
-    var content: String
-    var reactions: [Reaction]
-}
-
-struct Reaction: Identifiable, Codable {
-    var id: String
-    var type: ReactionType
-}
-
-enum ReactionType: String, Codable {
-    case like
-    case love
-    case laugh
-}
-
 struct PostView: View {
     let item: String // UUID of the cloth document
     @State var UserID: String?
+    @State private var selectedReaction: String?
     @State var Owner : User?
+    
     func loadUser(completion: @escaping () -> Void) {
         
         let docRef = Firestore.firestore().collection("users").document(UserID ?? "")
@@ -51,7 +35,7 @@ struct PostView: View {
             }
         }
     }
-
+    
     
     @State var post: Post? // Cloth object fetched from Fire
     
@@ -61,10 +45,10 @@ struct PostView: View {
             HStack {
                 Image("UserIcon")
                     .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                 Text(Owner?.email ?? "user")
                     .foregroundColor(.black)
                     .font(.system( size: 15))
@@ -76,19 +60,19 @@ struct PostView: View {
                     .foregroundColor(Color(hex: "E1DDED"))
                     .frame(width: UIScreen.main.bounds.width - 40, height: 300)
                     .overlay(
-                            Group {
-                                                    if let image = imageLoader.image {
-                                                        Image(uiImage: image)
-                                                            .resizable()
-                                                            .aspectRatio(contentMode: .fill)
-                                                            .frame(height: 300)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                    } else {
-                                                        RoundedRectangle(cornerRadius: 10)
-                                                            .foregroundColor(Color(hex: "E1DDED"))
-                                                            .frame(width: UIScreen.main.bounds.width - 40, height: 300)
-                                                    }
-                                                }
+                        Group {
+                            if let image = imageLoader.image {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(height: 300)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            } else {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(hex: "E1DDED"))
+                                    .frame(width: UIScreen.main.bounds.width - 40, height: 300)
+                            }
+                        }
                     )
                 Spacer()
             }.padding(.leading, 20)
@@ -97,9 +81,25 @@ struct PostView: View {
                     .foregroundColor(.black)
                     .font(.system( size: 12))
                     .fontWeight(.semibold)
+                
+                if selectedReaction == nil {
+                        ForEach(["🔥", "👍", "😂"], id: \.self) { emoji in
+                            Button(action: {
+                                selectedReaction = emoji
+                                reactToPost(postID: item, reaction: emoji)
+                            }) {
+                                Text(emoji)
+                                    .font(.subheadline)
+                            }
+                        }
+                } else {
+                    Text(selectedReaction ?? "")
+                        .font(.title2)
+                }
                 Spacer()
+                
             }.padding(.leading, 25)
-
+            
         }
         .onAppear {
             fetchPostFromFirestore {
@@ -110,10 +110,46 @@ struct PostView: View {
             }
         }
     }
-
+    
+    func reactToPost(postID: String, reaction: String) {
+        guard let currentUserUID = UserID else {
+            print("Current user UID not found")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        
+        // Add the reaction to the post document
+        let reactionData: [String: Any] = [
+            "userUID": currentUserUID,
+            "reaction": reaction
+        ]
+        
+        let postRef = db.collection("posts").document(postID)
+        let reactionsCollectionRef = postRef.collection("reactions")
+        
+        reactionsCollectionRef.addDocument(data: reactionData) { error in
+            if let error = error {
+                print("Error adding reaction to post \(postID): \(error.localizedDescription)")
+            } else {
+                print("Reaction added successfully to post \(postID)")
+                
+                let userRef = db.collection("users").document(post?.owner ?? "")
+                let postReactionsCollectionRef = userRef.collection("postReactions").document(postID)
+                
+                postReactionsCollectionRef.setData(reactionData) { error in
+                    if let error = error {
+                        print("Error updating user document with reaction: \(error.localizedDescription)")
+                    } else {
+                        print("User document updated with reaction")
+                    }
+                }
+            }
+        }
+    }
     
     
-     func fetchPostFromFirestore(completion: @escaping () -> Void) {
+    func fetchPostFromFirestore(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("posts").document(item)
         docRef.getDocument { document, error in
             if let document = document, document.exists {

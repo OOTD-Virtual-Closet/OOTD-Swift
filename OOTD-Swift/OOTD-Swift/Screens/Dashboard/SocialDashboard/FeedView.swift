@@ -203,22 +203,4 @@ struct FeedView: View {
         }
     }
     
-    
-    
-    private func reactionImageName(for reactionType: ReactionType) -> String {
-        switch reactionType {
-        case .like:
-            return "hand.thumbsup.fill"
-        case .love:
-            return "heart.fill"
-        case .laugh:
-            return "laugh.fill"
-        }
-    }
-    
-    //struct FeedView_Previews: PreviewProvider {
-    //  static var previews: some View {
-    // FeedView()
-    //  }
-    //}
 }
