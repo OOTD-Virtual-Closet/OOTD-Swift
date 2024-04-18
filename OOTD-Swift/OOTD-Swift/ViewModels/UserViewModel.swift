@@ -26,7 +26,7 @@ class UserViewModel: ObservableObject {
                 "uid": newUser.uid,
                 "email": newUser.email,
                 "name": newUser.name ?? "",
-                "username": newUser.username ?? "",
+                "username": newUser.username ?? "Aaryan Srivastava",
                 "creation_date": newUser.creationDate?.description ?? "",
                 "username": newUser.username ?? "",
                 "clothes": newUser.clothes,
