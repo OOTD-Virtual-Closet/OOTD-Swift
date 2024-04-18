@@ -92,8 +92,17 @@ struct PostView: View {
                     .fontWeight(.semibold)
                 
                 if let selectedReaction = selectedReaction {
-                    Text(selectedReaction)
-                        .font(.title2)
+                    Button(action: {
+                        // When the selected reaction is clicked again, set it to nil
+                        // This will display the reaction list again
+                        if selectedReaction == self.selectedReaction {
+                            self.selectedReaction = nil
+                            UserDefaults.standard.removeObject(forKey: selectedReactionKey) // Remove stored reaction
+                        }
+                    }) {
+                        Text(selectedReaction)
+                            .font(.title2)
+                    }
                 } else {
                     ForEach(["🔥", "👍", "😂"], id: \.self) { emoji in
                         Button(action: {
