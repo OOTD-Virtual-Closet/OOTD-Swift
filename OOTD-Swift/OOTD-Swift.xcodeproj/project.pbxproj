@@ -95,6 +95,7 @@
 		89F139892B8B225A007BF7CC /* FavoriteOutfits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */; };
 		89F6E55E2BB528B900CE02D9 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 89F6E55D2BB528B900CE02D9 /* GoogleSignInSwift */; };
 		89F6E5602BB528D700CE02D9 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 89F6E55F2BB528D700CE02D9 /* SwiftCSV */; };
+		CC0F5A5B2BD193C90020C28A /* BlockedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F5A5A2BD193C90020C28A /* BlockedListView.swift */; };
 		CC1AAF4A2BA802B80093EAA6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */; };
 		CC22F0D82BAC82D200648F7F /* RecommendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC22F0D72BAC82D200648F7F /* RecommendedView.swift */; };
 		CC95B8FA2B82AC360034B352 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC95B8F92B82AC360034B352 /* AuthManager.swift */; };
@@ -185,6 +186,7 @@
 		89F139842B8B2163007BF7CC /* TabUnderlineViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabUnderlineViews.swift; sourceTree = "<group>"; };
 		89F139862B8B224F007BF7CC /* FavoriteClothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClothes.swift; sourceTree = "<group>"; };
 		89F139882B8B225A007BF7CC /* FavoriteOutfits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteOutfits.swift; sourceTree = "<group>"; };
+		CC0F5A5A2BD193C90020C28A /* BlockedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedListView.swift; sourceTree = "<group>"; };
 		CC1AAF492BA802B80093EAA6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CC22F0D72BAC82D200648F7F /* RecommendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedView.swift; sourceTree = "<group>"; };
 		CC95B8F92B82AC360034B352 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 				89D107C42BB53F100059F232 /* FriendRequestView.swift */,
 				89D107C82BB53F5F0059F232 /* FriendReceivedView.swift */,
 				89D107CA2BB5A4510059F232 /* SendFriendRequestView.swift */,
+				CC0F5A5A2BD193C90020C28A /* BlockedListView.swift */,
 			);
 			path = SocialDashboard;
 			sourceTree = "<group>";
@@ -638,6 +641,7 @@
 				CCDE677F2B7F1E9C00599FE8 /* Login.swift in Sources */,
 				CC95B8FA2B82AC360034B352 /* AuthManager.swift in Sources */,
 				34C8281D2B885812007AE17F /* SocialNav.swift in Sources */,
+				CC0F5A5B2BD193C90020C28A /* BlockedListView.swift in Sources */,
 				8915767D2B7F1422006947E4 /* Closet.swift in Sources */,
 				89396F192B922E770041F5F0 /* ExpandedClothesView.swift in Sources */,
 				89CB20862BB5FC800044E5A0 /* EditOutfitsView.swift in Sources */,

@@ -11,6 +11,7 @@ import FirebaseFirestore
 struct FriendsView: View {
     @State var showRequestsReceived = false
     @State var showRequestsSent = false
+    @State var showBlockedList = false
     @State private var searchText = ""
     @State private var isEditing = false
     @State var showAddFriends = false
@@ -45,7 +46,7 @@ struct FriendsView: View {
     }
     
     func reloadFriendList() {
-            populateFriendsList()
+        populateFriendsList()
     }
     
     var body: some View {
@@ -54,11 +55,11 @@ struct FriendsView: View {
                 VStack {
                     HStack {
                         Text("\(friendsList?.count ?? 0) \(friendsList?.count == 1 ? "Friend" : "Friends")")
-                                .padding()
-                                .font(.headline)
-                                .foregroundColor(.black)
-                                .background(Color.gray.opacity(0.3))
-                                .cornerRadius(10)
+                            .padding()
+                            .font(.headline)
+                            .foregroundColor(.black)
+                            .background(Color.gray.opacity(0.3))
+                            .cornerRadius(10)
                         Image(systemName: "person.2.fill")
                             .padding(.leading, 10)
                             .padding(.trailing, 10)
@@ -83,7 +84,7 @@ struct FriendsView: View {
                     Rectangle()
                         .foregroundColor(Color.gray)
                         .frame(height: 0.5)
-                    .padding(.horizontal, 20)
+                        .padding(.horizontal, 20)
                     VStack(spacing: 20) {
                         ForEach(friendsList ?? [], id: \.self) { friendID in
                             FriendDisplay(userBID: friendID)
@@ -114,6 +115,7 @@ struct FriendsView: View {
                 }
                 Button(action: {
                     print("Blocked user list")
+                    showBlockedList.toggle()
                 }) {
                     RoundedRectangle(cornerRadius: 15)
                         .foregroundColor(Color.purple)
@@ -157,12 +159,16 @@ struct FriendsView: View {
         {
             FriendRequestView()
         }
+        .sheet(isPresented: $showBlockedList)
+        {
+            BlockedListView()
+        }
         .sheet(isPresented: $showAddFriends, onDismiss: {
-                    reloadFriendList()
-                })
-                {
-                    SendFriendRequestView()
-                }
+            reloadFriendList()
+        })
+        {
+            SendFriendRequestView()
+        }
     }
 }
 
@@ -212,6 +218,27 @@ struct FriendDisplay: View {
         }
     }
     
+    func blockUser() {
+        guard let userToBlockID = userBID else { return }
+        
+        let db = Firestore.firestore()
+        var userA = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+        
+        let userRef = db.collection("users").document(userA)
+        userRef.updateData([
+            "blockedUsers": FieldValue.arrayUnion([userToBlockID])
+        ]) { error in
+            if let error = error {
+                print("Error blocking user: \(error.localizedDescription)")
+            } else {
+                print("User blocked successfully!")
+                
+                if let index = friendsList?.firstIndex(of: userToBlockID) {
+                    friendsList?.remove(at: index)
+                }
+            }
+        }
+    }
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
@@ -237,15 +264,20 @@ struct FriendDisplay: View {
                         .scaledToFit()
                         .frame(width: 20, height: 40)
                 }
-                
-                .alert(isPresented: $showAlert) {
-                    Alert(
-                        title: Text("Remove Friend"),
-                        message: Text("Are you sure you want to remove this friend?"),
-                        primaryButton: .destructive(Text("Remove")) {
-                            removeFriend()
-                        },
-                        secondaryButton: .cancel()
+                .actionSheet(isPresented: $showAlert) {
+                    ActionSheet(
+                        title: Text("Friend Actions"),
+                        message: nil,
+                        buttons: [
+                            .destructive(Text("Remove Friend")) {
+                                removeFriend()
+                            },
+                            .default(Text("Block User")) {
+                                blockUser()
+                                removeFriend()
+                            },
+                            .cancel()
+                        ]
                     )
                 }
                 Spacer()
