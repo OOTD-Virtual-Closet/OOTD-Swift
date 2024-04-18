@@ -68,8 +68,8 @@ struct FriendsView: View {
                         }) {
                             Text("Add Friend")
                                 .padding()
-                                .background(Color.uIpurple)
-                                .foregroundColor(.black)
+                                .background(Color.black)
+                                .foregroundColor(.white)
                                 .cornerRadius(8)
                         }
                     }
