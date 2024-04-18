@@ -130,7 +130,6 @@ struct PostView: View {
         }
         
         let db = Firestore.firestore()
-        
         let reactionData: [String: Any] = [
             "userUID": currentUserUID,
             "reaction": reaction
@@ -139,14 +138,38 @@ struct PostView: View {
         let postRef = db.collection("posts").document(postID)
         let reactionsCollectionRef = postRef.collection("reactions")
         
-        reactionsCollectionRef.addDocument(data: reactionData) { error in
+        // Check if the user has already reacted to this post
+        reactionsCollectionRef.whereField("userUID", isEqualTo: currentUserUID).getDocuments { snapshot, error in
             if let error = error {
-                print("Error adding reaction to post \(postID): \(error.localizedDescription)")
+                print("Error fetching existing reactions: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else { return }
+            
+            if snapshot.documents.isEmpty {
+                // If the user has not reacted yet, add a new reaction
+                reactionsCollectionRef.addDocument(data: reactionData) { error in
+                    if let error = error {
+                        print("Error adding reaction to post \(postID): \(error.localizedDescription)")
+                    } else {
+                        print("Reaction added successfully to post \(postID)")
+                    }
+                }
             } else {
-                print("Reaction added successfully to post \(postID)")
+                // If the user has already reacted, update their existing reaction
+                guard let existingReactionDoc = snapshot.documents.first else { return }
+                existingReactionDoc.reference.updateData(reactionData) { error in
+                    if let error = error {
+                        print("Error updating existing reaction: \(error.localizedDescription)")
+                    } else {
+                        print("Existing reaction updated successfully")
+                    }
+                }
             }
         }
     }
+
     
     func fetchPostFromFirestore(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("posts").document(item)
