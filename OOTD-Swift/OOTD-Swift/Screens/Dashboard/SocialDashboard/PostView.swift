@@ -93,11 +93,9 @@ struct PostView: View {
                 
                 if let selectedReaction = selectedReaction {
                     Button(action: {
-                        // When the selected reaction is clicked again, set it to nil
-                        // This will display the reaction list again
                         if selectedReaction == self.selectedReaction {
                             self.selectedReaction = nil
-                            UserDefaults.standard.removeObject(forKey: selectedReactionKey) // Remove stored reaction
+                            UserDefaults.standard.removeObject(forKey: selectedReactionKey)
                         }
                     }) {
                         Text(selectedReaction)
