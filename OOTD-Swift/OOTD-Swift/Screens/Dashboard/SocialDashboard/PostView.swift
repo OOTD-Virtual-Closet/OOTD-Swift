@@ -13,33 +13,35 @@ struct PostView: View {
     let item: String // UUID of the cloth document
     @State var UserID: String?
     @State private var selectedReaction: String?
-    @State var Owner : User?
+    @State var owner: User?
     
-    func loadUser(completion: @escaping () -> Void) {
+    // Key for UserDefaults
+    private let selectedReactionKey = "selectedReaction"
+    
+    func loadUser() {
+        guard let userID = UserID else {
+            print("Current user UID not found")
+            return
+        }
         
-        let docRef = Firestore.firestore().collection("users").document(UserID ?? "")
+        let docRef = Firestore.firestore().collection("users").document(userID)
         docRef.getDocument { document, error in
             if let document = document, document.exists {
                 do {
-                    Owner = try document.data(as: User.self)
+                    self.owner = try document.data(as: User.self)
                     print("User successfully fetched")
-                    
-                    
                 } catch {
                     print("Error decoding user document: \(error.localizedDescription)")
-                    completion()
                 }
             } else {
                 print("User document does not exist")
-                completion()
             }
         }
     }
     
-    
     @State var post: Post? // Cloth object fetched from Fire
-    
     @StateObject var imageLoader = ImageLoader() // Image load
+    
     var body: some View {
         VStack {
             HStack {
@@ -49,12 +51,16 @@ struct PostView: View {
                     .frame(width: 30, height: 30)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                Text(Owner?.email ?? "user")
+                
+                Text(owner?.email ?? "user")
                     .foregroundColor(.black)
-                    .font(.system( size: 15))
+                    .font(.system(size: 15))
                     .fontWeight(.bold)
+                
                 Spacer()
-            }.padding(.leading, 20)
+            }
+            .padding(.leading, 20)
+            
             HStack {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(Color(hex: "E1DDED"))
@@ -74,39 +80,45 @@ struct PostView: View {
                             }
                         }
                     )
+                
                 Spacer()
-            }.padding(.leading, 20)
+            }
+            .padding(.leading, 20)
+            
             HStack {
                 Text(post?.caption ?? "")
                     .foregroundColor(.black)
-                    .font(.system( size: 12))
+                    .font(.system(size: 12))
                     .fontWeight(.semibold)
                 
-                if selectedReaction == nil {
-                        ForEach(["🔥", "👍", "😂"], id: \.self) { emoji in
-                            Button(action: {
-                                selectedReaction = emoji
-                                reactToPost(postID: item, reaction: emoji)
-                            }) {
-                                Text(emoji)
-                                    .font(.subheadline)
-                            }
-                        }
-                } else {
-                    Text(selectedReaction ?? "")
+                if let selectedReaction = selectedReaction {
+                    Text(selectedReaction)
                         .font(.title2)
+                } else {
+                    ForEach(["🔥", "👍", "😂"], id: \.self) { emoji in
+                        Button(action: {
+                            selectedReaction = emoji
+                            UserDefaults.standard.set(emoji, forKey: selectedReactionKey) // Save selected reaction
+                            reactToPost(postID: item, reaction: emoji)
+                        }) {
+                            Text(emoji)
+                                .font(.subheadline)
+                        }
+                    }
                 }
-                Spacer()
                 
-            }.padding(.leading, 25)
-            
+                Spacer()
+            }
+            .padding(.leading, 25)
         }
         .onAppear {
+            loadUser()
             fetchPostFromFirestore {
                 print("fetched post and stuff")
             }
-            loadUser {
-                print(".")
+            // Retrieve selected reaction from UserDefaults on appearance
+            if let storedReaction = UserDefaults.standard.string(forKey: selectedReactionKey) {
+                selectedReaction = storedReaction
             }
         }
     }
@@ -119,7 +131,6 @@ struct PostView: View {
         
         let db = Firestore.firestore()
         
-        // Add the reaction to the post document
         let reactionData: [String: Any] = [
             "userUID": currentUserUID,
             "reaction": reaction
@@ -133,51 +144,38 @@ struct PostView: View {
                 print("Error adding reaction to post \(postID): \(error.localizedDescription)")
             } else {
                 print("Reaction added successfully to post \(postID)")
-                
-                let userRef = db.collection("users").document(post?.owner ?? "")
-                let postReactionsCollectionRef = userRef.collection("postReactions").document(postID)
-                
-                postReactionsCollectionRef.setData(reactionData) { error in
-                    if let error = error {
-                        print("Error updating user document with reaction: \(error.localizedDescription)")
-                    } else {
-                        print("User document updated with reaction")
-                    }
-                }
             }
         }
     }
-    
     
     func fetchPostFromFirestore(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("posts").document(item)
         docRef.getDocument { document, error in
             if let document = document, document.exists {
                 do {
-                    post = try document.data(as: Post.self)
+                    self.post = try document.data(as: Post.self)
                     print("Post successfully fetched")
                     
                     if let imageUrl = post?.image {
                         let storageRef = Storage.storage().reference()
                         storageRef.child(imageUrl).downloadURL { url, error in
                             if let url = url {
-                                // Load image using image loader
                                 imageLoader.loadImage(from: url)
                             } else if let error = error {
                                 print("Error downloading image: \(error.localizedDescription)")
                             }
-                            completion() // Call completion handler after fetching image
+                            completion()
                         }
                     } else {
-                        completion() // Call completion handler if image URL is nil
+                        completion()
                     }
                 } catch {
                     print("Error decoding post document: \(error.localizedDescription)")
-                    completion() // Call completion handler if error occurs during decoding
+                    completion()
                 }
             } else {
                 print("post document does not exist")
-                completion() // Call completion handler if document does not exist
+                completion()
             }
         }
     }
