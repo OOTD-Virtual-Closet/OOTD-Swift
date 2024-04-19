@@ -105,7 +105,7 @@ struct PostView: View {
                     ForEach(["🔥", "👍", "😂"], id: \.self) { emoji in
                         Button(action: {
                             selectedReaction = emoji
-                            UserDefaults.standard.set(emoji, forKey: selectedReactionKey) // Save selected reaction
+                            UserDefaults.standard.set(emoji, forKey: selectedReactionKey)
                             reactToPost(postID: item, reaction: emoji)
                         }) {
                             Text(emoji)
@@ -123,7 +123,6 @@ struct PostView: View {
             fetchPostFromFirestore {
                 print("fetched post and stuff")
             }
-            // Retrieve selected reaction from UserDefaults on appearance
             if let storedReaction = UserDefaults.standard.string(forKey: selectedReactionKey) {
                 selectedReaction = storedReaction
             }

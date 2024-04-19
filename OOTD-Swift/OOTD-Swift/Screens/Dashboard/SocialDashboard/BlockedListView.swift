@@ -180,10 +180,11 @@ struct BlockedUserDisplay: View {
                     isUnblockAlertPresented = true
                 }) {
                     Text("Unblock")
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
-                        .background(Color.blue)
+                        .background(Color.purple)
                         .cornerRadius(8)
                 }
                 
