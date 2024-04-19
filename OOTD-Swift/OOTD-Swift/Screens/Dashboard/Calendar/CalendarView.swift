@@ -43,7 +43,7 @@ struct CalendarView: View {
             return thirtyDaysAgo
         } else {
             // Handle error if unable to calculate the date
-            fatalError("Unable to calculate 30 days ago.")
+            return Date()
         }
     }
     
