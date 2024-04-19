@@ -19,6 +19,9 @@ struct EditOutfitsView: View {
     @StateObject var imageLoader3 = ImageLoader()
     @StateObject var imageLoader4 = ImageLoader()
     @StateObject var mannequinImageLoader = ImageLoader() //here
+    
+    @State private var showShirt = true
+    
     let imageName = "mannequin_template"
     @State  var searchText = ""
     @State  var selectedGenre : String?
@@ -26,14 +29,14 @@ struct EditOutfitsView: View {
      var genreOptions = ["Streetwear", "Formalwear", "Casual", "Business Casual", "Pajamas"]
     @State var showAlert = false
 
-    func loadMannequinTemplate() {
-        if let imageUrl = Bundle.main.url(forResource: imageName, withExtension: "jpeg") {
-            mannequinImageLoader.loadImage(from: imageUrl)
-            print("Mannequin fetched!")
-        } else {
-            print("Image not found in bundle.")
-        }
-    }
+//    func loadMannequinTemplate() {
+//        if let imageUrl = Bundle.main.url(forResource: imageName, withExtension: "jpeg") {
+//            mannequinImageLoader.loadImage(from: imageUrl)
+//            print("Mannequin fetched!")
+//        } else {
+//            print("Image not found in bundle.")
+//        }
+//    }
     
     func fetchFitFromFirestore(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("outfits").document(mainOutfit.id)
@@ -106,21 +109,33 @@ struct EditOutfitsView: View {
                         .frame(width: 220, height: 300)
                         .overlay(
                             ZStack {
-                                if let shirt = imageLoader.image {
-                                    Image(uiImage: shirt)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .foregroundColor(Color(hex: "E1DDED"))
-                                        .frame(width:120, height: 120)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .offset(y: -50)
+                                if showShirt {
+                                    if let shirt = imageLoader.image {
+                                        Image(uiImage: shirt)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .foregroundColor(Color(hex: "E1DDED"))
+                                            .frame(width:120, height: 120)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                            .offset(y: -50)
+                                    }
+                                } else {
+                                    if let jacket = imageLoader2.image {
+                                        Image(uiImage: jacket)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .foregroundColor(Color(hex: "E1DDED"))
+                                            .frame(width:100, height: 110)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                            .offset(y: -50)
+                                    }
                                 }
                                 Image("UserIcon")
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fill)
                                                 .foregroundColor(Color(hex: "E1DDED"))
                                                 .frame(width:50, height: 50)
-                                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                                                .clipShape(RoundedRectangle(cornerRadius: 20))
                                                 .offset(y: -115)
                                 if let shoe = imageLoader4.image {
                                     Image(uiImage: shoe)
@@ -173,6 +188,23 @@ struct EditOutfitsView: View {
                         CustomDropDown(title: "Genre", prompt: "Select a Genre", options: genreOptions, selection: $selectedGenre)
                     }
                     .padding(.horizontal)
+                    
+                    Button(action: {
+                        showShirt.toggle()
+                    }) {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                            .foregroundColor(.blue)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(hex: "E1DDED"))
+                                    .frame(width: 50, height: 50)
+                                    .shadow(radius: 4)
+                            )
+                            
+                    }
                 }
 
 
@@ -221,10 +253,10 @@ struct EditOutfitsView: View {
                 
             }
             .onAppear {
-                loadMannequinTemplate()
+                //loadMannequinTemplate()
                 fetchFitFromFirestore {
                     print("fetched fit and stuff")
-                    searchText = mainOutfit.name ?? ""
+                    searchText = mainOutfit.name
                     selectedGenre = mainOutfit.genre
                     
                 }
