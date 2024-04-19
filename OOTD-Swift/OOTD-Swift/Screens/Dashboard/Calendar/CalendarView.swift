@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseStorage
+import FirebaseFirestore
+import PhotosUI
+import UIKit
 
 struct CalendarView: View {
     @Binding var addPadding: Bool
@@ -42,6 +46,7 @@ struct CalendarView: View {
             fatalError("Unable to calculate 30 days ago.")
         }
     }
+    
 
     var body: some View {
         
@@ -125,7 +130,54 @@ struct CalendarCell: View {
     @State private var selectedOutfit : String?
     @State var showSheet:Bool = false
     @ObservedObject var viewModel : CalendarViewModel
+    @State var selectedImage: UIImage?
+    @State private var photosPickerItem: PhotosPickerItem?
     
+    func getImage() -> UIImage? {
+            let uiImage = UIImage(named: "shirt")
+            return uiImage
+        }
+    
+    
+    func uploadImage() -> String {
+        if selectedImage == nil  {
+            selectedImage = getImage()
+            print("Image not selected in calendarview!")
+        }
+        
+        //create storage reference
+        let storageRef = Storage.storage().reference()
+        
+        // turn image into data (please work)
+        let imageData = selectedImage!.pngData()
+        
+        guard imageData != nil else {
+            print("failed")
+            return ""
+        }
+        // specify filepath and name
+        let path = "daily/\(UUID().uuidString).png"
+        let fileRef = storageRef.child(path)
+        
+        // Upload dis data
+        if let selectedImage = selectedImage {
+            let resizedImage = selectedImage.resizedImageWithinRect(rectSize: CGSize(width: 200, height: 200)) //check size stuff after
+            if let imageData = resizedImage.jpegData(compressionQuality: 0.75) {
+                let uploadTask = fileRef.putData(imageData, metadata: nil) {
+                    metadata, error in
+                    
+                    if error == nil && metadata != nil {
+                        print("Successfully stored image")
+                    }
+                    else {
+                        print("failed storing image")
+                    }
+                }
+            }
+        }
+        return path
+    }
+
     var body: some View {
         
         Button {
@@ -145,17 +197,62 @@ struct CalendarCell: View {
             print(selectedOutfit ?? "None")
             viewModel.editOutfitPlan(date: date, outfitID: selectedOutfit ?? "None")
         }) {
-            CustomDropDown(title: "Planned Outfit", prompt: "Select an Outfit for this day", options: viewModel.outfitOptions, selection: $selectedOutfit)
-                .onAppear {
-                    addPadding = false
-                    print(date)
-                    viewModel.getOutfitPlan()
-                    if let plans = viewModel.plans {
-                        selectedOutfit = plans[date]
-                    }
-                    print("adi get the plan")
-                    print(viewModel.plans?[date] ?? "no plan for \(date)")
+            
+            VStack {
+                Rectangle()
+                    .foregroundColor(.white)
+                    .frame(height: UIScreen.main.bounds.height / 7)
+                    .ignoresSafeArea(.all)
+                
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 220, height: 220)
+                        .padding(.bottom, 20)
+                } else {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color(hex: "E1DDED"))
+                        .frame(width: 220, height: 220)
+                        .padding(.bottom, 20)
+                        .overlay(
+                    Text("Upload Image Below")
+                        .foregroundColor(.black)
+                        .font(.system( size: 20))
+                        )
                 }
+                PhotosPicker(selection: $photosPickerItem, label: {
+                    Image(systemName: "square.and.arrow.up.circle.fill")
+                        .resizable()
+                        .foregroundColor(Color(hex: "9278E0"))
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 35, height: 35)
+                        .padding(.bottom, 20)
+                })
+                .onChange(of: photosPickerItem) {  _ in
+                    Task{
+                        if let photosPickerItem,
+                           let data = try? await photosPickerItem.loadTransferable(type: Data.self) {
+                            if let image = UIImage(data:data) {
+                                selectedImage = image
+                            }
+                        }
+                        var path = uploadImage()
+                    }
+                }
+                CustomDropDown(title: "Planned Outfit", prompt: "Select an Outfit for this day", options: viewModel.outfitOptions, selection: $selectedOutfit)
+                    .onAppear {
+                        addPadding = false
+                        print(date)
+                        viewModel.getOutfitPlan()
+                        if let plans = viewModel.plans {
+                            selectedOutfit = plans[date]
+                        }
+                        print("adi get the plan")
+                        print(viewModel.plans?[date] ?? "no plan for \(date)")
+                    }
+            }
+
         }
     }
 }
