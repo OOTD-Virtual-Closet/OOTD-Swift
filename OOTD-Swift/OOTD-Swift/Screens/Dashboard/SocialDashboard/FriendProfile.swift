@@ -57,8 +57,9 @@ struct FriendProfile: View {
                 }
             }
             let name1 = document.data()?["email"] as? String ?? ""
-            name = name1
             email = name1
+            let username1 = document.data()?["username"] as? String ?? ""
+            name = username1
 
             let pinnedFits = document.data()?["pinnedFits"] as? [String] ?? []
             
@@ -117,13 +118,7 @@ struct FriendProfile: View {
                                     .frame(width: 70, height: 70)
                                     .clipShape(Circle())
                             } else {
-                                Circle()
-                                    .foregroundColor(Color(hex: "9278E0"))
-                                    .frame(width: 70, height: 70)
-                                    .overlay(
-                                        Image(systemName: "plus")
-                                            .foregroundColor(.white)
-                                    )
+                           
                             }
                             
                             
@@ -136,13 +131,7 @@ struct FriendProfile: View {
                                     .frame(width: 70, height: 70)
                                     .clipShape(Circle())
                             } else {
-                                Circle()
-                                    .foregroundColor(Color(hex: "9278E0"))
-                                    .frame(width: 70, height: 70)
-                                    .overlay(
-                                        Image(systemName: "plus")
-                                            .foregroundColor(.white)
-                                    )
+                               
                             }
                             
                             
@@ -154,13 +143,7 @@ struct FriendProfile: View {
                                     .frame(width: 70, height: 70)
                                     .clipShape(Circle())
                             } else {
-                                Circle()
-                                    .foregroundColor(Color(hex: "9278E0"))
-                                    .frame(width: 70, height: 70)
-                                    .overlay(
-                                        Image(systemName: "plus")
-                                            .foregroundColor(.white)
-                                    )
+                             
                             }
                             
                         }

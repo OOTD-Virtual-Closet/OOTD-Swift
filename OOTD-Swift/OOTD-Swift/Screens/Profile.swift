@@ -29,7 +29,7 @@ struct ProfileSummary: View {
     @AppStorage("staySignedIn") private var staySignedIn: Bool = UserDefaults.standard.bool(forKey: "staySignedIn")
     
     var email = UserDefaults.standard.string(forKey: "email") ?? "atharva.gu@gmail.com"
-    var name = "Atharva Gupta"
+    @State var name = "Atharva Gupta"
     var phoneNumber = "(510) 335-9060"
     @State var pinnedOne : String?
     @State var pinnedTwo : String?
@@ -128,7 +128,7 @@ struct ProfileSummary: View {
                do {
                   let user = try document.data(as: User.self)
                    print("Cloth successfully fetched")
-                   
+                   name = user.username ?? "Atharva Gupta"
                    if let imageUrl = user.name {
                        let storageRef = Storage.storage().reference()
                        storageRef.child(imageUrl).downloadURL { url, error in

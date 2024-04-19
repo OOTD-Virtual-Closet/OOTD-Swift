@@ -286,7 +286,7 @@ struct FriendDisplay: View {
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 }
-                Text(userB?.email ?? "friend")
+                Text(userB?.username ?? "friend")
                     .foregroundColor(.black)
                     .font(.system(size: 15))
                     .fontWeight(.bold)
@@ -420,6 +420,10 @@ struct RequestSentDisplay: View {
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 }
+                Text(userB?.username ?? "")
+                    .foregroundColor(.black)
+                    .font(.system( size: 15))
+                    .fontWeight(.bold)
                 Spacer()
                 Button(action: {
                     retractRequest {
@@ -569,7 +573,7 @@ struct RequestReceivedDisplay: View {
                         .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 }
 
-                Text(userB?.email ?? "")
+                Text(userB?.username ?? "")
                     .foregroundColor(.black)
                     .font(.system( size: 15))
                     .fontWeight(.bold)

@@ -19,7 +19,7 @@ struct SendFriendRequestView: View {
         let db = Firestore.firestore()
         
         db.collection("users")
-            .whereField("email", isEqualTo: searchText.lowercased())
+            .whereField("username", isEqualTo: searchText.lowercased())
             .getDocuments { querySnapshot, error in
                 if let error = error {
                     print("Error fetching user documents: \(error.localizedDescription)")
