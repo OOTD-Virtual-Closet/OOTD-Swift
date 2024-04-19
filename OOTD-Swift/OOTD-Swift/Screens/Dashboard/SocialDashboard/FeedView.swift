@@ -158,35 +158,35 @@ struct FeedView: View {
     
     var body: some View {
         ScrollView {
-            ZStack {
-                TextField("", text: $searchText, onEditingChanged: { editing in
-                    isEditing = editing
-                })
-                .padding(.leading, 30)
-                .frame(width: UIScreen.main.bounds.width - 90, height: 40)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(Color(hex: "F4F4F4"))
-                        .padding(.leading, 15)
-                )
-                .overlay(
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 20, height: 20)
-                            .padding(.leading, 27)
-                        Text("Search...")
-                            .foregroundColor(.black)
-                            .font(.system(size: 17))
-                            .fontWeight(.heavy)
-                            .padding(.leading, 5)
-                        Spacer()
-                    }
-                        .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
-                )
-            }
+//            ZStack {
+//                TextField("", text: $searchText, onEditingChanged: { editing in
+//                    isEditing = editing
+//                })
+//                .padding(.leading, 30)
+//                .frame(width: UIScreen.main.bounds.width - 90, height: 40)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 10)
+//                        .foregroundColor(Color(hex: "F4F4F4"))
+//                        .padding(.leading, 15)
+//                )
+//                .overlay(
+//                    HStack {
+//                        Image(systemName: "magnifyingglass")
+//                            .resizable()
+//                            .foregroundColor(.black)
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 20, height: 20)
+//                            .padding(.leading, 27)
+//                        Text("Search...")
+//                            .foregroundColor(.black)
+//                            .font(.system(size: 17))
+//                            .fontWeight(.heavy)
+//                            .padding(.leading, 5)
+//                        Spacer()
+//                    }
+//                        .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
+//                )
+//            }
             VStack(spacing: 20) {
                 ForEach(feed ?? [], id: \.self) { test in
                     PostView(item: test.id, UserID: test.owner )
