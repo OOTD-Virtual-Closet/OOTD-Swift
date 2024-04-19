@@ -8,20 +8,7 @@
 import SwiftUI
 import FirebaseFirestore
 import FirebaseStorage
-//struct ClothingItem: Identifiable, Hashable {
-  //  var id = UUID()
-   // var name: String // Name or description of the item
-   // var lastWorn: Date? // Optional last worn date
-   // var color: String
-   // var clothingType: String
-    
-    //init(name: String, lastWorn: Date? = nil, color: String = "", clothingType: String = "") {
-     //   self.name = name
-     //   self.lastWorn = lastWorn
-     //   self.color = color
-     //   self.clothingType = clothingType
-   // }
-//}
+
 
 struct ClothesView: View {
     
@@ -31,6 +18,13 @@ struct ClothesView: View {
     @State private var bottoms : [Cloth]?
     @State private var jackets : [Cloth]?
     @State private var shoes : [Cloth]?
+    
+    @State private var filteredTops: [Cloth] = []
+    @State private var filteredBottoms: [Cloth] = []
+    @State private var filteredJackets: [Cloth] = []
+    @State private var filteredShoes: [Cloth] = []
+    let tags: [String] = ["All", "casual", "sport"]
+    @State private var selectedTag: String = "All"
     
     @State private var searchText = ""
     @State private var isEditing = false
@@ -48,6 +42,25 @@ struct ClothesView: View {
     
     @State private var expandedClothesPresented = false;
     @State private var expandedClothesChosen : Cloth?
+    
+    private func filterByTag(clothes: [Cloth]?) -> [Cloth] {
+        guard selectedTag != "All" else {return clothes ?? [] }
+        return clothes!.filter { $0.tags?.contains(selectedTag) ?? false }
+    }
+    
+    private func filterClothes(searchText: String, clothes: [Cloth]?) -> [Cloth] {
+        guard !searchText.isEmpty else { return clothes ?? [] }
+        return clothes?.filter { $0.name!.localizedCaseInsensitiveContains(searchText) } ?? []
+    }
+    
+    private func populateAndFilter() {
+        populateArrays {
+            filteredTops = filterClothes(searchText: searchText, clothes: tops)
+            filteredBottoms = filterClothes(searchText: searchText, clothes: bottoms)
+            filteredJackets = filterClothes(searchText: searchText, clothes: jackets)
+            filteredShoes = filterClothes(searchText: searchText, clothes: shoes)
+        }
+    }
     
     private func populateArrays(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
@@ -81,10 +94,15 @@ struct ClothesView: View {
                     }
                     
                     dispatchGroup.notify(queue: .main) {
-                        tops = loadedCloths.filter { $0.type == "Tops" }
-                        bottoms = loadedCloths.filter { $0.type == "Bottoms" }
-                        jackets = loadedCloths.filter { $0.type == "Jackets/Hoodies" }
-                        shoes = loadedCloths.filter { $0.type == "Shoes" }
+                        let loadedTops = loadedCloths.filter { $0.type == "Tops" }
+                        let loadedBottoms = loadedCloths.filter { $0.type == "Bottoms" }
+                        let loadedJackets = loadedCloths.filter { $0.type == "Jackets/Hoodies" }
+                        let loadedShoes = loadedCloths.filter { $0.type == "Shoes" }
+                        
+                        tops = filterByTag(clothes: loadedTops)
+                        bottoms = filterByTag(clothes: loadedBottoms)
+                        jackets = filterByTag(clothes: loadedJackets)
+                        shoes = filterByTag(clothes: loadedShoes)
                         
                         completion()
                     }
@@ -114,7 +132,7 @@ struct ClothesView: View {
                             .fontWeight(.heavy)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 15)
-                            .padding(.vertical, 5)
+                            .padding(.top, 5)
                         Text("Your Closet")
                             .foregroundColor(.black)
                             .font(.system( size: 25))
@@ -122,58 +140,75 @@ struct ClothesView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 15)
                         HStack {
-                            ZStack {
-                                        TextField("", text: $searchText, onEditingChanged: { editing in
-                                            isEditing = editing
-                                        })
-                                        .padding(.leading, 15)
-                                        .frame(width: UIScreen.main.bounds.width - 90, height: 40)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .foregroundColor(Color(hex: "E1DDED"))
-                                                .padding(.leading, 15)
-                                        )
-                                        .overlay(
-                                            HStack {
-                                                Image(systemName: "magnifyingglass")
-                                                    .resizable()
-                                                    .foregroundColor(.black)
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(width: 20, height: 20)
-                                                    .padding(.leading, 27)
-                                                Text("Search...")
-                                                    .foregroundColor(.black)
-                                                    .font(.system(size: 17))
-                                                    .fontWeight(.heavy)
-                                                    .padding(.leading, 5)
-                                                Spacer()
-                                            }
-                                            .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
-                                        )
-                                    }
-                            Spacer()
-                            ZStack {
-                                Button(action: {
-                                    self.showPopUp.toggle()
-                                }) {
-                                    Image(systemName: "slider.horizontal.3")
+                            TextField("", text: $searchText, onEditingChanged: { editing in
+                                isEditing = editing
+                            })
+                            .padding(.leading, 30)
+                            .frame(width: UIScreen.main.bounds.width - 90, height: 40)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(hex: "E1DDED"))
+                                    .padding(.leading, 15)
+                            )
+                            .overlay(
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
                                         .resizable()
                                         .foregroundColor(.black)
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 30, height: 30)
-                                        .padding(.trailing, 20)
+                                        .frame(width: 20, height: 20)
+                                        .padding(.leading, 27)
+                                    Text("Search...")
+                                        .foregroundColor(.black)
+                                        .font(.system(size: 17))
+                                        .fontWeight(.heavy)
+                                        .padding(.leading, 5)
+                                    Spacer()
                                 }
+                                .opacity(isEditing || !searchText.isEmpty ? 0 : 1)
+                            )
+                            Spacer()
+                            Menu {
+                                Picker(selection: $selectedTag, label: Text("Filter by Tag")) {
+                                    ForEach(tags, id: \.self) { tag in
+                                        Text(tag).tag(tag)
+                                    }
+                                }
+                            } label: {
+                                Label("", systemImage: "slider.horizontal.3")
+                                    .foregroundColor(.black)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 50, height: 50)
                             }
-                            .actionSheet(isPresented: $showPopUp) {
-                                ActionSheet(title: Text("Options"), buttons: [
-                                    .default(Text("Date Last Worn")) {  self.showDatePicker = true  },
-                                    .default(Text("Type of Clothing")) { self.showClothingCategory = true },
-                                    .default(Text("Color of Clothing")) {
-                                    self.showColorPicker = true
-                                    },
-                                    .cancel()
-                                ])
+                            .onChange(of: selectedTag) { _ in
+                                filteredTops = filterByTag(clothes: tops)
+                                filteredBottoms = filterByTag(clothes: bottoms)
+                                filteredJackets = filterByTag(clothes: jackets)
+                                filteredShoes = filterByTag(clothes: shoes)
                             }
+                            .padding(.trailing, 20)
+//                            ZStack {
+//                                Button(action: {
+//                                    self.showPopUp.toggle()
+//                                }) {
+//                                    Image(systemName: "slider.horizontal.3")
+//                                        .resizable()
+//                                        .foregroundColor(.black)
+//                                        .aspectRatio(contentMode: .fit)
+//                                        .frame(width: 30, height: 30)
+//                                        .padding(.trailing, 20)
+//                                }
+//                            }
+//                            .actionSheet(isPresented: $showPopUp) {
+//                                ActionSheet(title: Text("Options"), buttons: [
+//                                    .default(Text("Date Last Worn")) {  self.showDatePicker = true  },
+//                                    .default(Text("Type of Clothing")) { self.showClothingCategory = true },
+//                                    .default(Text("Color of Clothing")) {
+//                                    self.showColorPicker = true
+//                                    },
+//                                    .cancel()
+//                                ])
+//                            }
                         }
                         HStack {
                             Text("Tops")
@@ -191,7 +226,7 @@ struct ClothesView: View {
                         }
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 10) {
-                                ForEach(tops ?? [], id: \.self) { view in
+                                ForEach(filteredTops, id: \.self) { view in
                                     Button(action: {
                                         expandedClothesPresented.toggle()
                                         expandedClothesChosen = view
@@ -205,7 +240,15 @@ struct ClothesView: View {
                             }.padding(10)
                         }
                         .padding(.trailing, 15)
-                        
+                        .onAppear {
+                            populateAndFilter()
+                        }
+                        .onChange(of: searchText) { newValue in
+                            filteredTops = filterClothes(searchText: newValue, clothes: tops)
+                            filteredBottoms = filterClothes(searchText: newValue, clothes: bottoms)
+                            filteredJackets = filterClothes(searchText: newValue, clothes: jackets)
+                            filteredShoes = filterClothes(searchText: newValue, clothes: shoes)
+                        }
                         
                         HStack {
                             Text("Hoodies & Jackets")
@@ -223,7 +266,7 @@ struct ClothesView: View {
                         }
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 10) {
-                                ForEach(jackets ?? [], id: \.self) { view in
+                                ForEach(filteredJackets, id: \.self) { view in
                                     Button(action: {
                                         expandedClothesPresented.toggle()
                                         expandedClothesChosen = view
@@ -236,7 +279,18 @@ struct ClothesView: View {
                                     }
                                 }
                             }.padding(10)
-                        }.padding(.trailing, 15)
+                        }
+                        .padding(.trailing, 15)
+                        .onAppear {
+                            populateAndFilter()
+                        }
+                        .onChange(of: searchText) { newValue in
+                            filteredTops = filterClothes(searchText: newValue, clothes: tops)
+                            filteredBottoms = filterClothes(searchText: newValue, clothes: bottoms)
+                            filteredJackets = filterClothes(searchText: newValue, clothes: jackets)
+                            filteredShoes = filterClothes(searchText: newValue, clothes: shoes)
+                        }
+                        
                         HStack {
                             Text("Pants")
                                 .foregroundColor(.black)
@@ -253,7 +307,7 @@ struct ClothesView: View {
                         }
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 10) {
-                                ForEach(bottoms ?? [], id: \.self) { view in
+                                ForEach(filteredBottoms, id: \.self) { view in
                                     Button(action: {
                                         expandedClothesPresented.toggle()
                                         expandedClothesChosen = view
@@ -268,6 +322,16 @@ struct ClothesView: View {
                             }.padding(10)
                         }
                         .padding(.trailing, 15)
+                        .onAppear {
+                            populateAndFilter()
+                        }
+                        .onChange(of: searchText) { newValue in
+                            filteredTops = filterClothes(searchText: newValue, clothes: tops)
+                            filteredBottoms = filterClothes(searchText: newValue, clothes: bottoms)
+                            filteredJackets = filterClothes(searchText: newValue, clothes: jackets)
+                            filteredShoes = filterClothes(searchText: newValue, clothes: shoes)
+                        }
+                        
                         HStack {
                             Text("Shoes")
                                 .foregroundColor(.black)
@@ -284,7 +348,7 @@ struct ClothesView: View {
                         }
                         ScrollView(.horizontal) {
                             LazyHStack(spacing: 10) {
-                                ForEach(shoes ?? [], id: \.self) { view in
+                                ForEach(filteredShoes, id: \.self) { view in
                                     Button(action: {
                                         expandedClothesPresented.toggle()
                                         expandedClothesChosen = view
@@ -299,35 +363,45 @@ struct ClothesView: View {
                         }
                     }
                     .padding(.trailing, 15)
-                    .sheet(isPresented: $showColorPicker) {
-                        ColorSelectionView(selectedColor: $selectedColor)
+                    .onAppear {
+                        populateAndFilter()
                     }
-                    .sheet(isPresented: $showClothingCategory) {
-                        ClothingTypeSelectionView(selectedClothingType: $selectedClothingCatergory, clothingCategories: clothingCategories)
+                    .onChange(of: searchText) { newValue in
+                        filteredTops = filterClothes(searchText: newValue, clothes: tops)
+                        filteredBottoms = filterClothes(searchText: newValue, clothes: bottoms)
+                        filteredJackets = filterClothes(searchText: newValue, clothes: jackets)
+                        filteredShoes = filterClothes(searchText: newValue, clothes: shoes)
                     }
-                    .sheet(isPresented: $showDatePicker) {
-                        NavigationView {
-                            DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
-                                .datePickerStyle(GraphicalDatePickerStyle())
-                                .padding()
-                                .navigationTitle("Date Last Worn")
-                                .toolbar {
-                                    ToolbarItem(placement: .navigationBarLeading) {
-                                        Button("Cancel") {
-                                            showDatePicker = false
-                                        }
-                                    }
-                                    ToolbarItem(placement: .navigationBarTrailing) {
-                                        Button("Done") {
-                                            showDatePicker = false
-                                            //Will print out the selected date correctly
-                                                //Need to substring the date tho
-                                            print(selectedDate)
-                                        }
-                                    }
-                                }
-                        }
-                    }
+                
+//                    .sheet(isPresented: $showColorPicker) {
+//                        ColorSelectionView(selectedColor: $selectedColor)
+//                    }
+//                    .sheet(isPresented: $showClothingCategory) {
+//                        ClothingTypeSelectionView(selectedClothingType: $selectedClothingCatergory, clothingCategories: clothingCategories)
+//                    }
+//                    .sheet(isPresented: $showDatePicker) {
+//                        NavigationView {
+//                            DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
+//                                .datePickerStyle(GraphicalDatePickerStyle())
+//                                .padding()
+//                                .navigationTitle("Date Last Worn")
+//                                .toolbar {
+//                                    ToolbarItem(placement: .navigationBarLeading) {
+//                                        Button("Cancel") {
+//                                            showDatePicker = false
+//                                        }
+//                                    }
+//                                    ToolbarItem(placement: .navigationBarTrailing) {
+//                                        Button("Done") {
+//                                            showDatePicker = false
+//                                            //Will print out the selected date correctly
+//                                                //Need to substring the date tho
+//                                            print(selectedDate)
+//                                        }
+//                                    }
+//                                }
+//                        }
+//                    }
                     Color.white
                             .frame(width: UIScreen.main.bounds.width, height: 100)
                    

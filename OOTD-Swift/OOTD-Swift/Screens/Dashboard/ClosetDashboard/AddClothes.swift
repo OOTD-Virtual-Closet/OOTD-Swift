@@ -36,6 +36,9 @@ struct AddClothes: View {
     @State private var isEditing = false
     @State private var isEditing2 = false
     
+    @State private var selectedStyle: String?
+    private var styleOptions = ["casual", "sport"]
+    
     @State private var isImagePickerPresented = false
     @State var selectedImage: UIImage?
 
@@ -162,22 +165,6 @@ struct AddClothes: View {
                 return uiImage
             }
         }
-    
-//    func convertImageToUIImage(_ image: Image) -> UIImage {
-//        // Create a hosting controller
-//        let viewController = UIHostingController(rootView: image)
-//
-//        // Get the image from the hosting controller's view
-//        let view = viewController.view
-//
-//        // Render view to an image
-//        let renderer = UIGraphicsImageRenderer(size: view!.bounds.size)
-//        let uiImage = renderer.image { ctx in
-//            view!.drawHierarchy(in: view!.bounds, afterScreenUpdates: true)
-//        }
-//
-//        return uiImage
-//    }
 
     func uploadClothImage() -> String {
         guard selectedImage != nil else {
@@ -327,14 +314,24 @@ struct AddClothes: View {
                                             }
                                             .opacity(isEditing2 || !searchText2.isEmpty ? 0 : 1)
                                         )
-                            }.padding(.horizontal,25)
-                                .padding(.vertical, 10)
+                            }
+                            .padding(.horizontal,25)
+                            .padding(.vertical, 10)
                             
-                            CustomDropDown(title: "Type", prompt: "Choose your type", options: typeOptions, selection: $selectedType)
+                            // cloth type
+                            CustomDropDown(title: "Type", prompt: "Choose your type...", options: typeOptions, selection: $selectedType)
+                            
+                            // custom style
+                            CustomDropDown(title: "Style", prompt: "Choose your style...", options: styleOptions, selection: $selectedStyle)
+                            
+                            // white background
                             Rectangle()
                                 .foregroundColor(Color.white)
                                 .frame(height: 200)
                                 .ignoresSafeArea(.all)
+                            
+
+
                         }
                         .padding(.horizontal)
                     }
@@ -361,7 +358,7 @@ struct AddClothes: View {
                             showAlert = true
                              alertMessage = "Photo upload failed"
                          } else {
-                             let cloth = Cloth(name: searchText, type: selectedType, size: selectedSize, color: selectedColor, brand: searchText2, image: path, tags: ["casual", "sport"])
+                             let cloth = Cloth(name: searchText, type: selectedType, size: selectedSize, color: selectedColor, brand: searchText2, image: path, tags: [selectedStyle].compactMap {$0})
                              
                              let clothViewModel = ClothViewModel()
                              

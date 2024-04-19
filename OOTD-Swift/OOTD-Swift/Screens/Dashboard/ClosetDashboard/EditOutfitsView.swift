@@ -181,7 +181,7 @@ struct EditOutfitsView: View {
                         showAlert = true
                     } else {
                         showAlert = false
-                        let outfit = Outfit(id: mainOutfit.id, name: searchText ?? "", genre: selectedGenre ?? "", cloth1: mainOutfit.cloth1 , cloth2: mainOutfit.cloth2, cloth3: mainOutfit.cloth3 , cloth4: mainOutfit.cloth4, date: Date())
+                        let outfit = Outfit(id: mainOutfit.id, name: searchText ?? "", genre: selectedGenre ?? "", cloth1: mainOutfit.cloth1 , cloth2: mainOutfit.cloth2, cloth3: mainOutfit.cloth3 , cloth4: mainOutfit.cloth4)
                         
                         let outfitViewModel = OutfitViewModel()
                         outfitViewModel.editOutfit(outfit: outfit)
