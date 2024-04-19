@@ -173,6 +173,61 @@ struct ExpandedOutfitsView: View {
 
                         
                     }
+                    HStack {
+                        
+                                if let image = imageLoader.image {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .offset(x: 10, y: 20)
+                                            .frame(width: 70, height: 100)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    } else {
+                                        Text("Loading...")
+                                    }
+                                
+                           
+                    
+                                if let image = imageLoader2.image {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .offset(x: 10, y: 20)
+                                            .frame(width: 70, height: 100)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    } else {
+                                        Text("Loading...")
+                                    }
+                                
+                           
+                        
+                                if let image = imageLoader3.image {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .offset(x: 10, y: 20)
+                                            .frame(width: 70, height: 100)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    } else {
+                                        Text("Loading...")
+                                    }
+                                
+                           
+                       
+                                if let image = imageLoader4.image {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .offset(x: 10, y: 20)
+                                            .frame(width: 70, height: 100)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    } else {
+                                        Text("Loading...")
+                                    }
+                                
+                           
+                        
+                    }
                     //buttons
                     HStack {
                         Button(action: {
