@@ -28,9 +28,11 @@ struct Clothes: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 100, height: 100)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .foregroundColor(Color.clear) // Set background color to clear
+
                         } else {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color(hex: "E1DDED"))
+                                .foregroundColor(Color.clear) // Set background color to clear
                                 .frame(width: 112, height: 130)
                         }
                     }

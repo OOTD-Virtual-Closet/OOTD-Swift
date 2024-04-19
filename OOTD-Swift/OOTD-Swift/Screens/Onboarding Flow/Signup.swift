@@ -115,6 +115,9 @@ struct Signup: View {
     @EnvironmentObject var loginVM: LogInVM
     @Binding var isAuthenticated:Bool
     @State private var signUpSuccess = false
+    
+    @State private var isPasswordVisible = false
+    
 
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
@@ -171,15 +174,25 @@ struct Signup: View {
                     )
                     .padding()
                     HStack {
-                        SecureField("Enter password...", text: $viewModel.password)
-
+                        if isPasswordVisible {
+                            TextField("Password...", text: $viewModel.password)
+                        } else {
+                            SecureField("Password...", text: $viewModel.password)
+                        }
                         if (viewModel.password == "") {
                             Image(systemName: "lock.fill")
                                 .fontWeight(.bold)
                         } else {
-                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
-                                .fontWeight(.bold)
-                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                            HStack {
+                                Image(systemName: isPasswordVisible ? "eye.slash.fill" : "eye.fill")
+                                    .fontWeight(.bold)
+                                    .onTapGesture {
+                                        isPasswordVisible.toggle()
+                                    }
+                                Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                            }
                         }
                     }
                     .padding()

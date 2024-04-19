@@ -459,3 +459,132 @@ struct Outfits: View {
   //      OutfitsView()
   //  }
 //}
+
+struct OutfitsPinned: View {
+    let item: String
+    @State var outfit: Outfit? // Cloth object fetched from Fire
+    
+    @StateObject var imageLoader = ImageLoader() // Image load
+    @StateObject var imageLoader2 = ImageLoader() // Image load
+    @StateObject var imageLoader3 = ImageLoader() // Image load
+    @StateObject var imageLoader4 = ImageLoader()
+    
+    func fetchOutfitFromFirestore(completion: @escaping () -> Void) {
+        let docRef = Firestore.firestore().collection("outfits").document(item)
+        docRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    outfit = try document.data(as: Outfit.self)
+                    print("Outfit successfully fetched")
+                    
+                    let cloths = [outfit?.cloth1, outfit?.cloth2, outfit?.cloth3, outfit?.cloth4].compactMap { $0 }
+                    for (index, clothID) in cloths.enumerated() {
+                        let counter = index + 1
+                        let clothDocRef = Firestore.firestore().collection("clothes").document(clothID)
+                        clothDocRef.getDocument { clothDocument, clothError in
+                            if let clothDocument = clothDocument, clothDocument.exists {
+                                do {
+                                    let cloth = try clothDocument.data(as: Cloth.self)
+                                    if let imageUrl = cloth.image {
+                                        let storageRef = Storage.storage().reference()
+                                        storageRef.child(imageUrl).downloadURL { url, error in
+                                            if let url = url {
+                                                switch counter {
+                                                case 1:
+                                                    imageLoader.loadImage(from: url)
+                                                case 2:
+                                                    imageLoader2.loadImage(from: url)
+                                                case 3:
+                                                    imageLoader3.loadImage(from: url)
+                                                case 4:
+                                                    imageLoader4.loadImage(from: url)
+                                                default:
+                                                    break
+                                                }
+                                            } else if let error = error {
+                                                print("Error downloading image: \(error.localizedDescription)")
+                                            }
+                                        }
+                                    }
+                                } catch {
+                                    print("Error decoding cloth document: \(error.localizedDescription)")
+                                }
+                            } else {
+                                print("Cloth document \(clothID) does not exist")
+                            }
+                        }
+                    }
+                    completion() // Call completion handler after fetching images
+                } catch {
+                    print("Error decoding outfit document: \(error.localizedDescription)")
+                    completion() // Call completion handler if error occurs during decoding
+                }
+            } else {
+                print("Outfit document does not exist")
+                completion() // Call completion handler if document does not exist
+            }
+        }
+    }
+
+    
+    var body: some View {
+            VStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(Color.clear)
+                    .frame(width: 120, height: 120)
+                    .overlay(
+                            Group {
+                                   if let image = imageLoader.image {
+                                      Image(uiImage: image)
+                                             .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .foregroundColor(Color.clear)
+                                            .frame(width:30, height: 30)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                            .offset(x: -20, y: -20)
+
+                                       if let image2 = imageLoader2.image {
+                                                   Image(uiImage: image2)
+                                                       .resizable()
+                                                       .aspectRatio(contentMode: .fill)
+                                                       .frame(width:30, height: 30)
+                                                       .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                       .offset(x: -10, y: -10)
+                                               }
+                                       if let image3 = imageLoader3.image {
+                                                   Image(uiImage: image3)
+                                                       .resizable()
+                                                       .aspectRatio(contentMode: .fill)
+                                                       .frame(width:30, height: 30)
+                                                       .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                       .offset(x: 0, y: 0)
+                                               }
+                                       if let image4 = imageLoader4.image {
+                                                   Image(uiImage: image4)
+                                                       .resizable()
+                                                       .aspectRatio(contentMode: .fill)
+                                                       .frame(width:30, height: 30)
+                                                       .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                       .offset(x: 10, y: 10)
+                                               }
+                                } else {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color(hex: "E1DDED"))
+                                        .frame(width: 70, height: 70)
+                                        .overlay(
+                                            Text("loading...")
+                                                .foregroundColor(.white)
+                                                .font(.headline)
+                                    )
+                                }
+                              }
+                    )
+                
+            }
+            .onAppear {
+                fetchOutfitFromFirestore {
+                    print("fetched outfit and stuff")
+                }
+            }
+    }
+}

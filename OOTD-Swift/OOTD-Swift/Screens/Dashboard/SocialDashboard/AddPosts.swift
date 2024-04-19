@@ -24,6 +24,7 @@ struct AddPosts: View {
     @State var selectedImage: UIImage?
 
     @State private var searchText = ""
+    @State var showImages = false
     
     
     @State var showAlert = false
@@ -98,6 +99,7 @@ struct AddPosts: View {
     }
 
     var body: some View {
+        NavigationView {
             ZStack(alignment: .top) {
                 ScrollView(showsIndicators: false){
                     VStack {
@@ -114,12 +116,19 @@ struct AddPosts: View {
                                 .foregroundColor(.black)
                                 .font(.system( size: 20))
                            )
-                        Image(systemName: "camera.circle.fill")
-                            .resizable()
-                            .foregroundColor(Color(hex: "9278E0"))
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 35, height: 35)
-                            .padding(.bottom, 20)
+                        Button(action: {
+                            showImages.toggle()}) {
+                                Image(systemName: "camera.circle.fill")
+                                    .resizable()
+                                    .foregroundColor(Color(hex: "9278E0"))
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 35, height: 35)
+                                .padding(.bottom, 20)
+                        }
+                            
+                            
+                        
+                        
                         VStack (alignment: .leading, spacing: 10){
                             Text("Caption")
                                 .foregroundColor(.black)
@@ -169,7 +178,9 @@ struct AddPosts: View {
                     .ignoresSafeArea(.all)
                 HStack {
                     Button(action: {
-                        selectedImage = getImageForSelectedType()
+                        if selectedImage == nil {
+                            selectedImage = getImageForSelectedType()
+                        }
                         
                         if searchText == "" {
                             showAlert = true
@@ -216,6 +227,12 @@ struct AddPosts: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
+            .sheet(isPresented: $showImages) {
+                PhotoPicker(image: $selectedImage, onDismiss: {})
+            }
+            
+        }
+           
         }
 }
 

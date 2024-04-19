@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseStorage
 
 // If User logged IN --> View this --> Redirect to the 3 view panels
 struct DashboardNav: View {
@@ -13,10 +15,46 @@ struct DashboardNav: View {
     @State private var selectedTab = 1
     @State private var stayLoggedInAlert = false
     let userProfile: String
+    var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+    @StateObject var imageLoader = ImageLoader() // Image load
+
     
     //ghetto code
     @State private var addPadding = true
     @State private var firstTimeOpening = true
+    
+    func fetchPFP(completion: @escaping () -> Void) {
+       let docRef = Firestore.firestore().collection("users").document(uid)
+       docRef.getDocument { document, error in
+           if let document = document, document.exists {
+               do {
+                  let user = try document.data(as: User.self)
+                   print("Cloth successfully fetched")
+                   
+                   if let imageUrl = user.name {
+                       let storageRef = Storage.storage().reference()
+                       storageRef.child(imageUrl).downloadURL { url, error in
+                           if let url = url {
+                               // Load image using image loader
+                               imageLoader.loadImage(from: url)
+                           } else if let error = error {
+                               print("Error downloading image: \(error.localizedDescription)")
+                           }
+                           completion() // Call completion handler after fetching image
+                       }
+                   } else {
+                       completion() // Call completion handler if image URL is nil
+                   }
+               } catch {
+                   print("Error decoding user document: \(error.localizedDescription)")
+                   completion() // Call completion handler if error occurs during decoding
+               }
+           } else {
+               print("user document does not exist")
+               completion() // Call completion handler if document does not exist
+           }
+       }
+   }
 
     var body: some View {
         NavigationView {
@@ -38,13 +76,24 @@ struct DashboardNav: View {
                         .multilineTextAlignment(.center)
                     Spacer()
                     NavigationLink(destination: ProfileSummary(isAuthenticated: $isAuthenticated)) {
-                        Image("UserIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 45, height: 45)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                            .padding(.trailing)
+                        if let image = imageLoader.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .frame(width: 45, height: 45)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                .padding(.trailing)
+
+                        } else {
+                            Image("UserIcon") // Your user's profile picture
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 45, height: 45)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                .padding(.trailing)
+                        }
+                            
                         
                     }
                 }
@@ -71,6 +120,9 @@ struct DashboardNav: View {
                 view.padding(.top, -125)
             }
             .onAppear {
+                fetchPFP {
+                    print("")
+                }
                 self.confirmDocOnFirebase()
                 if (UserDefaults.standard.bool(forKey: "staySignedIn") == false && firstTimeOpening == true) {
                     stayLoggedInAlert = true

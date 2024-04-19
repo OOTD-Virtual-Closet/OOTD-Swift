@@ -28,6 +28,7 @@ final class LoginViewModel: ObservableObject {
     @Published var uid = ""
     @Published var password = ""
     
+    
     func login() async throws {
         print("Email: \(email)")
         print("Password: \(password)")
@@ -56,16 +57,16 @@ final class LoginViewModel: ObservableObject {
         } catch let error as NSError {
             if error.domain == AuthErrorDomain {
                 let errorCode = AuthErrorCode(_nsError: error)
-
-                    print("Error: \(error.localizedDescription)")
-                    throw LoginErrors.InvalidLogin
+                
+                print("Error: \(error.localizedDescription)")
+                throw LoginErrors.InvalidLogin
             } else {
                 // If the error is not from Firebase Auth
                 print("Non-Firebase Error: \(error.localizedDescription)")
                 throw LoginErrors.InvalidLogin
             }
         }
-
+        
     }
     func signInWithGoogle() async -> Bool {
         guard let clientID = FirebaseApp.app()?.options.clientID else {
@@ -104,7 +105,7 @@ final class LoginViewModel: ObservableObject {
         let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
         return emailTest.evaluate(with: email)
-
+        
     }
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
@@ -118,7 +119,7 @@ final class LoginViewModel: ObservableObject {
 }
 
 struct Login: View {
-//    @Binding var currentShowingView: String
+    //    @Binding var currentShowingView: String
     @StateObject private var viewModel = LoginViewModel()
     //@State private var loginButton: Bool = false
     @State private var signUpActive: Bool = false
@@ -127,6 +128,7 @@ struct Login: View {
     @State private var alertMessage = ""
     @Binding var isAuthenticated:Bool
     @EnvironmentObject var loginVM: LogInVM
+    @State private var isPasswordVisible = false
     
     private func isValidPassword(_ password: String) -> Bool {
         // checks if the password that is passed is a valid password
@@ -157,7 +159,7 @@ struct Login: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .font(.title3)
                         .fontWeight(.heavy)
-
+                    
                 }
                 VStack {
                     HStack {
@@ -181,14 +183,25 @@ struct Login: View {
                     )
                     .padding()
                     HStack {
-                        SecureField("Password...", text: $viewModel.password)
+                        if isPasswordVisible {
+                            TextField("Password...", text: $viewModel.password)
+                        } else {
+                            SecureField("Password...", text: $viewModel.password)
+                        }
                         if (viewModel.password == "") {
                             Image(systemName: "lock.fill")
                                 .fontWeight(.bold)
                         } else {
-                            Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
-                                .fontWeight(.bold)
-                                .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                            HStack {
+                                Image(systemName: isPasswordVisible ? "eye.slash.fill" : "eye.fill")
+                                    .fontWeight(.bold)
+                                    .onTapGesture {
+                                        isPasswordVisible.toggle()
+                                    }
+                                Image(systemName: isValidPassword(viewModel.password) ? "checkmark" : "xmark")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(isValidPassword(viewModel.password) ? .green : .red)
+                            }
                         }
                     }
                     .padding()
@@ -292,22 +305,22 @@ struct Login: View {
                         .foregroundStyle(Color(hex:"898989"))
                         .fontWeight(.bold)
                     
-
+                    
                     // #### NEED TO ADD NAV LOCATIONS ####
                     Button(action: {
                         Task {
-                                let success = await viewModel.signInWithGoogle()
-                                if success {
-                                    print("Login with Google successful")
-                                    isAuthenticated = true
-                                } else {
-                                    // Handle sign-in failure
-                                    alertMessage = "Login with Google unsuccessful"
-                                    print("Login with Google unsuccessful")
-                                    isAuthenticated = false
-                                    showingAlert = true
-                                }
+                            let success = await viewModel.signInWithGoogle()
+                            if success {
+                                print("Login with Google successful")
+                                isAuthenticated = true
+                            } else {
+                                // Handle sign-in failure
+                                alertMessage = "Login with Google unsuccessful"
+                                print("Login with Google unsuccessful")
+                                isAuthenticated = false
+                                showingAlert = true
                             }
+                        }
                     }) {
                         HStack {
                             Image("Google")
@@ -324,34 +337,34 @@ struct Login: View {
                         Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
                     .buttonStyle(.bordered)
-                //    GoogleSignInButton(action: {
-                     //   loginVM.signUpWithGoogle()
+                    //    GoogleSignInButton(action: {
+                    //   loginVM.signUpWithGoogle()
                     //    isAuthenticated = true;
                     //})
-//                        .foregroundColor(.white)
-//                        .font(.title)
-//                        .bold()
-//                        .frame(maxWidth: 350)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 8)
-//                                .stroke(Color.black, lineWidth: 1)
-//                        )
-//
-//                    Button (action: {
-//                       // handle google login
-//                        print("Login with Apple")
-//                    }) {
-//                        HStack {
-//                            Text("Log In with Apple")
-//                                .foregroundColor(.black)
-//                        }
-//                    }
+                    //                        .foregroundColor(.white)
+                    //                        .font(.title)
+                    //                        .bold()
+                    //                        .frame(maxWidth: 350)
+                    //                        .overlay(
+                    //                            RoundedRectangle(cornerRadius: 8)
+                    //                                .stroke(Color.black, lineWidth: 1)
+                    //                        )
+                    //
+                    //                    Button (action: {
+                    //                       // handle google login
+                    //                        print("Login with Apple")
+                    //                    }) {
+                    //                        HStack {
+                    //                            Text("Log In with Apple")
+                    //                                .foregroundColor(.black)
+                    //                        }
+                    //                    }
                 }
                 
                 Spacer()
             }
         }
-
+        
     }
     
     func biometricAuthentication() {
@@ -359,7 +372,7 @@ struct Login: View {
         var error: NSError?
         
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                
+            
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "This is for quick login purposes!") { success, authenticationError in
                 DispatchQueue.main.async {
                     if success {
@@ -372,7 +385,7 @@ struct Login: View {
                     }
                 }
             }
-
+            
         } else {
             self.showingAlert = true
             self.alertMessage = "Face ID is not available on this device! Update your iOS version or application privileges."
@@ -406,7 +419,7 @@ extension Color {
         default:
             (a, r, g, b) = (1, 1, 1, 0)
         }
-
+        
         self.init(
             .sRGB,
             red: Double(r) / 255,
@@ -422,8 +435,8 @@ struct Login_Previews: PreviewProvider {
         @State var showSignInView = false
         @State var isAuthenticated = false
         NavigationStack {
-        Login(isAuthenticated: $isAuthenticated)
-            .environmentObject(LogInVM())
+            Login(isAuthenticated: $isAuthenticated)
+                .environmentObject(LogInVM())
         }
     }
 }

@@ -342,7 +342,9 @@ struct AddClothes: View {
                     .ignoresSafeArea(.all)
                 HStack {
                     Button(action: {
-                        selectedImage = getImageForSelectedType()
+                        if selectedImage == nil  {
+                            selectedImage = getImageForSelectedType()
+                        }
                         let path = uploadClothImage()
                         let colors = selectedImage?.getColors()
                         color = Color((colors?.background)!) ?? Color(hex: "9278E0")
