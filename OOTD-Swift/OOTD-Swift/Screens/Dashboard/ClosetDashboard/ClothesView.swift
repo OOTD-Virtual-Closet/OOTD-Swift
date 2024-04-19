@@ -61,6 +61,7 @@ struct ClothesView: View {
             filteredShoes = filterClothes(searchText: searchText, clothes: shoes)
         }
     }
+
     
     private func populateArrays(completion: @escaping () -> Void) {
         let db = Firestore.firestore()

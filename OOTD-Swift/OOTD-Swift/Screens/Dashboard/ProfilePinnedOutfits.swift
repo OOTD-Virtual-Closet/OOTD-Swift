@@ -12,6 +12,7 @@ import FirebaseStorage
 struct ProfilePinnedOutfits: View {
     @State private var outfits : [Outfit]?
     var uid = UserDefaults.standard.string(forKey: "uid") ?? "uid"
+    
 
     private func populateOutfits(completion: @escaping () -> Void) {
         let db = Firestore.firestore()

@@ -7,7 +7,7 @@
 
 import SwiftUI
 import FirebaseFirestore
-
+import FirebaseStorage
 struct FriendsView: View {
     @State var showRequestsReceived = false
     @State var showRequestsSent = false
@@ -16,6 +16,8 @@ struct FriendsView: View {
     @State private var isEditing = false
     @State var showAddFriends = false
     @State var friendsList : [String]?
+    @State var showFriendProfile = false
+    @State var friendURL : String?
     
     func populateFriendsList() {
         let db = Firestore.firestore()
@@ -87,7 +89,12 @@ struct FriendsView: View {
                         .padding(.horizontal, 20)
                     VStack(spacing: 20) {
                         ForEach(friendsList ?? [], id: \.self) { friendID in
-                            FriendDisplay(userBID: friendID)
+                            Button(action: {
+                                showFriendProfile.toggle()
+                                friendURL = friendID
+                            }) {
+                                FriendDisplay(userBID: friendID)
+                            }
                         }
                     }
                     .padding(.top, 20)
@@ -151,6 +158,9 @@ struct FriendsView: View {
         .onAppear {
             populateFriendsList()
         }
+        .sheet(isPresented: $showFriendProfile) {
+            FriendProfile(uid: friendURL ?? "uid")
+        }
         .sheet(isPresented: $showRequestsReceived)
         {
             FriendReceivedView()
@@ -177,6 +187,7 @@ struct FriendDisplay: View {
     @State var userB: User?
     @State var friendsList: [String]?
     @State var showAlert = false
+    @StateObject var imageLoader = ImageLoader()
     
     func loadUser(completion: @escaping () -> Void) {
         let docRef = Firestore.firestore().collection("users").document(userBID ?? "")
@@ -185,6 +196,20 @@ struct FriendDisplay: View {
                 do {
                     userB = try document.data(as: User.self)
                     print("User successfully fetched")
+                    if let imageUrl = userB?.name {
+                        let storageRef = Storage.storage().reference()
+                        storageRef.child(imageUrl).downloadURL { url, error in
+                            if let url = url {
+                                // Load image using image loader
+                                imageLoader.loadImage(from: url)
+                            } else if let error = error {
+                                print("Error downloading image: \(error.localizedDescription)")
+                            }
+                            completion() // Call completion handler after fetching image
+                        }
+                    } else {
+                        completion() // Call completion handler if image URL is nil
+                    }
                 } catch {
                     print("Error decoding user document: \(error.localizedDescription)")
                     completion()
@@ -245,12 +270,22 @@ struct FriendDisplay: View {
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: UIScreen.main.bounds.width - 40, height: 60)
             HStack {
-                Image("UserIcon")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                if let image = imageLoader.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+
+                } else {
+                    Image("UserIcon") // Your user's profile picture
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                }
                 Text(userB?.email ?? "friend")
                     .foregroundColor(.black)
                     .font(.system(size: 15))
@@ -296,7 +331,8 @@ struct FriendDisplay: View {
 struct RequestSentDisplay: View {
     @State var userB : User?
     @State var userBID: String?
-    
+    @StateObject var imageLoader = ImageLoader()
+
     func loadUser(completion: @escaping () -> Void) {
         
         let docRef = Firestore.firestore().collection("users").document(userBID ?? "")
@@ -306,7 +342,20 @@ struct RequestSentDisplay: View {
                     userB = try document.data(as: User.self)
                     print("User successfully fetched")
                     
-                    
+                    if let imageUrl = userB?.name {
+                        let storageRef = Storage.storage().reference()
+                        storageRef.child(imageUrl).downloadURL { url, error in
+                            if let url = url {
+                                // Load image using image loader
+                                imageLoader.loadImage(from: url)
+                            } else if let error = error {
+                                print("Error downloading image: \(error.localizedDescription)")
+                            }
+                            completion() // Call completion handler after fetching image
+                        }
+                    } else {
+                        completion() // Call completion handler if image URL is nil
+                    }
                 } catch {
                     print("Error decoding user document: \(error.localizedDescription)")
                     completion()
@@ -355,16 +404,22 @@ struct RequestSentDisplay: View {
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: UIScreen.main.bounds.width - 40, height: 60)
             HStack {
-                Image("UserIcon")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
-                Text(userB?.email ?? "Friend")
-                    .foregroundColor(.black)
-                    .font(.system( size: 15))
-                    .fontWeight(.bold)
+                if let image = imageLoader.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+
+                } else {
+                    Image("UserIcon") // Your user's profile picture
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                }
                 Spacer()
                 Button(action: {
                     retractRequest {
@@ -389,6 +444,7 @@ struct RequestSentDisplay: View {
 struct RequestReceivedDisplay: View {
     @State var userB : User?
     @State var userBID : String?
+    @StateObject var imageLoader = ImageLoader()
     
     func loadUser(completion: @escaping () -> Void) {
         
@@ -398,6 +454,20 @@ struct RequestReceivedDisplay: View {
                 do {
                     userB = try document.data(as: User.self)
                     print("User successfully fetched")
+                    if let imageUrl = userB?.name {
+                        let storageRef = Storage.storage().reference()
+                        storageRef.child(imageUrl).downloadURL { url, error in
+                            if let url = url {
+                                // Load image using image loader
+                                imageLoader.loadImage(from: url)
+                            } else if let error = error {
+                                print("Error downloading image: \(error.localizedDescription)")
+                            }
+                            completion() // Call completion handler after fetching image
+                        }
+                    } else {
+                        completion() // Call completion handler if image URL is nil
+                    }
                     
                     
                 } catch {
@@ -482,12 +552,23 @@ struct RequestReceivedDisplay: View {
                 .foregroundColor(Color(hex: "E1DDED"))
                 .frame(width: UIScreen.main.bounds.width - 40, height: 60)
             HStack {
-                Image("UserIcon")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                if let image = imageLoader.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+
+                } else {
+                    Image("UserIcon") // Your user's profile picture
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                }
+
                 Text(userB?.email ?? "")
                     .foregroundColor(.black)
                     .font(.system( size: 15))

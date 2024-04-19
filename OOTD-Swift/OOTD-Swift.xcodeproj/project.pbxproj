@@ -72,6 +72,7 @@
 		8948EE7A2BCDB36900232925 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8948EE792BCDB36900232925 /* FirebaseStorage */; };
 		8948EE7C2BCDB36900232925 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 8948EE7B2BCDB36900232925 /* FirebaseStorageCombine-Community */; };
 		8948EE7E2BCDB66500232925 /* ProfilePinnedOutfits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8948EE7D2BCDB66500232925 /* ProfilePinnedOutfits.swift */; };
+		8948EE802BD2ADE000232925 /* FriendProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8948EE7F2BD2ADE000232925 /* FriendProfile.swift */; };
 		89791E1E2B8EEA4A00E28FE9 /* AddClothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E1D2B8EEA4A00E28FE9 /* AddClothes.swift */; };
 		89791E202B8EFDB400E28FE9 /* CustomDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E1F2B8EFDB400E28FE9 /* CustomDropDown.swift */; };
 		89791E242B8FCF5800E28FE9 /* ClothViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */; };
@@ -161,6 +162,7 @@
 		89396F182B922E770041F5F0 /* ExpandedClothesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedClothesView.swift; sourceTree = "<group>"; };
 		8948EE452BCB0C6100232925 /* UIImageColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageColors.swift; sourceTree = "<group>"; };
 		8948EE7D2BCDB66500232925 /* ProfilePinnedOutfits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePinnedOutfits.swift; sourceTree = "<group>"; };
+		8948EE7F2BD2ADE000232925 /* FriendProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfile.swift; sourceTree = "<group>"; };
 		89791E1D2B8EEA4A00E28FE9 /* AddClothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothes.swift; sourceTree = "<group>"; };
 		89791E1F2B8EFDB400E28FE9 /* CustomDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDropDown.swift; sourceTree = "<group>"; };
 		89791E232B8FCF5800E28FE9 /* ClothViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothViewModel.swift; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				89D107C82BB53F5F0059F232 /* FriendReceivedView.swift */,
 				89D107CA2BB5A4510059F232 /* SendFriendRequestView.swift */,
 				CC0F5A5A2BD193C90020C28A /* BlockedListView.swift */,
+				8948EE7F2BD2ADE000232925 /* FriendProfile.swift */,
 			);
 			path = SocialDashboard;
 			sourceTree = "<group>";
@@ -675,6 +678,7 @@
 				343F077D2B86B35E007DBE14 /* ApplicationUtility.swift in Sources */,
 				890DCE352BB282E800292B8E /* EditClothesView.swift in Sources */,
 				8948EE462BCB0C6100232925 /* UIImageColors.swift in Sources */,
+				8948EE802BD2ADE000232925 /* FriendProfile.swift in Sources */,
 				CCDE67842B8138BD00599FE8 /* Signup.swift in Sources */,
 				89791E242B8FCF5800E28FE9 /* ClothViewModel.swift in Sources */,
 				89396F032B9167AC0041F5F0 /* ImageLoader.swift in Sources */,
