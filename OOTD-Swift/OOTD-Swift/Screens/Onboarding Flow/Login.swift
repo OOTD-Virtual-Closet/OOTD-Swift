@@ -323,7 +323,7 @@ struct Login: View {
                         }
                     }) {
                         HStack {
-                            Image("Google")
+                            Image("google")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 25, height: 30)
