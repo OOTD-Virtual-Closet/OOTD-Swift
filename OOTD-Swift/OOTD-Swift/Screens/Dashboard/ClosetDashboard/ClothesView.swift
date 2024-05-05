@@ -437,6 +437,7 @@ struct ClothesView: View {
                            populateArrays {
                                print("Arrays are updated again")
                            }
+                           populateAndFilter()
                        }) {
                 
                            if let expandedClothesChosen = expandedClothesChosen {
@@ -447,6 +448,7 @@ struct ClothesView: View {
                            populateArrays {
                                print("Arrays are updated")
                            }
+                           populateAndFilter()
                        }) {
                            AddClothes()
                        }

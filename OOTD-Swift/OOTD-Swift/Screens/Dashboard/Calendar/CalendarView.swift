@@ -110,6 +110,7 @@ struct CalendarView: View {
                 print("got outfits")
             }
             viewModel.getOutfitPlan()
+            viewModel.getOutfitPath()
         }
     }
 }
@@ -128,10 +129,33 @@ struct CalendarCell: View {
     var dayOfMonth:Int
     
     @State private var selectedOutfit : String?
+    @State private var path : String?
     @State var showSheet:Bool = false
     @ObservedObject var viewModel : CalendarViewModel
-    @State var selectedImage: UIImage?
+    //@State var selectedImage: UIImage?
     @State private var photosPickerItem: PhotosPickerItem?
+    @StateObject var imageLoader = ImageLoader() // Image load
+
+    func fetchImgFromDB(completion: @escaping () -> Void) {
+        print("fetchImgFromDB "+(path ?? "path not found"))
+        if let imageUrl = path {
+            print("inside if")
+            let storageRef = Storage.storage().reference()
+            storageRef.child(imageUrl).downloadURL { url, error in
+                if let url = url {
+                    // Load image using image loader
+                    imageLoader.loadImage(from: url)
+                } else if let error = error {
+                    print("Error downloading image: \(error.localizedDescription)")
+                }
+                completion() // Call completion handler after fetching image
+            }
+        } else {
+            print("outside if")
+            completion() // Call completion handler if image URL is nil
+        }
+
+    }
     
     func getImage() -> UIImage? {
             let uiImage = UIImage(named: "shirt")
@@ -140,8 +164,8 @@ struct CalendarCell: View {
     
     
     func uploadImage() -> String {
-        if selectedImage == nil  {
-            selectedImage = getImage()
+        if imageLoader.image == nil  {
+            imageLoader.image = getImage()
             print("Image not selected in calendarview!")
         }
         
@@ -149,7 +173,7 @@ struct CalendarCell: View {
         let storageRef = Storage.storage().reference()
         
         // turn image into data (please work)
-        let imageData = selectedImage!.pngData()
+        let imageData = imageLoader.image!.pngData()
         
         guard imageData != nil else {
             print("failed")
@@ -160,7 +184,7 @@ struct CalendarCell: View {
         let fileRef = storageRef.child(path)
         
         // Upload dis data
-        if let selectedImage = selectedImage {
+        if let selectedImage = imageLoader.image {
             let resizedImage = selectedImage.resizedImageWithinRect(rectSize: CGSize(width: 200, height: 200)) //check size stuff after
             if let imageData = resizedImage.jpegData(compressionQuality: 0.75) {
                 let uploadTask = fileRef.putData(imageData, metadata: nil) {
@@ -204,7 +228,7 @@ struct CalendarCell: View {
                     .frame(height: UIScreen.main.bounds.height / 7)
                     .ignoresSafeArea(.all)
                 
-                if let selectedImage = selectedImage {
+                if let selectedImage = imageLoader.image {
                     Image(uiImage: selectedImage)
                         .resizable()
                         .scaledToFit()
@@ -234,24 +258,39 @@ struct CalendarCell: View {
                         if let photosPickerItem,
                            let data = try? await photosPickerItem.loadTransferable(type: Data.self) {
                             if let image = UIImage(data:data) {
-                                selectedImage = image
+                                imageLoader.image = image
                             }
                         }
-                        var path = uploadImage()
+                        path = uploadImage()
+                        print("adi path is " + path!)
+                        viewModel.editOutfitPath(date: date, path: path ?? "path not found")
                     }
                 }
                 CustomDropDown(title: "Planned Outfit", prompt: "Select an Outfit for this day", options: viewModel.outfitOptions, selection: $selectedOutfit)
-                    .onAppear {
-                        addPadding = false
-                        print(date)
-                        viewModel.getOutfitPlan()
-                        if let plans = viewModel.plans {
-                            selectedOutfit = plans[date]
-                        }
-                        print("adi get the plan")
-                        print(viewModel.plans?[date] ?? "no plan for \(date)")
-                    }
             }
+            .onAppear {
+                addPadding = false
+                print(date)
+                viewModel.getOutfitPath()
+                viewModel.getOutfitPlan()
+                if let paths = viewModel.paths {
+                    print("path selected")
+                    path = paths[date]
+                    fetchImgFromDB {
+                        print("image fetched")
+                    }
+                }
+                if let plans = viewModel.plans {
+                    selectedOutfit = plans[date]
+                    print("outfit selected")
+                }
+
+                print("adi get the plan")
+                print(viewModel.plans?[date] ?? "no plan for \(date)")
+                print(viewModel.paths?[date] ?? "no outfit for \(date)")
+
+            }
+
 
         }
     }

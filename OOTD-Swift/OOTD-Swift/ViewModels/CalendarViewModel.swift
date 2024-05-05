@@ -1,10 +1,3 @@
-//
-//  CalendarViewModel.swift
-//  OOTD-Swift
-//
-//  Created by Aditya Patel on 3/24/24.
-//
-
 import Foundation
 import Firebase
 import FirebaseFirestore
@@ -17,6 +10,7 @@ class CalendarViewModel: ObservableObject {
     @Published var outfits : [Outfit]?
     @Published var outfitOptions =  ["None"]
     @Published var plans : [String: String]?
+    @Published var paths : [String: String]?
 
     func addPostToCurrentUser() {
         
@@ -42,6 +36,10 @@ class CalendarViewModel: ObservableObject {
                       if (dataDescription.contains("plans")) {
                           let plans: [String: String] = document.data()?["plans"] as! [String : String]
                           self.plans = plans
+                          
+                          print("plans found")
+                          print(plans)
+
                       }
                   }
               } else {
@@ -52,11 +50,35 @@ class CalendarViewModel: ObservableObject {
             }
         }
     }
-    func editOutfitPlan(date: String, outfitID: String) {
+    func getOutfitPath() {
         let docRef = db.collection("users").document(uid)
+
+        Task {
+            do {
+              let document = try await docRef.getDocument()
+              if document.exists {
+                  let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                  DispatchQueue.main.async {
+                      if (dataDescription.contains("paths")) {
+                          let paths: [String: String] = document.data()?["paths"] as! [String : String]
+                          self.paths = paths
+                          print("paths found")
+                          print(paths)
+                          print(paths["2024 March 19"] ?? "default")
+                      }
+                  }
+              } else {
+                print("Document does not exist")
+              }
+            } catch {
+              print("Error getting document: \(error)")
+            }
+        }
+    }
+    
+    func editOutfitPlan(date: String, outfitID: String) {
         self.plans?[date] = outfitID
         print("plans are here adi")
-        print(self.plans)
         Task {
             do {
                 // Update one field, creating the document if it does not exist.
@@ -64,6 +86,17 @@ class CalendarViewModel: ObservableObject {
             }
         }
     }
+    
+    func editOutfitPath(date: String, path: String) {
+        self.paths?[date] = path
+        Task {
+            do {
+                // Update one field, creating the document if it does not exist.
+                try await db.collection("users").document(uid).setData([ "paths": paths ?? ["date":"path"]], merge: true)
+            }
+        }
+    }
+    
     func printOutfits() {
         if let outfitsTemp = outfits {
             for outfit in outfitsTemp {
